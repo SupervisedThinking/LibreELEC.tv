@@ -1,0 +1,49 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Set common paths
+CITRA_HOME_CONFIG=/storage/.config/citra-emu
+CITRA_HOME_LOCAL=/storage/.local/share/citra-emu
+CITRA_VAR_LOG=/var/log/citra.log
+
+# create link to config directory
+if [ ! -L ${CITRA_HOME_LOCAL} ]; then
+  if [ -d ${CITRA_HOME_LOCAL} ]; then
+    cp -rf ${CITRA_HOME_LOCAL} ${CITRA_HOME_CONFIG}
+    rm -rf ${CITRA_HOME_LOCAL}
+  fi
+  ln -sf ${CITRA_HOME_CONFIG} ${CITRA_HOME_LOCAL}
+fi
+
+# Stop Kodi service / load audio backend config
+kodi-service.sh --stop
+
+# Set SDL audio driver to PulseAudio or ALSA
+set_SDL_audiodriver
+
+# Change refresh rate to 60Hz
+set_refresh_rate_60
+
+# force SDL2 audio engine
+set_CITRA_audioengine
+
+# force fullscreen on startup
+set_CITRA_videosettings
+
+# Set Qt5 screen scale environment vars
+set_QT_environment_vars
+
+# Create symlink to logfile
+if [ ! -L ${CITRA_VAR_LOG} ]; then
+  ln -sf ${CITRA_HOME_CONFIG}/log/citra_log.txt ${CITRA_VAR_LOG}
+fi
+
+# Run the emulator
+citra-qt "$@"
+
+# Switch back to frontends or start Kodi service / unload audio backend config
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start

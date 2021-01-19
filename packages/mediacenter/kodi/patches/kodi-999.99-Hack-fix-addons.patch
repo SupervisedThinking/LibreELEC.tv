@@ -1,0 +1,34 @@
+@@ -0,0 +1,33 @@
+diff --git a/xbmc/addons/AddonDatabase.cpp b/xbmc/addons/AddonDatabase.cpp
+index d5eac2b..4205cbc 100644
+--- a/xbmc/addons/AddonDatabase.cpp
++++ b/xbmc/addons/AddonDatabase.cpp
+@@ -202,6 +202,11 @@ void CAddonDatabase::UpdateTables(int version)
+     m_pDS->exec("DELETE FROM dependencies");
+     m_pDS->exec("DELETE FROM addonlinkrepo");
+     m_pDS->exec("DELETE FROM repo");
++
++    // Ugly hack to disable multiple PVR clients
++    m_pDS->query(PrepareSQL("SELECT COUNT(1) FROM installed WHERE addonID LIKE 'pvr.%%' AND enabled=1"));
++    if (m_pDS->num_rows() != 0 && m_pDS->fv(0).get_asInt() > 1)
++      m_pDS->exec("UPDATE installed SET enabled=0 WHERE addonID LIKE 'pvr.%%'");
+   }
+ }
+ 
+@@ -244,6 +249,16 @@ void CAddonDatabase::SyncInstalled(const std::set<std::string>& ids, const std::
+     for (const auto& id : enabled)
+       m_pDS->exec(PrepareSQL("UPDATE installed SET enabled=1 WHERE addonID='%s'", id.c_str()));
+ 
++    // Ugly hack to always enable inputstream.* and os.*
++    m_pDS->exec("UPDATE installed SET enabled=1 WHERE addonID == 'inputstream.adaptive'");
++    m_pDS->exec("UPDATE installed SET enabled=1 WHERE addonID == 'inputstream.rtmp'");
++    m_pDS->exec("UPDATE installed SET enabled=1 WHERE addonID LIKE 'os.%%'");
++
++    // Ugly hack to disable multiple PVR clients - remove this eventually? Allow up to 4 clients - any more assume all need disabling
++    m_pDS->query(PrepareSQL("SELECT COUNT(1) FROM installed WHERE addonID LIKE 'pvr.%%' AND enabled=1"));
++    if (m_pDS->num_rows() != 0 && m_pDS->fv(0).get_asInt() > 4)
++      m_pDS->exec("UPDATE installed SET enabled=0 WHERE addonID LIKE 'pvr.%%'");
++
+     CommitTransaction();
+   }
+   catch (...)

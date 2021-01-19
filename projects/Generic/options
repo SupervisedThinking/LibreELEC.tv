@@ -56,6 +56,9 @@
   # OpenGL-ES implementation to use (no / bcm2835-driver / gpu-viv-bin-mx6q)
     OPENGLES="no"
 
+  # Vulkan API support (yes / no)
+    VULKAN_API="yes"
+
   # Displayserver to use (x11 / no)
     DISPLAYSERVER="x11"
 
@@ -83,3 +86,33 @@
 
   # Default size of the ova image, in MB, eg. 4096
     OVA_SIZE="4096"
+
+################################################################################
+# setup LibreELEC-RR defaults
+################################################################################
+
+  # Install applications e.g. Chrome or Spotify (yes / no)
+  OEM_APPLICATIONS="yes"
+
+  # Install standalone emulators e.g. Emulationstation, Amiberry, PPSSPP (yes / no)
+  OEM_EMULATORS="yes"
+
+  # Install additional frontends e.g. Pegasus Frontend (yes / no)
+  OEM_FRONTENDS_EXTRA="yes"
+
+  # Install libretro cores e.g. Retroarch, snes9x, mame2003-plus (yes / no)
+  OEM_LIBRETRO="yes"
+
+  # Install tools e.g. additional tools like mc or htop (yes / no)
+  OEM_TOOLS="yes"
+
+  # Add non-free packages i.e. fdk-aac (yes / no)
+  NON_FREE_PKG_SUPPORT="no"
+
+  # Override some RetroArch playlist core assignation
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//fceumm/mesen}"
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//mame2003_plus/mame2016}"
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//mupen64plus/parallel_n64}"
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//pcsx_rearmed/mednafen_psx}"
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//snes9x2010/bsnes_mercury_accuracy}"
+    RA_PLAYLIST_CORES="${RA_PLAYLIST_CORES//yabause/mednafen_saturn}"

@@ -1,0 +1,12 @@
+--- a/mupen64plus-gui.pro
++++ b/mupen64plus-gui.pro
+@@ -57,7 +57,7 @@
+     osal/osal_files_unix.c
+ 
+ LIBS += -L/usr/local/lib -ldl -lSDL2 -lz
+-INCLUDEPATH += /usr/local/include /usr/include/SDL2 /usr/local/include/SDL2
++INCLUDEPATH += /usr/local/include $(SYSROOT_PREFIX)/usr/include/SDL2 /usr/local/include/SDL2
+ }
+ 
+ HEADERS  += mainwindow.h \
+

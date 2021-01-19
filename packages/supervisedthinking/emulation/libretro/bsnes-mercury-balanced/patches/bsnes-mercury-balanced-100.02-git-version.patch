@@ -1,0 +1,15 @@
+--- a/Makefile
++++ b/Makefile
+@@ -26,6 +26,11 @@
+ # options += debugger
+ # arch := x86
+ # console := true
++
++GIT_VERSION ?= " $(shell git rev-parse --short HEAD || echo unknown)"
++ifneq ($(GIT_VERSION)," unknown")
++   FLAGS += -DGIT_VERSION=\"$(GIT_VERSION)\"
++endif
+ 
+ # compiler
+ 
+

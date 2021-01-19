@@ -1,0 +1,186 @@
+From 809bd34e52615ec42395e068884f3d57a9ec5b53 Mon Sep 17 00:00:00 2001
+From: Stefan <gizmo98@users.noreply.github.com>
+Date: Wed, 6 Jul 2016 21:53:43 +0200
+Subject: [PATCH] rpi video - Use dispmanx scaling (#1) * Use dispmanx scaling
+ * There is the new SDL hint SDL_VIDEO_RPI_SCALE_MODE. There are three values.
+  * The variable can be set to the following values:  *   "0"       - Window
+ resolution is desktop resolution.  *               This is the behaviour of
+ SDL <= 2.0.4. (default)  *   "1"       - Requested video resolution will be
+ scaled to desktop resolution.  *               Aspect ratio of requested
+ video resolution will be respected.  *   "2"       - Requested video
+ resolution will be scaled to desktop resolution  *   "3"       - Integer
+ scaling. dst_rect is an integral multiple of src_rect. Should prevent scaling
+ artifacts. * Add aspect ratio hint
+
+---
+ include/SDL_hints.h                | 27 +++++++++
+ src/video/raspberry/SDL_rpivideo.c | 89 ++++++++++++++++++++++++++----
+ 2 files changed, 106 insertions(+), 10 deletions(-)
+
+diff --git a/include/SDL_hints.h b/include/SDL_hints.h
+index 4ee72e97d6..1ea9045690 100644
+--- a/include/SDL_hints.h
++++ b/include/SDL_hints.h
+@@ -903,6 +903,33 @@ extern "C" {
+  */
+ #define SDL_HINT_NO_SIGNAL_HANDLERS   "SDL_NO_SIGNAL_HANDLERS"
+ 
++/**
++ *  \brief Tell dispmanx to stretch the SDL window to fill the display.
++ *
++ * This hint only applies to the rpi video driver.
++ *
++ * The variable can be set to the following values:
++ *   "0"       - Window resolution is desktop resolution.
++ *               This is the behaviour of SDL <= 2.0.4. (default)
++ *   "1"       - Requested video resolution will be scaled to desktop resolution.
++ *               Aspect ratio of requested video resolution will be respected.
++ *   "2"       - Requested video resolution will be scaled to desktop resolution.
++ *   "3"       - Requested video resolution will be scaled to desktop resolution.
++ *               Aspect ratio of requested video resolution will be respected.
++ *               If possible output resolution will be integral multiple of video
++ *               resolution.
++ */
++#define SDL_HINT_VIDEO_RPI_SCALE_MODE    "SDL_VIDEO_RPI_SCALE_MODE"
++
++/**
++ *  \brief Tell dispmanx to set a specific aspect ratio.
++ *
++ * This hint only applies to the rpi video driver.
++ *
++ * Must be set together with SDL_HINT_VIDEO_RPI_SCALE_MODE=1.
++ */
++#define SDL_HINT_VIDEO_RPI_RATIO    "SDL_VIDEO_RPI_RATIO"
++
+ /**
+  *  \brief Tell SDL not to generate window-close events for Alt+F4 on Windows.
+  *
+diff --git a/src/video/raspberry/SDL_rpivideo.c b/src/video/raspberry/SDL_rpivideo.c
+index c4f4a6069b..bee622fd80 100644
+--- a/src/video/raspberry/SDL_rpivideo.c
++++ b/src/video/raspberry/SDL_rpivideo.c
+@@ -31,6 +31,7 @@
+  */
+ 
+ /* SDL internals */
++#include "SDL_hints.h"
+ #include "../SDL_sysvideo.h"
+ #include "SDL_version.h"
+ #include "SDL_syswm.h"
+@@ -243,6 +244,9 @@ RPI_vsync_callback(DISPMANX_UPDATE_HANDLE_T u, void *data)
+ int
+ RPI_CreateWindow(_THIS, SDL_Window * window)
+ {
++    const char *hintScale = SDL_GetHint(SDL_HINT_VIDEO_RPI_SCALE_MODE);
++    const char *hintRatio = SDL_GetHint(SDL_HINT_VIDEO_RPI_RATIO);
++    char scalemode = '0';
+     SDL_WindowData *wdata;
+     SDL_VideoDisplay *display;
+     SDL_DisplayData *displaydata;
+@@ -252,6 +256,10 @@ RPI_CreateWindow(_THIS, SDL_Window * window)
+     DISPMANX_UPDATE_HANDLE_T dispman_update;
+     uint32_t layer = SDL_RPI_VIDEOLAYER;
+     const char *env;
++    float srcAspect = 1;
++    float dstAspect = 1;
++    int factor_x = 0;
++    int factor_y = 0;
+ 
+     /* Disable alpha, otherwise the app looks composed with whatever dispman is showing (X11, console,etc) */
+     dispman_alpha.flags = DISPMANX_FLAGS_ALPHA_FIXED_ALL_PIXELS; 
+@@ -266,24 +274,85 @@ RPI_CreateWindow(_THIS, SDL_Window * window)
+     display = SDL_GetDisplayForWindow(window);
+     displaydata = (SDL_DisplayData *) display->driverdata;
+ 
+-    /* Windows have one size for now */
+-    window->w = display->desktop_mode.w;
+-    window->h = display->desktop_mode.h;
+-
+-    /* OpenGL ES is the law here, buddy */
+-    window->flags |= SDL_WINDOW_OPENGL;
++    if (hintScale != NULL)
++        scalemode = *hintScale;
+ 
+     /* Create a dispman element and associate a window to it */
+-    dst_rect.x = 0;
+-    dst_rect.y = 0;
+-    dst_rect.width = window->w;
+-    dst_rect.height = window->h;
++    switch(scalemode) {
++        case '3':
++            /* Pixel perfect scaling mode. */
++            factor_x = (display->desktop_mode.w / window->w);
++            factor_y = (display->desktop_mode.h / window->h);
++            if ((factor_x != 0) && (factor_y != 0)) {
++                if (factor_x >= factor_y) {
++                    dst_rect.width = window->w * factor_y;
++                    dst_rect.height = window->h * factor_y;
++                }
++                else {
++                    dst_rect.width = window->w * factor_x;
++                    dst_rect.height = window->h * factor_x;
++                }
++                /* Center window. */
++                dst_rect.x = (display->desktop_mode.w - dst_rect.width) / 2;
++                dst_rect.y = (display->desktop_mode.h - dst_rect.height) / 2;
++                break;
++            }
++            /* If integer scale is not possible fallback to mode 1. */
++        case '1':
++            /* Fullscreen mode. */
++            /* Calculate source and destination aspect ratios. */
++            if (hintRatio != NULL)
++                srcAspect = strtof(hintRatio, NULL);
++            else
++                srcAspect = (float)window->w / (float)window->h;
++            /* only allow sensible aspect ratios */
++            if (srcAspect < 0.2f || srcAspect > 6.0f)
++                srcAspect = (float)window->w / (float)window->h;
++            dstAspect = (float)display->desktop_mode.w / (float)display->desktop_mode.h;
++            /* If source and destination aspect ratios are not equal correct destination width. */
++            if (srcAspect < dstAspect) {
++                dst_rect.width = (unsigned)(display->desktop_mode.h * srcAspect);
++                dst_rect.height = display->desktop_mode.h;
++            }
++            else if (srcAspect > dstAspect) {
++                dst_rect.width = display->desktop_mode.w;
++                dst_rect.height = (unsigned)((float)display->desktop_mode.w / srcAspect);
++            }
++            else {
++                dst_rect.width = display->desktop_mode.w;
++                dst_rect.height = display->desktop_mode.h;
++            }
++            /* Center window. */
++            dst_rect.x = (display->desktop_mode.w - dst_rect.width) / 2;
++            dst_rect.y = (display->desktop_mode.h - dst_rect.height) / 2;
++            break;
++        case '2':
++            /* Fullscreen streched mode. */
++            dst_rect.x = 0;
++            dst_rect.y = 0;
++            dst_rect.width = display->desktop_mode.w;
++            dst_rect.height = display->desktop_mode.h;
++            break;
++        default:
++            /* Default mode. */
++            window->w = display->desktop_mode.w;
++            window->h = display->desktop_mode.h;
++
++            dst_rect.x = 0;
++            dst_rect.y = 0;
++            dst_rect.width = window->w;
++            dst_rect.height = window->h;
++            break;
++    }
+ 
+     src_rect.x = 0;
+     src_rect.y = 0;
+     src_rect.width = window->w << 16;
+     src_rect.height = window->h << 16;
+ 
++    /* OpenGL ES is the law here, buddy */
++    window->flags |= SDL_WINDOW_OPENGL;
++
+     env = SDL_GetHint(SDL_HINT_RPI_VIDEO_LAYER);
+     if (env) {
+         layer = SDL_atoi(env);

@@ -1,0 +1,116 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Set some common variables
+FSUAE_DIR=/storage/.config/fs-uae
+FSUAE_CONFIG_DIR=$FSUAE_DIR/Configurations
+FSUAE_TMP_DIR=/tmp/emulation/fs-uae
+FSUAE_TMP_CONFIG="$FSUAE_TMP_DIR"/.fs-uae_conf.fs-uae
+FSUAE_LOG=/var/log/fs-uae.log
+MAX_DRIVES=20
+i=0
+
+# Stop Kodi service / load audio backend config
+kodi-service.sh --stop > $FSUAE_LOG
+
+# Change refresh rate to 50Hz(PAL) or 60Hz(NTSC/PAL60)
+set_refresh_rate_AMIGA >> $FSUAE_LOG
+
+# Set OpenAL audio driver to Pulseaudio or ALSA
+set_OpenAL_audiodriver
+
+# Which file should FS-UAE load?
+ echo "Trying to boot this game:" "$1" >> $FSUAE_LOG
+
+# Check if the file is an Amiga 1200/CD32 game and set configuration options for an Amiga 1200
+FSUAE_SET_CONF() {
+  if [ `echo $1 | egrep 'AGA|CD32' | wc -l` -eq 1 -o `echo "$FSUAE_TMP_DIR"/* | egrep 'AGA|CD32' | wc -l` -eq 1 ]; then
+    echo "Loading Amiga 1200/CD32 config." >> $FSUAE_LOG
+    cp $FSUAE_CONFIG_DIR/AmigaA1200-default.fs-uae "$FSUAE_TMP_CONFIG"
+  else
+    echo "Loading Amiga 500 config." >> $FSUAE_LOG
+    cp $FSUAE_CONFIG_DIR/AmigaA500-default.fs-uae "$FSUAE_TMP_CONFIG"
+  fi
+}
+
+# Create a clean working directory
+if [ -d "$FSUAE_TMP_DIR" ]; then
+  echo "Clean up old working directory." >> $FSUAE_LOG
+  rm -rf "$FSUAE_TMP_DIR"
+fi
+mkdir -p "$FSUAE_TMP_DIR"
+
+# Check if we are loading a zip file
+if [ `echo $1 | grep -i .zip | wc -l` -eq 1 ]; then
+  # Unpack the zip file
+  unzip -q -o "$1" -d "$FSUAE_TMP_DIR"
+
+  if [ -f "$FSUAE_TMP_DIR"/*.*nfo ] && [ -f "$FSUAE_TMP_DIR"/*/*.*lave ]; then
+
+    # Unsupported WHDLoad file detected
+    echo "Detected a WHDLoad (.zip) file. Sorry these files are not supported without fs-uae-launcher." >> $FSUAE_LOG
+
+  else
+
+    # .zip file detected
+    echo "Loading a .zip file..." >> $FSUAE_LOG
+
+    # Set default config
+    FSUAE_SET_CONF "$1"
+
+    # Assign files to floppy1-20
+    for FILE in "$FSUAE_TMP_DIR"/*
+    do
+      ARGS="$ARGS\nfloppy_drive_$i = "$FILE"\nfloppy_image_$i = "$FILE""
+      i=$(($i+1))
+      # This emulator supports 20 floppies max
+      if [ $i -eq $MAX_DRIVES ]; then
+        break;
+      fi
+    done
+  
+    # Add game files as floppies 1-20 to .fs-uae_conf.fs-uae & start fs-uae
+    echo -e "#" >> "$FSUAE_TMP_CONFIG"
+    echo -e "# *** temporary added Floppy Drives" >> "$FSUAE_TMP_CONFIG"
+    echo -e "#" >> "$FSUAE_TMP_CONFIG"
+    echo -e $ARGS >> "$FSUAE_TMP_CONFIG"
+    echo -e "\nAssigned floppy drives:" $ARGS "\n">> $FSUAE_LOG
+    fs-uae "$FSUAE_TMP_CONFIG" >> $FSUAE_LOG 2>&1
+  fi
+# Check if we are loading a configuration file
+elif [ `echo $1 | grep -i .fs-uae | wc -l` -eq 1 ]; then
+  # .uae file detected
+  echo "Loading a .fs-uae file..." >> $FSUAE_LOG
+
+  fs-uae "$1" >> $FSUAE_LOG 2>&1
+
+# All other files (.adf .adz .ipf)
+else
+
+  # .adf or .adz or .ipf file detected
+  echo "Loading a single .adf or .adz or .ipf file..." >> $FSUAE_LOG
+
+  # Set default config
+  FSUAE_SET_CONF "$1"
+
+  # Add game file as floppy_drive_0 to .fs-uae_conf.fs-uae & start fs-uae
+  echo -e "#" >> "$FSUAE_TMP_CONFIG"
+  echo -e "# *** temporary added Floppy Drives" >> "$FSUAE_TMP_CONFIG"
+  echo -e "#" >> "$FSUAE_TMP_CONFIG"
+  echo -e "\nfloppy_drive_0="$1"\nfloppy_image_0="$1"" >> "$FSUAE_TMP_CONFIG"
+  echo -e "\nAssigned floppy drive:\nfloppy_drive_0="$1"\nfloppy_image_0="$1"\n" >> $FSUAE_LOG
+  fs-uae "$FSUAE_TMP_CONFIG" >> $FSUAE_LOG 2>&1
+fi
+
+# Remove temporary dir
+rm -rf "$FSUAE_TMP_DIR"
+
+# Set OpenAL audio driver to ALSA
+rm /storage/.alsoftrc
+
+# Switch back to frontends or start Kodi service / unload audio backend config
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start

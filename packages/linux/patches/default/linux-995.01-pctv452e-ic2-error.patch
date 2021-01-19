@@ -1,0 +1,13 @@
+--- a/drivers/media/usb/dvb-usb/pctv452e.c
++++ b/drivers/media/usb/dvb-usb/pctv452e.c
+@@ -449,8 +449,8 @@
+ 
+ 	/* I2C device didn't respond as expected. */
+ 	ret = -EREMOTEIO;
+-	if (buf[5] < snd_len || buf[6] < rcv_len)
+-		goto failed;
++//	if (buf[5] < snd_len || buf[6] < rcv_len)
++//		goto failed;
+ 
+ 	memcpy(rcv_buf, buf + 7, rcv_len);
+ 

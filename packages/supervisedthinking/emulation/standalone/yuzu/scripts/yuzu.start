@@ -1,0 +1,49 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Set common paths
+YUZU_HOME_CONFIG=/storage/.config/yuzu
+YUZU_HOME_LOCAL=/storage/.local/share/yuzu
+YUZU_VAR_LOG=/var/log/yuzu.log
+
+# create link to config directory
+if [ ! -L ${YUZU_HOME_LOCAL} ]; then
+  if [ -d ${YUZU_HOME_LOCAL} ]; then
+    cp -rf ${YUZU_HOME_LOCAL} ${YUZU_HOME_CONFIG}
+    rm -rf ${YUZU_HOME_LOCAL}
+  fi
+  ln -sf ${YUZU_HOME_CONFIG} ${YUZU_HOME_LOCAL}
+fi
+
+# Stop Kodi service / load audio backend config
+kodi-service.sh --stop
+
+# Set SDL audio driver to PulseAudio or ALSA
+set_SDL_audiodriver
+
+# Change refresh rate to 60Hz
+set_refresh_rate_60
+
+# force SDL2 audio engine
+#set_YUZU_audioengine
+
+# force fullscreen on startup
+#set_YUZU_videosettings
+
+# Set Qt5 screen scale environment vars
+set_QT_environment_vars
+
+# Create symlink to logfile
+if [ ! -L ${YUZU_VAR_LOG} ]; then
+  ln -sf ${YUZU_HOME_CONFIG}/log/yuzu_log.txt ${YUZU_VAR_LOG}
+fi
+
+# Run the emulator
+yuzu "$@"
+
+# Switch back to frontends or start Kodi service / unload audio backend config
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start

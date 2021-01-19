@@ -1,0 +1,89 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+### Define common variables ###
+
+ICON=/usr/config/google-chrome/icon.png
+CHROME_HOME=/storage/.cache/app.chrome
+CHROME_VERSION=$CHROME_HOME/chrome.version
+CHROME_LOG=/var/log/chrome.log
+CHROME_PKGVER_REPO=`curl -s https://dl.google.com/linux/chrome/rpm/stable/x86_64/repodata/other.xml.gz | gzip -df | grep -A1 'chrome-stable' | awk 'FNR == 2' | sed 's/^.*ver/ver/' | awk -F\" '{print $2}'`
+CHROME_URL=http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_$CHROME_PKGVER_REPO-1_amd64.deb
+CHROME_URL_STATUS=`curl -s --head $CHROME_URL | head -n 1 | grep "HTTP/1.[01] [23].."`
+
+### Define functions ###
+
+install_chrome() {
+  echo "Installing Google Chrome..." >> $CHROME_LOG 2>&1
+  kodi-send --action="Notification(Chrome,This is the first time you are starting Chrome. It is being downloaded in the background...,13000,${ICON})"
+  mkdir -p /tmp/chrome ; cd /tmp/chrome
+  wget -q $CHROME_URL || exit 1
+  kodi-send --action="Notification(Chrome,Download finished. Installing Chrome...,8000,${ICON})"
+  ar -x *.deb && tar -Jxf data.tar.xz
+  mv opt/google/chrome $CHROME_HOME
+  echo $CHROME_PKGVER_REPO > $CHROME_VERSION 2>&1
+  cp usr/share/applications/google-chrome.desktop $CHROME_HOME/
+  cd ~ ; rm -rf /tmp/chrome
+}
+
+update_chrome() {
+  echo "Updating Google Chrome..." >> $CHROME_LOG 2>&1
+  kodi-send --action="Notification(Chrome,Updating Chrome. It is being downloaded in the background.,10000,${ICON})"
+  mkdir -p /tmp/chrome ; cd /tmp/chrome
+  wget -q $CHROME_URL || exit 1
+  kodi-send --action="Notification(Chrome,Download finished. Updating Chrome.,8000,${ICON})"
+  ar -x *.deb && tar -Jxf data.tar.xz
+  rm -rf $CHROME_HOME
+  mv opt/google/chrome $CHROME_HOME
+  echo $CHROME_PKGVER_REPO > $CHROME_VERSION 2>&1
+  cp usr/share/applications/google-chrome.desktop $CHROME_HOME/
+  cd ~ ; rm -rf /tmp/chrome
+}
+
+run_chrome() {
+  CHROME_USER_FLAGS="$(cat ~/.config/google-chrome/chrome-flags.conf)"
+  /opt/google/chrome/chrome $CHROME_USER_FLAGS "$@"
+}
+
+### Run ###
+
+if [ -f $CHROME_LOG ];then
+  rm $CHROME_LOG ; touch $CHROME_LOG
+elif [ -d /tmp/chrome ];then
+  rm -rf /tmp/chrome
+fi
+
+if [ -f $CHROME_VERSION ];then
+  echo -e "Chrome PKG Version Local:" $(cat $CHROME_VERSION) >> $CHROME_LOG 2>&1
+fi
+
+if [ ! -z "$CHROME_PKGVER_REPO" ]; then
+  echo -e "Chrome PKG Version Repo:  $CHROME_PKGVER_REPO\n" >> $CHROME_LOG 2>&1
+elif [ -z "$CHROME_PKGVER_REPO" ]; then
+  echo -e "Chrome PKG Version Repo: Could not receive version!\n" >> $CHROME_LOG 2>&1
+fi
+
+if [ ! -z "$CHROME_URL_STATUS" ]; then
+  if [ ! -x $CHROME_HOME ]; then
+    install_chrome "$CHROME_PKGVER_REPO" >> $CHROME_LOG 2>&1
+  elif [ "$CHROME_PKGVER_REPO" != "$(cat $CHROME_VERSION)" ]; then
+    update_chrome "$CHROME_PKGVER_REPO" >> $CHROME_LOG 2>&1
+  fi
+else
+  echo -e "##################################################################################################################################################" >> $CHROME_LOG 2>&1
+  echo -e "# The download URL is not valid. If the Repo PKG version is available & seems legit check back later. Otherwise the script might need an update. #" >> $CHROME_LOG 2>&1
+  echo -e "##################################################################################################################################################\n" >> $CHROME_LOG 2>&1
+fi
+
+if [ -f /opt/google/chrome/chrome ]; then 
+  echo "Starting Google Chrome..." >> $CHROME_LOG 2>&1
+  kodi-service.sh --mute
+  systemctl stop pulseaudio
+  run_chrome "$@" >> $CHROME_LOG 2>&1
+  systemctl start pulseaudio
+  kodi-service.sh --unmute
+fi

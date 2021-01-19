@@ -1,0 +1,25 @@
+From 32a34a65055d944a8dc6d439650d7f343280da7b Mon Sep 17 00:00:00 2001
+From: ThinkSupervised <supervisedthinking@gmail.com>
+Date: Sun, 15 Sep 2019 23:03:44 +0200
+Subject: [PATCH] Makefile: added COREFLAGS to define MESA_EGL_NO_X11_HEADERS
+ for eglplatform.h if mesa is used for AMLGX
+
+---
+ Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index ba49e623..eb5b1754 100644
+--- a/Makefile
++++ b/Makefile
+@@ -249,6 +249,10 @@ else ifneq (,$(findstring AMLG,$(platform)))
+       endif
+    endif
+ 
++   ifneq (,$(findstring mesa,$(platform)))
++     COREFLAGS += -DMESA_EGL_NO_X11_HEADERS
++   endif
++
+    GL_LIB := -lGLESv2
+    HAVE_NEON = 1
+    WITH_DYNAREC=arm

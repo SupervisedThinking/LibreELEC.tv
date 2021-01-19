@@ -1,23 +1,23 @@
 --- a/Makefile
 +++ b/Makefile
-@@ -185,8 +182,8 @@
- #
- ifdef USE_SDL2
- all: guisan $(PROG)
--export SDL_CFLAGS := $(shell sdl2-config --cflags)
--export SDL_LDFLAGS := $(shell sdl2-config --libs)
-+export SDL_CFLAGS := $(shell $(SDL2_CONFIG_PREFIX)/sdl2-config --cflags)
-+export SDL_LDFLAGS := $(shell $(SDL2_CONFIG_PREFIX)/sdl2-config --libs)
+@@ -211,10 +211,6 @@
+ endif
  
- CPPFLAGS += $(SDL_CFLAGS) -Iguisan-dev/include
- LDFLAGS += $(SDL_LDFLAGS) -lSDL2_image -lSDL2_ttf -lguisan -Lguisan-dev/lib
-@@ -230,7 +227,7 @@
+ RM     = rm -f
+-AS     = as
+-CC     ?= gcc
+-CXX    ?= g++
+-STRIP  ?= strip
+ PROG   = amiberry
+ 
+ #
+@@ -272,7 +268,7 @@
      CFLAGS += -fsanitize=leak -fsanitize-recover=address
  endif
  
 -LDFLAGS += -lpthread -lz -lpng -lrt -lxml2 -lFLAC -lmpg123 -ldl -lmpeg2convert -lmpeg2
 +LDFLAGS += -lpthread -lz -lpng -lrt -lxml2 -lFLAC -lmpg123 -ldl -lmpeg2convert -lmpeg2 -logg
+ export ASFLAGS = $(CPUFLAGS)
  
- ASFLAGS += $(CFLAGS) -falign-functions=16
- 
+ export CFLAGS := $(CPUFLAGS) $(CFLAGS) -pipe -Wno-shift-overflow -Wno-narrowing $(EXTRA_CFLAGS)
 

@@ -16,13 +16,11 @@ PKG_MAKE_OPTS_TARGET="all"
 
 pre_configure_target() {
   cd ${PKG_BUILD}
-  export SDL2_CONFIG_PREFIX=${SYSROOT_PREFIX}/usr/bin
+  export SDL_CONFIG=${SYSROOT_PREFIX}/usr/bin/sdl2-config
 
   case ${PROJECT} in
     Amlogic)
-      if [ "${DEVICE}" = "AMLG12" ]; then
-        AMIBERRY_PLATFORM="AMLG12B"
-      else
+      if [ "${DEVICE}" = "AMLGX" ]; then
         AMIBERRY_PLATFORM="AMLGX"
       fi
       ;;
@@ -70,7 +68,7 @@ makeinstall_target() {
   ln -s "/usr/share/retroarch/autoconfig/udev/Pro Controller.cfg"     "${INSTALL}/usr/config/amiberry/controller/Pro Controller.cfg"
 
   # Copy binary, scripts & link libcapsimg
-  cp -av amiberry-${AMIBERRY_PLATFORM} ${INSTALL}/usr/bin/amiberry
+  cp -av amiberry                      ${INSTALL}/usr/bin
   cp -a ${PKG_DIR}/scripts/*           ${INSTALL}/usr/bin
   ln -sf /usr/lib/libcapsimage.so.5.1  ${INSTALL}/usr/config/amiberry/capsimg.so
 }

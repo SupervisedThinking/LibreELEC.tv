@@ -69,6 +69,7 @@ make_target() {
   make -C bfd
   make -C opcodes
   make -C binutils strings
+  make -C binutils ar
 }
 
 makeinstall_target() {
@@ -79,4 +80,5 @@ makeinstall_target() {
 
   mkdir -p ${INSTALL}/usr/bin
     cp binutils/strings ${INSTALL}/usr/bin
+    cp binutils/ar      ${INSTALL}/usr/bin/ar
 }

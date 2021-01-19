@@ -11,10 +11,10 @@
 
 # Welcome Message for e.g. SSH Server (up to 5 Lines)
   GREETING0="##############################################"
-  GREETING1="#                 LibreELEC                  #"
-  GREETING2="#            https://libreelec.tv            #"
-  GREETING3="##############################################"
-  GREETING4=""
+  GREETING1="#           LibreELEC-RR pre-10.x            #"
+  GREETING2="#           https://bit.ly/3qdHoNp           #"
+  GREETING3="#        based on https://libreelec.tv       #"
+  GREETING4="##############################################"
 
 # Root password to integrate in the target system
   ROOT_PASSWORD="libreelec"
@@ -51,7 +51,7 @@
   ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8192EU RTL8188EU RTL8812AU"
 
 # Default size of system partition, in MB, eg. 512
-  SYSTEM_SIZE=512
+  SYSTEM_SIZE=1024
 
 # Default system partition offset, in sectors, eg. 2048
   SYSTEM_PART_START=8192
@@ -232,9 +232,128 @@
   CEC_FRAMEWORK_SUPPORT="no"
 
 # OEM packages for OEM's (yes / no)
-  OEM_SUPPORT="no"
+  OEM_SUPPORT="yes"
 
 # additional packages to install:
 # Space separated list is supported,
 # e.g. ADDITIONAL_PACKAGES="PACKAGE1 PACKAGE2"
   ADDITIONAL_PACKAGES=""
+
+# This will be put in retroarch.cfg as core playlists
+  RA_PLAYLIST_NAMES=""\
+"Atari - 2600.lpl;"\
+"Atari - 5200.lpl;"\
+"Atari - 7800.lpl;"\
+"Atari - Jaguar.lpl;"\
+"Atari - Lynx.lpl;"\
+"Atari - ST.lpl;"\
+"Bandai - WonderSwan Color.lpl;"\
+"Bandai - WonderSwan.lpl;"\
+"Cave Story.lpl;"\
+"ChaiLove.lpl;"\
+"Coleco - ColecoVision.lpl;"\
+"Commodore - 64.lpl;"\
+"DOOM.lpl;"\
+"DOS.lpl;"\
+"FB Alpha - Arcade Games.lpl;"\
+"GCE - Vectrex.lpl;"\
+"Lutro.lpl;"\
+"Magnavox - Odyssey2.lpl;"\
+"MAME.lpl;"\
+"Microsoft - MSX2.lpl;"\
+"Microsoft - MSX.lpl;"\
+"NEC - PC Engine SuperGrafx.lpl;"\
+"NEC - PC Engine - TurboGrafx 16.lpl;"\
+"Nintendo - Famicom Disk System.lpl;"\
+"Nintendo - Game Boy Advance (e-Cards).lpl;"\
+"Nintendo - Game Boy Advance.lpl;"\
+"Nintendo - Game Boy Color.lpl;"\
+"Nintendo - Game Boy.lpl;"\
+"Nintendo - GameCube.lpl;"\
+"Nintendo - Nintendo 64.lpl;"\
+"Nintendo - Nintendo 64DD.lpl;"\
+"Nintendo - Nintendo DS Decrypted.lpl;"\
+"Nintendo - Nintendo DS (Download Play) (BETA).lpl;"\
+"Nintendo - Nintendo DSi Decrypted.lpl;"\
+"Nintendo - Nintendo DSi (DLC).lpl;"\
+"Nintendo - Nintendo 3DS.lpl;"\
+"Nintendo - Nintendo Entertainment System.lpl;"\
+"Nintendo - Satellaview.lpl;"\
+"Nintendo - Super Nintendo Entertainment System.lpl;"\
+"Nintendo - Virtual Boy.lpl;"\
+"Nintendo - Wii.lpl;"\
+"Quake1.lpl;"\
+"ScummVM.lpl;"\
+"Sega - 32X.lpl;"\
+"Sega - Game Gear.lpl;"\
+"Sega - Dreamcast.lpl;"\
+"Sega - NAOMI.lpl;"\
+"Sega - Master System - Mark III.lpl;"\
+"Sega - Mega Drive - Genesis.lpl;"\
+"Sega - PICO.lpl;"\
+"Sega - SG-1000.lpl;"\
+"Sega - Saturn.lpl;"\
+"Sinclair - ZX Spectrum +3.lpl;"\
+"SNK - Neo Geo Pocket Color.lpl;"\
+"SNK - Neo Geo Pocket.lpl;"\
+"Sony - PlayStation Portable.lpl;"\
+"Sony - PlayStation.lpl"
+
+  RA_PLAYLIST_CORES=""\
+"/tmp/cores/stella_libretro.so;"\
+"/tmp/cores/atari800_libretro.so;"\
+"/tmp/cores/prosystem_libretro.so;"\
+"/tmp/cores/virtualjaguar_libretro.so;"\
+"/tmp/cores/handy_libretro.so;"\
+"/tmp/cores/hatari_libretro.so;"\
+"/tmp/cores/mednafen_wswan_libretro.so;"\
+"/tmp/cores/mednafen_wswan_libretro.so;"\
+"/tmp/cores/nxengine_libretro.so;"\
+"/tmp/cores/chailove_libretro.so;"\
+"/tmp/cores/bluemsx_libretro.so;"\
+"/tmp/cores/vice_x64_libretro.so;"\
+"/tmp/cores/prboom_libretro.so;"\
+"/tmp/cores/dosbox_libretro.so;"\
+"/tmp/cores/fbaneo_libretro.so;"\
+"/tmp/cores/vecx_libretro.so;"\
+"/tmp/cores/lutro_libretro.so;"\
+"/tmp/cores/o2em_libretro.so;"\
+"/tmp/cores/mame2003_plus_libretro.so;"\
+"/tmp/cores/bluemsx_libretro.so;"\
+"/tmp/cores/bluemsx_libretro.so;"\
+"/tmp/cores/mednafen_supergrafx_libretro.so;"\
+"/tmp/cores/mednafen_pce_fast_libretro.so;"\
+"/tmp/cores/fceumm_libretro.so;"\
+"/tmp/cores/mgba_libretro.so;"\
+"/tmp/cores/mgba_libretro.so;"\
+"/tmp/cores/gambatte_libretro.so;"\
+"/tmp/cores/gambatte_libretro.so;"\
+"/tmp/cores/dolphin_libretro.so;"\
+"/tmp/cores/mupen64plus_next_libretro.so;"\
+"/tmp/cores/mupen64plus_next_libretro.so;"\
+"/tmp/cores/desmume_libretro.so;"\
+"/tmp/cores/desmume_libretro.so;"\
+"/tmp/cores/desmume_libretro.so;"\
+"/tmp/cores/desmume_libretro.so;"\
+"/tmp/cores/citra_libretro.so;"\
+"/tmp/cores/fceumm_libretro.so;"\
+"/tmp/cores/snes9x_libretro.so;"\
+"/tmp/cores/snes9x_libretro.so;"\
+"/tmp/cores/mednafen_vb_libretro.so;"\
+"/tmp/cores/dolphin_libretro.so;"\
+"/tmp/cores/tyrquake_libretro.so;"\
+"/tmp/cores/scummvm_libretro.so;"\
+"/tmp/cores/picodrive_libretro.so;"\
+"/tmp/cores/genesis_plus_gx_libretro.so;"\
+"/tmp/cores/flycast_libretro.so;"\
+"/tmp/cores/flycast_libretro.so;"\
+"/tmp/cores/genesis_plus_gx_libretro.so;"\
+"/tmp/cores/genesis_plus_gx_libretro.so;"\
+"/tmp/cores/yabause_libretro.so;"\
+"/tmp/cores/picodrive_libretro.so;"\
+"/tmp/cores/genesis_plus_gx_libretro.so;"\
+"/tmp/cores/fuse_libretro.so;"\
+"/tmp/cores/mednafen_ngp_libretro.so;"\
+"/tmp/cores/mednafen_ngp_libretro.so;"\
+"/tmp/cores/ppsspp_libretro.so;"\
+"/tmp/cores/pcsx_rearmed_libretro.so"

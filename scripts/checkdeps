@@ -171,6 +171,8 @@ case "${DISTRO}" in
         [java]="java-runtime-common jdk8-openjdk"
         [python3]=python3
         [rpcgen]=rpcsvc-proto
+        [xa]=xa
+        [makeinfo]=texinfo
       )
       perl_map+=(
         [JSON]=perl-json
@@ -210,6 +212,8 @@ case "${DISTRO}" in
         [xsltproc]=xsltproc
         [java]=default-jre
         [python3]=python3
+        [xa]=xa65
+        [makeinfo]=texinfo
       )
       ;;
 esac

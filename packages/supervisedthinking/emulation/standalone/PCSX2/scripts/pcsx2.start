@@ -1,0 +1,126 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+oe_setup_addon service.rr-config-tool
+
+# Set common vars
+DOCKER_PATH=/storage/.kodi/addons/service.system.docker/bin/docker
+PCSX2_DOCKER_IMAGE_NAME=arch-pcsx2
+PCSX2_DOCKER_IMAGE_VERSION=v1.0.0
+PCSX2_DOCKER_REPO=supervisedthinking/${PCSX2_DOCKER_IMAGE_NAME}
+PCSX2_LOG=/var/log/pcsx2.log
+
+# Install the PCSX2 Docker image
+docker_image_install() {
+  DOCKER_IMAGE_INSTALL=$(docker images -a | grep ${PCSX2_DOCKER_REPO})
+  if [ -z "${DOCKER_IMAGE_INSTALL}" ]; then
+    echo "#################################################################################################" >> ${PCSX2_LOG} 2>&1
+    echo "#                                    Pulling the Docker image                                   #" >> ${PCSX2_LOG} 2>&1
+    echo -e "#################################################################################################\n" >> ${PCSX2_LOG} 2>&1
+    docker pull ${PCSX2_DOCKER_REPO}:${PCSX2_DOCKER_IMAGE_VERSION} >> ${PCSX2_LOG} 2>&1
+  fi
+}
+
+# Update the PCSX2 Docker image
+docker_image_update() {
+  DOCKER_IMAGE_UPDATE=$(docker images -a | grep ${PCSX2_DOCKER_IMAGE_VERSION})
+  if [ -z "${DOCKER_IMAGE_UPDATE}" ]; then
+    echo "#################################################################################################" >> ${PCSX2_LOG} 2>&1
+    echo "#                                   Updating the Docker image                                   #" >> ${PCSX2_LOG} 2>&1
+    echo -e "#################################################################################################\n" >> ${PCSX2_LOG} 2>&1
+    docker pull ${PCSX2_DOCKER_REPO}:${PCSX2_DOCKER_IMAGE_VERSION} >> ${PCSX2_LOG} 2>&1
+  fi
+}
+
+# Clean up the PCSX2 Docker images
+docker_image_clean() {
+  # Clean up image with "latest" tag
+  DOCKER_TAG_LATEST=$(docker images -a | grep "latest" | awk '{print $3}')
+  if [ ! -z "${DOCKER_TAG_LATEST}" ]; then
+    echo "#################################################################################################" >> ${PCSX2_LOG} 2>&1
+    echo "#                                     Clean up tag "latest"                                     #" >> ${PCSX2_LOG} 2>&1
+    echo -e "#################################################################################################\n" >> ${PCSX2_LOG} 2>&1
+    docker image rm -f $(docker images -a | grep "latest" | awk '{print $3}') >> ${PCSX2_LOG} 2>&1
+  fi
+
+  # Clean up images with oudated tags
+  DOCKER_TAG_OUTDATED=$(docker images -a | grep ${PCSX2_DOCKER_IMAGE_NAME} | awk '{print $3}' | awk 'FNR == 2')
+  if [ ! -z "${DOCKER_TAG_OUTDATED}" ]; then
+    echo "#################################################################################################" >> ${PCSX2_LOG} 2>&1
+    echo "#                                     Clean up "old" tags                                       #" >> ${PCSX2_LOG} 2>&1
+    echo -e "#################################################################################################\n" >> ${PCSX2_LOG} 2>&1
+    for IMAGE_ID in $(docker images -a | grep ${PCSX2_DOCKER_IMAGE_NAME} | awk '{print $3}' | awk 'NR>1'); do
+      docker image rm -f ${IMAGE_ID} >> ${PCSX2_LOG} 2>&1
+    done
+  fi
+}
+
+# Run the PCSX2 Docker image
+docker_image_run() {
+  echo "#################################################################################################" >> ${PCSX2_LOG} 2>&1
+  echo "#                                          Run PCSX2                                            #" >> ${PCSX2_LOG} 2>&1
+  echo -e "#################################################################################################\n" >> ${PCSX2_LOG} 2>&1
+
+  # Set audio driver to Pulseaudio or ALSA
+  set_SDL_audiodriver
+  set_PCSX2_audiodriver
+
+  # Get tag of installed Docker image
+  DOCKER_IMAGE_INSTALLED_VERSION=$(docker images -a | grep ${PCSX2_DOCKER_IMAGE_NAME} | awk '{print $2}' | awk 'FNR == 1')
+
+  # Set common Docker arguments
+  DOCKER_ARGS="--rm \
+               --name arch-pcsx2 \
+               --privileged \
+               -i \
+               -e DISPLAY=:0.0 \
+               -e SDL_AUDIODRIVER=${SDL_AUDIODRIVER} \
+               -e PULSE_RUNTIME_PATH=${PULSE_RUNTIME_PATH} \
+               -v /dev/shm:/dev/shm \
+               -v /var/media:/media \
+               -v /var/run/localtime:/etc/localtime
+               -v /run:/run \
+               -v /storage:/storage \
+               -v /storage/.config/asound.conf:/etc/asound.conf \
+               -v /storage/.config/PCSX2:/root/.config/PCSX2 \
+               -v /storage/roms/bios/PCSX2:/root/.config/PCSX2/bios \
+               -v /tmp/.X11-unix:/tmp/.X11-unix"
+
+  # Log the installed Docker image version & arguments
+  echo -e "Starting the installed Docker image "${PCSX2_DOCKER_IMAGE_NAME}" - "${PCSX2_DOCKER_IMAGE_VERSION}" and use these arguments:\n"${DOCKER_ARGS} "$@""\n" >> ${PCSX2_LOG} 2>&1
+  echo -e "The PCSX2 logfile starts here:\n" >> ${PCSX2_LOG} 2>&1
+
+  # Start the Docker image / apply args / run PCSX2
+  ${DOCKER_PATH} run ${DOCKER_ARGS} ${PCSX2_DOCKER_REPO}:${DOCKER_IMAGE_INSTALLED_VERSION} /usr/bin/PCSX2 "$@" >> ${PCSX2_LOG} 2>&1
+}
+
+if [ -x ${DOCKER_PATH} ]; then
+  # Stop Kodi service / load audio backend config
+  kodi-service.sh --stop > ${PCSX2_LOG} 2>&1
+
+  # Change refresh rate to 50Hz(PAL) or 60Hz(NTSC/PAL60)
+  set_refresh_rate_PCSX2
+
+  # Get Docker version
+  ${DOCKER_PATH} -v >> ${PCSX2_LOG} 2>&1
+
+  # Install / update / clean / run the PCSX2 Docker image
+  docker_image_install
+
+  docker_image_update
+
+  docker_image_clean
+
+  docker_image_run "$@"
+
+  # Switch back to frontends or start Kodi service / unload audio backend config
+  pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start
+else
+  # Inform about the missing Docker addon
+  echo "######################################################################################################" > ${PCSX2_LOG} 2>&1
+  echo "# The Docker addon is missing. Please check out the Kodi addons, install Docker and run PCSX2 again. #" >> ${PCSX2_LOG} 2>&1
+  echo "######################################################################################################" >> ${PCSX2_LOG} 2>&1
+fi

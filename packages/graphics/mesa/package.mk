@@ -21,7 +21,6 @@ PKG_MESON_OPTS_TARGET="-Ddri-drivers=${DRI_DRIVERS// /,} \
                        -Dgallium-omx=disabled \
                        -Dgallium-nine=false \
                        -Dgallium-opencl=disabled \
-                       -Dvulkan-drivers= \
                        -Dshader-cache=enabled \
                        -Dshared-glapi=enabled \
                        -Dopengl=true \
@@ -78,3 +77,9 @@ else
   PKG_MESON_OPTS_TARGET+=" -Dgles1=disabled -Dgles2=disabled"
 fi
 
+if [ "${VULKAN_SUPPORT}" = "yes" ]; then
+  PKG_DEPENDS_TARGET+=" vulkan-loader"
+  PKG_MESON_OPTS_TARGET+=" -Dvulkan-drivers=amd,intel"
+else
+  PKG_MESON_OPTS_TARGET+=" -Dvulkan-drivers="
+fi

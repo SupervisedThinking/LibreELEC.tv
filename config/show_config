@@ -85,6 +85,7 @@ show_config() {
   fi
   config_message+="\n - OpenGL (GLX) support (provider):\t $OPENGL_SUPPORT ($OPENGL)"
   config_message+="\n - OpenGLES support (provider):\t\t $OPENGLES_SUPPORT ($OPENGLES)"
+  config_message+="\n - Vulkan API support (provider):\t $VULKAN_SUPPORT ($OPENGL)"
   config_message+="\n - VAAPI Support:\t\t\t $VAAPI_SUPPORT"
   config_message+="\n - VDPAU Support:\t\t\t $VDPAU_SUPPORT"
 
@@ -94,6 +95,12 @@ show_config() {
   config_message+="\n $dashes$dashes"
 
   config_message+="\n - OEM Support:\t\t\t\t $OEM_SUPPORT"
+  config_message+="\n   - OEM Applications (Chrome,Spotify):\t $OEM_APPLICATIONS"
+  config_message+="\n   - OEM Emulators (Emulationstation):\t $OEM_EMULATORS"
+  config_message+="\n   - OEM Frontends Extra:\t\t $OEM_FRONTENDS_EXTRA"
+  config_message+="\n   - OEM Libretro (Retroarch):\t\t $OEM_LIBRETRO"
+  config_message+="\n   - OEM Tools:\t\t\t\t $OEM_TOOLS"
+  config_message+="\n - Add non-free packages:\t\t $NON_FREE_PKG_SUPPORT"
   config_message+="\n - Default ROOT Password:\t\t $ROOT_PASSWORD"
   config_message+="\n - Bootloader:\t\t\t\t $BOOTLOADER"
   config_message+="\n - UDevil support:\t\t\t $UDEVIL"

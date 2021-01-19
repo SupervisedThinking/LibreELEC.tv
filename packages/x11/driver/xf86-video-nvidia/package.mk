@@ -70,4 +70,15 @@ makeinstall_target() {
     cp libvdpau_nvidia.so* ${INSTALL}/usr/lib/vdpau/libvdpau_nvidia-main.so.1
     ln -sf /var/lib/libvdpau_nvidia.so ${INSTALL}/usr/lib/vdpau/libvdpau_nvidia.so
     ln -sf /var/lib/libvdpau_nvidia.so.1 ${INSTALL}/usr/lib/vdpau/libvdpau_nvidia.so.1
+
+  # Install Vulkan ICD & SPIR-V lib
+  if [ "${VULKAN_SUPPORT}" = "yes" ]; then
+    cp -P libnvidia-glvkspirv.so.${PKG_VERSION} ${INSTALL}/usr/lib 
+    mkdir -p ${INSTALL}/usr/share/vulkan/icd.d
+    if [ -f nvidia_icd.json.template ]; then
+      sed "s#__NV_VK_ICD__#/usr/lib/libGLX_nvidia.so.0#" nvidia_icd.json.template > ${INSTALL}/usr/share/vulkan/icd.d/nvidia_icd.json
+    elif [ -f nvidia_icd.json ]; then
+      cp -P nvidia_icd.json ${INSTALL}/usr/share/vulkan/icd.d/
+    fi
+  fi
 }

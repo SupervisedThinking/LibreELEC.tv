@@ -1,0 +1,21 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Stop Kodi service / load audio backend config
+kodi-service.sh --stop
+
+# Change refresh rate to 50Hz(PAL) or 60Hz(NTSC/PAL60)
+set_refresh_rate_PCSX2
+
+# Set audio backend to PulseAudio or ALSA
+set_PCSX2_audiodriver
+
+# Run the emulator
+PCSX2 "$@"> /var/log/pcsx2.log 2>&1
+
+# Switch back to frontends or start Kodi service / unload audio backend config
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start

@@ -23,4 +23,8 @@ makeinstall_init() {
   mkdir -p ${INSTALL}/splash
     find_file_path splash/splash.conf && cp ${FOUND_PATH} ${INSTALL}/splash
     find_file_path "splash/splash-*.png" && cp ${FOUND_PATH} ${INSTALL}/splash
+
+  mkdir -p ${INSTALL}/usr/lib
+    cp -a $(get_install_dir libpng)/usr/lib/libpng*so* ${INSTALL}/usr/lib/
+    cp -a $(get_install_dir zlib)/usr/lib/libz*so*     ${INSTALL}/usr/lib/
 }

@@ -1,0 +1,38 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Check if Retroarch is already running
+if pidof "retroarch" > /dev/null; then
+    echo "Retroarch is already running!"
+else
+  # Announce frontend loading in Kodi
+  show_RR_announcement Retroarch
+
+  # Create basic links & files
+  set_RR_environment
+
+  # Stop Kodi service / load audio backend config
+  kodi-service.sh --stop
+
+  # Change refresh rate to 60Hz
+  set_refresh_rate_60
+
+  # enable kms
+  switch_kms_on
+
+  # Set audio & midi driver
+  set_RA_audiodriver
+
+  # Run RetroArch
+  /usr/bin/retroarch -v "$@" > /var/log/retroarch.log 2>&1
+
+  # disable kms
+  switch_kms_off
+
+  # Switch back to frontends or start Kodi service / unload audio backend config
+  pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start
+fi

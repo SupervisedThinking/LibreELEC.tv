@@ -1,0 +1,13 @@
+[Unit]
+Description=RetroArch is the reference frontend for the libretro API
+After=graphical.target
+Requires=graphical.target
+
+[Service]
+ExecStart=/usr/bin/retroarch.start
+TimeoutStopSec=30
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

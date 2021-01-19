@@ -1,0 +1,38 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Set common variables
+RR_VICE_HOME=/storage/.vice
+RR_VICE_HOME_CONFIG=/storage/.config/vice
+
+# Create symlink to config dir
+if [ ! -L ${RR_VICE_HOME} ]; then
+  if [ -d ${RR_VICE_HOME} ]; then
+    cp -rf ${RR_VICE_HOME} ${RR_VICE_HOME_CONFIG}
+    rm -rf ${RR_VICE_HOME}
+  fi
+  ln -sf ${RR_VICE_HOME_CONFIG} ${RR_VICE_HOME}
+fi
+
+# Restore base config
+if [ ! -f ${RR_VICE_HOME_CONFIG}/sdl-vicerc ]; then
+  cp /etc/sdl-vicerc ${RR_VICE_HOME_CONFIG}/sdl-vicerc
+fi
+
+# Stop Kodi service / load audio backend config
+kodi-service.sh --stop
+
+# Change refresh rate to 50Hz(PAL) or 60Hz(NTSC/PAL60)
+set_refresh_rate_C64
+
+# Set SDL audio driver to Pulseaudio or ALSA
+set_SDL_audiodriver
+
+x64 "$@" > /var/log/vice-emulator.log 2>&1
+
+# Switch back to frontends or start Kodi service / unload audio backend config
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start

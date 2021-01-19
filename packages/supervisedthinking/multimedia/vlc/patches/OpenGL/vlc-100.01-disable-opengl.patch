@@ -1,0 +1,33 @@
+diff --git a/configure.ac b/configure.ac
+index 4aef56f06e..c0f77e15b2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -3179,28 +3179,6 @@ PKG_CHECK_MODULES([EGL], [egl], [
+ AM_CONDITIONAL([HAVE_EGL], [test "${have_egl}" = "yes"])
+ 
+ have_gl="no"
+-PKG_CHECK_MODULES([GL], [gl], [
+-  have_gl="yes"
+-], [
+-  AC_MSG_CHECKING([for OpenGL])
+-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+-#ifdef _WIN32
+-# include <GL/glew.h>
+-#endif
+-#include <GL/gl.h>
+-]], [
+-    [int t0 = GL_TEXTURE0;]])
+-  ], [
+-    GL_CFLAGS=""
+-    have_gl="yes"
+-    AS_IF([test "${SYS}" != "mingw32"], [
+-      GL_LIBS="-lGL"
+-    ], [
+-      GL_LIBS="-lopengl32"
+-    ])
+-  ])
+-  AC_MSG_RESULT([${have_gl}])
+-])
+ AM_CONDITIONAL([HAVE_GL], [test "${have_gl}" = "yes"])
+ AS_IF([test "${have_gl}" = "yes"], [
+   AC_DEFINE([HAVE_GL], 1, [Defined if having OpenGL])

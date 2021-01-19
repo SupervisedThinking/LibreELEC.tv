@@ -1,0 +1,44 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Set common variables
+RR_OPENBOR_CONFIG=/storage/.config/openbor
+RR_OPENBOR_LOG=/var/log/openbor.log
+
+# Create config files
+FULL_PAK_NAME=$(basename "$1")
+PAK_CONFIG_NAME=""${FULL_PAK_NAME%.*}".cfg"
+
+if [ ! -d ${RR_OPENBOR_CONFIG}/Saves ]; then
+  mkdir -p ${RR_OPENBOR_CONFIG}/Saves
+fi
+
+if [ ! -f ${RR_OPENBOR_CONFIG}/Saves/${PAK_CONFIG_NAME} ]; then
+  cp ${RR_OPENBOR_CONFIG}/default.cfg ${RR_OPENBOR_CONFIG}/Saves/${PAK_CONFIG_NAME}
+  echo "created config file for" ${FULL_PAK_NAME}
+fi
+
+if [ ! -L ${RR_OPENBOR_LOG} ]; then
+  ln -sf ${RR_OPENBOR_CONFIG}/Logs/OpenBorLog.txt ${RR_OPENBOR_LOG}
+fi
+
+# Stop Kodi service / load audio backend config
+kodi-service.sh --stop
+
+# Change refresh rate to 60Hz
+set_refresh_rate_60
+
+# Set SDL audio driver to Pulseaudio or ALSA
+set_SDL_audiodriver
+
+# Run the emulator
+cd ${RR_OPENBOR_CONFIG}
+openbor "$@"
+cd -
+
+# Switch back to frontends or start Kodi service / unload audio backend config
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start

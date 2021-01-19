@@ -1,0 +1,11 @@
+--- a/src/Combiner.cpp
++++ b/src/Combiner.cpp
+@@ -295,7 +295,7 @@
+ 	} else {
+ 		m_pCurrent = Combiner_Compile(key);
+ 		m_pCurrent->update(true);
+-		m_combiners[m_pCurrent->getKey()] = m_pCurrent;
++		m_combiners.emplace(m_pCurrent->getKey(), m_pCurrent);
+ 	}
+ 	m_bChanged = true;
+ }

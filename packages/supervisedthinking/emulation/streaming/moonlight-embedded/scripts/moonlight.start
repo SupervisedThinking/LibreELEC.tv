@@ -1,0 +1,42 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Stop Kodi service / load audio backend config
+kodi-service.sh --stop
+
+# Set SDL audio driver to Pulseaudio or ALSA
+set_SDL_audiodriver
+
+  MOONLIGHT_ARGS_CONF="/storage/.config/moonlight/moonlight_extra_args.conf"
+
+  # Get moonlight game identifier
+  MOONLIGHT_APP_ID=$(cat "$@"|grep MOONLIGHT_APP_ID=* | cut -f2- -d"=")
+  MOONLIGHT_ARGS="stream"
+
+  # Set extra moonlight arguments if necessary
+  if [ -f "$MOONLIGHT_ARGS_CONF" ]; then
+    MOONLIGHT_VERBOSE=$(cat "$MOONLIGHT_ARGS_CONF" |grep MOONLIGHT_VERBOSE=* | cut -f2- -d"=" | tr -d '\n')
+    MOONLIGHT_WIDTH_RESOLUTION=$(cat "$MOONLIGHT_ARGS_CONF" |grep MOONLIGHT_WIDTH_RESOLUTION=* | cut -f2- -d"=" | tr -d '\n')
+    MOONLIGHT_HEIGHT_RESOLUTION=$(cat "$MOONLIGHT_ARGS_CONF" |grep MOONLIGHT_HEIGHT_RESOLUTION=* | cut -f2- -d"="| tr -d '\n')
+
+    if [ "$MOONLIGHT_VERBOSE" != "" ]; then
+	  MOONLIGHT_ARGS="$MOONLIGHT_ARGS -verbose"
+    fi
+
+    if [ "$MOONLIGHT_WIDTH_RESOLUTION" != "" ] && [ "$MOONLIGHT_HEIGHT_RESOLUTION" != "" ]; then
+      MOONLIGHT_ARGS="$MOONLIGHT_ARGS -unsupported -width $MOONLIGHT_WIDTH_RESOLUTION -height $MOONLIGHT_HEIGHT_RESOLUTION"
+    fi
+  fi
+
+  # Echo the current moonlight arguments
+  echo MOONLIGHT_ARGS="$MOONLIGHT_ARGS -app "${MOONLIGHT_APP_ID}"" > /var/log/moonlight.log 2>&1
+
+  # Run the emulator
+  moonlight ${MOONLIGHT_ARGS} -app "${MOONLIGHT_APP_ID}" >> /var/log/moonlight.log 2>&1
+
+# Switch back to frontends or start Kodi service / unload audio backend config
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start

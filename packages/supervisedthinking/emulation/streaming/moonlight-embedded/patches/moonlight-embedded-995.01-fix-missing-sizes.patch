@@ -1,0 +1,24 @@
+From 52efef7a6609e0e473641199d2e4ad21a8a6d83e Mon Sep 17 00:00:00 2001
+From: ThinkSupervised <supervisedthinking@gmail.com>
+Date: Wed, 3 Jul 2019 18:00:12 +0200
+Subject: [PATCH] video/rockchip: define READ_BUF_SIZE as a size of 0x00100000
+ If you use SZ_1M to define READ_BUF_SIZE you also need to include the sizes.h
+ header file which is apparently missing.
+
+---
+ src/video/rk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/video/rk.c b/src/video/rk.c
+index 1cba97b3..44526443 100644
+--- a/src/video/rk.c
++++ b/src/video/rk.c
+@@ -38,7 +38,7 @@
+ 
+ #include <rockchip/rk_mpi.h>
+ 
+-#define READ_BUF_SIZE (SZ_1M)
++#define READ_BUF_SIZE 0x00100000
+ #define MAX_FRAMES 16
+ #define RK_H264 7
+ #define RK_H265 16777220

@@ -1,0 +1,21 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Stop Kodi service / load audio backend config
+kodi-service.sh --stop
+
+# Set OpenAL audio driver to Pulseaudio or ALSA
+set_OpenAL_audiodriver RPCS3
+
+# Set Qt5 screen scale environment vars
+set_QT_environment_vars
+
+# Run the emulator
+rpcs3 "$@"> /var/log/rpcs3.log 2>&1
+
+# Switch back to frontends or start Kodi service / unload audio backend config
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start

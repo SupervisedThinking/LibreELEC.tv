@@ -1,0 +1,149 @@
+Core:
+  PPU Decoder: Recompiler (LLVM)
+  PPU Threads: 2
+  PPU Debug: false
+  Save LLVM logs: false
+  Use LLVM CPU: ""
+  Max LLVM Compile Threads: 0
+  Enable thread scheduler: false
+  Set DAZ and FTZ: false
+  SPU Decoder: Recompiler (ASMJIT)
+  Lower SPU thread priority: false
+  SPU Debug: false
+  Preferred SPU Threads: 0
+  SPU delay penalty: 3
+  SPU loop detection: true
+  Max SPURS Threads: 6
+  SPU Block Size: Safe
+  Accurate GETLLAR: false
+  Accurate PUTLLUC: false
+  SPU Verification: true
+  SPU Cache: true
+  Enable TSX: Enabled
+  Accurate xfloat: false
+  Approximate xfloat: true
+  Debug Console Mode: false
+  Lib Loader: Load liblv2.sprx only
+  Hook static functions: false
+  Load libraries:
+    []
+  HLE lwmutex: false
+  Clocks scale: 100
+  Sleep Timers Accuracy: Usleep Only
+VFS:
+  $(EmulatorDir): /storage/roms/ps3/
+  /dev_hdd0/: $(EmulatorDir)dev_hdd0/
+  /dev_hdd1/: $(EmulatorDir)dev_hdd1/
+  /dev_flash/: ""
+  /dev_usb000/: $(EmulatorDir)dev_usb000/
+  /dev_bdvd/: ""
+  /app_home/: ""
+  Enable /host_root/: false
+  Initialize Directories: true
+  Limit disk cache size: false
+  Disk cache maximum size (MB): 5120
+Video:
+  Renderer: OpenGL
+  Resolution: 1280x720
+  Aspect ratio: 16:9
+  Frame limit: Off
+  MSAA: Auto
+  Write Color Buffers: false
+  Write Depth Buffer: false
+  Read Color Buffers: false
+  Read Depth Buffer: false
+  Log shader programs: false
+  VSync: false
+  Debug output: false
+  Debug overlay: false
+  Use Legacy OpenGL Buffers: false
+  Use GPU texture scaling: false
+  Stretch To Display Area: false
+  Force High Precision Z buffer: false
+  Strict Rendering Mode: false
+  Disable ZCull Occlusion Queries: false
+  Disable Vertex Cache: false
+  Disable FIFO Reordering: false
+  Enable Frame Skip: false
+  Force CPU Blit: false
+  Disable On-Disk Shader Cache: false
+  Disable Vulkan Memory Allocator: false
+  Use full RGB output range: true
+  Disable Asynchronous Shader Compiler: false
+  Strict Texture Flushing: false
+  Disable native float16 support: false
+  Multithreaded RSX: false
+  Consecutive Frames To Draw: 1
+  Consecutive Frames To Skip: 1
+  Resolution Scale: 100
+  Anisotropic Filter Override: 0
+  Minimum Scalable Dimension: 16
+  Driver Recovery Timeout: 1000000
+  Vblank Rate: 60
+  D3D12:
+    Adapter: ""
+  Vulkan:
+    Adapter: ""
+    Force FIFO present mode: false
+    Force primitive restart flag: false
+  Performance Overlay:
+    Enabled: false
+    Detail level: Medium
+    Metrics update interval (ms): 350
+    Font size (px): 10
+    Position: Top Left
+    Font: n023055ms.ttf
+    Horizontal Margin (px): 50
+    Vertical Margin (px): 50
+    Center Horizontally: false
+    Center Vertically: false
+    Opacity (%): 70
+    Body Color (hex): "#FFE138FF"
+    Body Background (hex): "#002339FF"
+    Title Color (hex): "#F26C24FF"
+    Title Background (hex): "#00000000"
+  Shader Compilation Hint:
+    Position X (px): 20
+    Position Y (px): 690
+  Shader Loading Dialog:
+    Allow custom background: true
+    Darkening effect strength: 30
+    Blur effect strength: 0
+Audio:
+  Renderer: OpenAL
+  Dump to file: false
+  Convert to 16 bit: false
+  Downmix to Stereo: true
+  Start Threshold: 1
+  Master Volume: 100
+  Enable Buffering: true
+  Desired Audio Buffer Duration: 100
+  Sampling Period Multiplier: 100
+  Enable Time Stretching: false
+  Time Stretching Threshold: 75
+  Microphone Type: "Null"
+  Microphone Devices: "@@@@@@@@@@@@"
+Input/Output:
+  Keyboard: "Null"
+  Mouse: Basic
+  Pad: Keyboard
+  Camera: "Null"
+  Camera type: Unknown
+  Move: "Null"
+System:
+  Language: English (US)
+  Keyboard Type: English keyboard (US standard)
+  Enter button assignment: Enter with cross
+Net:
+  Connection status: Disconnected
+  IP address: 192.168.1.1
+Miscellaneous:
+  Automatically start games after boot: true
+  Exit RPCS3 when process finishes: false
+  Start games in fullscreen mode: true
+  Show FPS counter in window title: true
+  Show trophy popups: true
+  Show shader compilation hint: true
+  Use native user interface: true
+  Port: 2345
+Log: {}

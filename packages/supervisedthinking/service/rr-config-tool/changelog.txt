@@ -1,0 +1,11 @@
+103
+-WIP Kodi 19 Matrix compatibility
+
+102
+- Added refresh rate settings for PCSX2
+
+101
+- Added volume control for PulseAudio
+
+100
+- Initial release

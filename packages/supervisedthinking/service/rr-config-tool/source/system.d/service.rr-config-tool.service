@@ -1,0 +1,13 @@
+[Unit]
+Description=RR Config Tool
+After=pulseaudio.service
+Before=kodi.service
+Wants=kodi.service pulseaudio.service
+
+[Service]
+ExecStart=/bin/sh /usr/share/kodi/addons/service.rr-config-tool/bin/rr-config-tool.start
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=kodi.service pulseaudio.service

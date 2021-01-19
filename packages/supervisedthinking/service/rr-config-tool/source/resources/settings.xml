@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <!-- RR Config Tool -->
+  <category  label="30000">
+    <setting label="30001" type="lsep"/>
+    <setting type="sep" />
+    <setting label="30002" type="action" action="RunAddon(service.rr-config-tool)" />
+    <setting id="RR_AUDIO_DEVICE"  type="text"   label="30003"   default="sysdefault:CARD=PCH" enable="false" />
+    <setting label="30004" type="lsep"/>
+    <setting type="sep" />
+    <setting id="RR_AUDIO_BACKEND" type="select" label="30005"   values="ALSA|PulseAudio" default="ALSA"/>
+    <setting id="RR_PA_UDEV"       type="bool"   label="30006"   default="true" visible="eq(-1,PulseAudio))" />
+    <setting id="RR_PA_TSCHED"     type="bool"   label="30007"   default="true" visible="eq(-2,PulseAudio))" />
+    <setting id="RR_AUDIO_VOLUME"  type="slider" label="30008"   default="75"   range="0,5,100" option="percent" visible="eq(-3,PulseAudio))" />
+  </category>
+  <category  label="30100">
+    <setting label="30101" type="lsep"/>
+    <setting type="sep" />
+    <setting id="RR_KMS"                  type="bool"   label="30102"                    default="false" />
+    <setting label="30103" type="lsep"/>
+    <setting type="sep" />
+    <setting id="RR_REFRESH_RATE_AMIGA"   type="select" label="30104" values="50Hz|60Hz" default="50Hz"/>
+    <setting id="RR_REFRESH_RATE_ATARI"   type="select" label="30105" values="50Hz|60Hz" default="50Hz"/>
+    <setting id="RR_REFRESH_RATE_C64"     type="select" label="30106" values="50Hz|60Hz" default="50Hz"/>
+    <setting id="RR_REFRESH_RATE_DOLPHIN" type="select" label="30107" values="60Hz|50Hz" default="60Hz"/>
+    <setting id="RR_REFRESH_RATE_PCSX2"   type="select" label="30108" values="60Hz|50Hz" default="60Hz"/>
+  </category>
+  <category  label="30200">
+    <setting label="30201" type="lsep"/>
+    <setting type="sep" />
+    <setting id="RR_QT_AUTO_SCREEN_SCALE_FACTOR"  type="bool"   label="30202" default="true" />
+    <setting id="RR_QT_SCALE_FACTOR"              type="slider" label="30203" default="1" range="0.5,0.1,2" option="float" visible="eq(-1,false))" />
+  </category>
+  <category  label="30300">
+    <setting label="30301" type="lsep"/>
+    <setting type="sep" />
+    <setting id="RR_EMULATION_DEMOS"    type="bool" label="30302" default="true" />
+    <setting id="RR_EMULATION_ID_GAMES" type="bool" label="30303" default="true" />
+  </category>
+  <category  label="30400">
+    <setting label="30401" type="lsep"/>
+    <setting type="sep" />
+    <setting id="RR_SPOTIFY_BRANCH" type="select" label="30402" values="stable|dev" default="stable"/>
+  </category>
+</settings>

@@ -1,0 +1,137 @@
+# Kodi Media Center language file
+# Addon Name: service.rr-config-tool
+msgid ""
+msgstr ""
+
+msgctxt "#30000"
+msgid "Audio"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Audio output device"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Select audio device"
+msgstr ""
+
+msgctxt "#30003"
+msgid "Current selected audio device"
+msgstr ""
+
+msgctxt "#30004"
+msgid "Audio backend"
+msgstr ""
+
+msgctxt "#30005"
+msgid "Select audio backend"
+msgstr ""
+
+msgctxt "#30006"
+msgid "Use module-udev-detect to autodetect PulseAudio device"
+msgstr ""
+
+msgctxt "#30007"
+msgid "Use PulseAudio timer-based scheduling (tsched)"
+msgstr ""
+
+msgctxt "#30008"
+msgid "PulseAudio volume control"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Restart Kodi to enable shared device"
+msgstr ""
+
+msgctxt "#30020"
+msgid "No soundcard found"
+msgstr ""
+
+msgctxt "#30100"
+msgid "Video"
+msgstr ""
+
+msgctxt "#30101"
+msgid "Retroarch video context driver"
+msgstr ""
+
+msgctxt "#30102"
+msgid "Use Kernel Mode Setting (KMS)"
+msgstr ""
+
+msgctxt "#30103"
+msgid "Emulator refresh rates [PAL 50Hz | NTSC 60Hz]"
+msgstr ""
+
+msgctxt "#30104"
+msgid "Amiga emulator (FS-UAE)"
+msgstr ""
+
+msgctxt "#30105"
+msgid "Atari emulator (Hatari)"
+msgstr ""
+
+msgctxt "#30106"
+msgid "C64 emulator (VICE)"
+msgstr ""
+
+msgctxt "#30107"
+msgid "GC/Wii emulator (Dolphin)"
+msgstr ""
+
+msgctxt "#30108"
+msgid "PlayStation 2 (PCSX2)"
+msgstr ""
+
+msgctxt "#30200"
+msgid "Qt 5 Framework"
+msgstr ""
+
+msgctxt "#30201"
+msgid "High DPI Support in Qt"
+msgstr ""
+
+msgctxt "#30202"
+msgid "Use automatic scaling, based on the TV pixel density"
+msgstr ""
+
+msgctxt "#30203"
+msgid "Manually define a global menu scale factor"
+msgstr ""
+
+msgctxt "#30204"
+msgid "Physical TV screen width in millimeters"
+msgstr ""
+
+msgctxt "#30205"
+msgid "Physical TV screen height in millimeters"
+msgstr ""
+
+msgctxt "#30300"
+msgid "Emulation"
+msgstr ""
+
+msgctxt "#30301"
+msgid "Emulationstation Systems"
+msgstr ""
+
+msgctxt "#30302"
+msgid "Show MrBoom & 2048 demos games"
+msgstr ""
+
+msgctxt "#30303"
+msgid "Show id Software emulators"
+msgstr ""
+
+msgctxt "#30400"
+msgid "Misc"
+msgstr ""
+
+msgctxt "#30401"
+msgid "Spotify configuration"
+msgstr ""
+
+msgctxt "#30402"
+msgid "Spotify branch"
+msgstr ""
+

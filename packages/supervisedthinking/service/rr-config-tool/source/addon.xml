@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="service.rr-config-tool"
+       name="RR Configuration"
+       version="10.0"
+       provider-name="ThinkSupervised">
+  <requires>
+    <import addon="os.libreelec.tv" version="10.0"/>
+    <import addon="xbmc.python" version="3.0.0"/>
+  </requires>
+  <extension point="xbmc.service"        library="default.py"> </extension>
+  <extension point="xbmc.python.library" library="addon.py"> </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary>RR Configuration</summary>
+    <description> This addon provides a graphical interface to configure audio, video etc. for the RR build. </description>
+    <platform>all</platform>
+    <assets>
+    <icon>resources/icon.png</icon>
+    <fanart>resources/fanart.png</fanart>
+    </assets>
+  </extension>
+</addon>

@@ -1,0 +1,33 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
+
+. /etc/profile
+oe_setup_addon service.rr-config-tool
+
+ASOUND_CONF="/storage/.config/asound.conf"
+ASOUND_CONF_DEFAULT="/usr/share/kodi/addons/service.rr-config-tool/config/asound.conf"
+
+# If RPi and no card is active then activate onboard audio
+if grep -q "RPi" /etc/release && [ ! -x /proc/asound ]; then
+  dtparam audio=on
+  dtparam -l
+fi
+
+# If selected card is not active then pick first active card
+CARDS="$(aplay -L | grep "^[^ ]*:CARD=")"
+if ! echo "${CARDS}" | grep -q "^$RR_AUDIO_DEVICE$"; then
+  RR_AUDIO_DEVICE="$(echo "${CARDS}" | head -n 1)"
+fi
+
+if [ -n "${RR_AUDIO_DEVICE}" ]; then
+  # Remove ALSA configuration
+  if [ -f "${ASOUND_CONF}" ]; then
+    rm -f "${ASOUND_CONF}"
+  fi
+  # Add ALSA configuration
+  sed -e "s/default \".*/default \"${RR_AUDIO_DEVICE}\"/" ${ASOUND_CONF_DEFAULT} >> "${ASOUND_CONF}"
+fi
+
+# Output configuration
+echo "rr-config-script: ALSA & PulseAudio will use "${RR_AUDIO_DEVICE}" as audio output device"

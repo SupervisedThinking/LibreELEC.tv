@@ -1,0 +1,21 @@
+<settings version="2">
+    <setting id="RR_AUDIO_DEVICE"                 default="true">sysdefault:CARD=PCH</setting>
+    <setting id="RR_AUDIO_BACKEND"                default="true">ALSA</setting>
+    <setting id="RR_PA_UDEV"                      default="true">true</setting>
+    <setting id="RR_PA_TSCHED"                    default="true">true</setting>
+    <setting id="RR_AUDIO_VOLUME"                 default="true">75</setting>
+    <setting id="RR_KMS"                          default="true">false</setting>
+    <setting id="RR_QT_AUTO_SCREEN_SCALE_FACTOR"  default="true">true</setting>
+    <setting id="RR_QT_SCALE_FACTOR"              default="true">1</setting>
+    <setting id="RR_EMULATION_DEMOS"              default="true">true</setting>
+    <setting id="RR_EMULATION_ID_GAMES"           default="true">true</setting>
+    <setting id="RR_REFRESH_RATE_AMIGA"           default="true">50Hz</setting>
+    <setting id="RR_REFRESH_RATE_ATARI"           default="true">50Hz</setting>
+    <setting id="RR_REFRESH_RATE_C64"             default="true">50Hz</setting>
+    <setting id="RR_REFRESH_RATE_DOLPHIN"         default="true">60Hz</setting>
+    <setting id="RR_REFRESH_RATE_PCSX2"           default="true">60Hz</setting>
+    <setting id="RR_SPOTIFY_BRANCH"               default="true">stable</setting>
+</settings>
+
+
+

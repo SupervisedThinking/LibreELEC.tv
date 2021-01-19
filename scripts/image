@@ -71,6 +71,7 @@ if [ "${LIBREELEC_VERSION}" = "devel" ]; then
     daily)   LIBREELEC_VERSION=daily-$(date +%Y%j)-${GIT_ABBREV};;
     weekly)  LIBREELEC_VERSION=weekly-$(date +%G%V)-${GIT_ABBREV};;
     monthly) LIBREELEC_VERSION=monthly-$(date +%Y%m)-${GIT_ABBREV};;
+    RR)      LIBREELEC_VERSION=RR-$(date +%Y%m%d)-${GIT_ABBREV};;
     *)       LIBREELEC_VERSION=devel-$(date +%Y%m%d%H%M%S)-${GIT_ABBREV};;
   esac
 fi

@@ -1,0 +1,85 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Set some common variables
+M64P_SHADER_CACHE=/storage/.cache/mupen64plus/shaders
+M64P_SHADER_HOME=/storage/.config/mupen64plus/shaders
+M64P_TMP_DIR=/tmp/emulation/m64p
+M64P_LOG=/var/log/m64p.log
+M64P_GAME_NAME=$(basename -- "$1")
+
+# create link to shader directory
+if [ ! -L ${M64P_SHADER_CACHE} ]; then
+  if [ -d ${M64P_SHADER_CACHE} ]; then
+    cp -rf ${M64P_SHADER_CACHE} ${M64P_SHADER_HOME}
+    rm -rf ${M64P_SHADER_CACHE}
+  fi
+  ln -sf ${M64P_SHADER_HOME} ${M64P_SHADER_CACHE}
+fi
+ 
+# Clean up log file
+if [ -f "${M64P_LOG}" ]; then
+  rm "${M64P_LOG}"
+fi
+
+if [ `echo ${M64P_GAME_NAME} | grep -i  '.n64\|.v64\|.z64\|.bin\|.u1\|.ndd\|.7z\|.zip' | wc -l` -eq 1 ]; then
+
+  # Stop Kodi service / load audio backend config
+  kodi-service.sh --stop
+
+  # Change refresh rate to 60Hz
+  set_refresh_rate_60
+
+  # Set audio backend to PulseAudio or ALSA
+  set_SDL_audiodriver
+
+  # Which file should M64P load?
+  echo "Trying to boot this game:" "${M64P_GAME_NAME}" > ${M64P_LOG}
+
+  # Create a clean working directory
+  if [ -d "${M64P_TMP_DIR}" ]; then
+    echo "Clean up old working directory." >> ${M64P_LOG}
+    rm -rf "${M64P_TMP_DIR}"
+  fi
+
+  # Check if we are loading a zip file
+  if [ `echo ${M64P_GAME_NAME} | grep -i .zip | wc -l` -eq 1 ]; then
+    # .zip file detected
+    echo "Loading a .zip file..." >> ${M64P_LOG}
+
+    # unpack the zip file
+    mkdir -p "${M64P_TMP_DIR}"
+    unzip -qq -o "$1" *.n64 *.v64 *.z64 *.bin *.u1 *.ndd -d "${M64P_TMP_DIR}" 2>/dev/null
+
+    # start m64p
+    mupen64plus "${M64P_TMP_DIR}"/* >> ${M64P_LOG} 2>&1
+    rm -rf "${M64P_TMP_DIR}"
+
+  # Check if we are loading a 7z file
+  elif [ `echo ${M64P_GAME_NAME} | grep -i .7z | wc -l` -eq 1 ]; then
+    # .7z file detected
+    echo "Loading a .7z file..." >> ${M64P_LOG}
+
+	# unpack the 7z file
+    mkdir -p "${M64P_TMP_DIR}"
+	7za x "$1" -o"${M64P_TMP_DIR}" *.n64 *.v64 *.z64 *.bin *.u1 *.ndd -r > /dev/null
+
+    # start m64p
+    mupen64plus "${M64P_TMP_DIR}"/* >> ${M64P_LOG} 2>&1
+    rm -rf "${M64P_TMP_DIR}"
+  else
+    # non-compressed file detcted
+    echo "Loading a regular file..." >> ${M64P_LOG}
+    mupen64plus "$@" >> ${M64P_LOG} 2>&1  
+  fi
+
+  # Switch back to frontends or start Kodi service / unload audio backend config
+  pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start
+else
+   echo "File extension of" "${M64P_GAME_NAME}" "is not supported" >> ${M64P_LOG}
+   echo "Try a rom with with one of these file extensions .n64 .v64 .z64 .bin .u1 .ndd .7z .zip" >> ${M64P_LOG}
+fi

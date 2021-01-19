@@ -16,3 +16,7 @@ PKG_MESON_OPTS_TARGET="-Ddocs=false \
                        -Dgir=false \
                        -Dman=false \
                        -Drelocatable=false"
+
+post_makeinstall_target() {
+  cp ${PKG_DIR}/config/* ${INSTALL}/usr/lib/gdk-pixbuf-2.0/2.10.0/
+}

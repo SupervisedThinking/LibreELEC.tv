@@ -1,0 +1,31 @@
+--- a/xml/Home.xml
++++ b/xml/Home.xml
+@@ -910,6 +910,13 @@
+ 							<property name="id">spotify</property>
+ 							<visible>!Skin.HasSetting(HomeMenuNoSpotifyButton)</visible>
+ 						</item>
++						<item>
++							<label>Retroarch</label>
++							<onclick>RunScript(/usr/bin/frontend-retroarch.py)</onclick>
++							<thumb>DefaultAddonGameRA.png</thumb>
++							<property name="id">retroarch</property>
++							<visible>!Skin.HasSetting(HomeMenuNoRetroarchButton)</visible>
++						</item>
+ 					</content>
+ 				</control>
+ 				<control type="grouplist" id="700">
+--- a/xml/SkinSettings.xml
++++ b/xml/SkinSettings.xml
+@@ -225,6 +225,12 @@
+ 					<selected>!Skin.HasSetting(HomeMenuNoSpotifyButton)</selected>
+ 					<onclick>Skin.ToggleSetting(HomeMenuNoSpotifyButton)</onclick>
+ 				</control>
++				<control type="radiobutton" id="62100">
++					<label>Retroarch</label>
++					<include>DefaultSettingButton</include>
++					<selected>!Skin.HasSetting(HomeMenuNoRetroarchButton)</selected>
++					<onclick>Skin.ToggleSetting(HomeMenuNoRetroarchButton)</onclick>
++				</control>
+ 			</control>
+ 			<control type="image">
+ 				<description>Dialog Header image</description>

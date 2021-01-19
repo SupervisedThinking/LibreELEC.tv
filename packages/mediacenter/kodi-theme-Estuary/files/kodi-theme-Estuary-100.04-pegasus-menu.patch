@@ -1,0 +1,32 @@
+--- a/xml/Home.xml
++++ b/xml/Home.xml
+@@ -910,6 +910,13 @@
+ 							<property name="id">spotify</property>
+ 							<visible>!Skin.HasSetting(HomeMenuNoSpotifyButton)</visible>
+ 						</item>
++						<item>
++							<label>Pegasus</label>
++							<onclick>RunScript(/usr/bin/frontend-pegasus-fe.py)</onclick>
++							<thumb>DefaultAddonGamePF.png</thumb>
++							<property name="id">pegasus</property>
++							<visible>!Skin.HasSetting(HomeMenuNoPegasusButton)</visible>
++						</item>
+ 					</content>
+ 				</control>
+ 				<control type="grouplist" id="700">
+--- a/xml/SkinSettings.xml
++++ b/xml/SkinSettings.xml
+@@ -225,6 +225,12 @@
+ 					<selected>!Skin.HasSetting(HomeMenuNoSpotifyButton)</selected>
+ 					<onclick>Skin.ToggleSetting(HomeMenuNoSpotifyButton)</onclick>
+ 				</control>
++				<control type="radiobutton" id="62200">
++					<label>Pegasus</label>
++					<include>DefaultSettingButton</include>
++					<selected>!Skin.HasSetting(HomeMenuNoPegasusButton)</selected>
++					<onclick>Skin.ToggleSetting(HomeMenuNoPegasusButton)</onclick>
++				</control>
+ 			</control>
+ 			<control type="image">
+ 				<description>Dialog Header image</description>
+

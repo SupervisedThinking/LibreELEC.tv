@@ -7,10 +7,41 @@ PKG_LICENSE="GPL"
 PKG_SITE="http://www.kodi.tv"
 PKG_URL=""
 PKG_DEPENDS_TARGET="kodi"
+PKG_NEED_UNPACK="$(get_pkg_directory $MEDIACENTER)"
 PKG_LONGDESC="Kodi Mediacenter default theme."
 PKG_TOOLCHAIN="manual"
 
 makeinstall_target() {
-  mkdir -p ${INSTALL}/usr/share/kodi/addons/
-    cp -a $(get_install_dir kodi)/.noinstall/skin.estuary ${INSTALL}/usr/share/kodi/addons/
+  mkdir -p $INSTALL/usr/share/kodi/addons/
+    cp -a $(get_install_dir kodi)/.noinstall/skin.estuary $INSTALL/usr/share/kodi/addons/
+
+  # Add Chrome & Spotify shortcuts to menu
+  if [ ! "${OEM_APPLICATIONS}" = "no" ]; then
+    echo "### Adding Chrome & Spotify to Estuary menu ###"
+    patch -d ${INSTALL}/usr/share/kodi/addons/skin.estuary -p1 < ${PKG_DIR}/files/kodi-theme-Estuary-100.01-application-menu.patch
+
+    # Add Moonlight shortcut to menu 
+    if [ "${PROJECT}" = "Generic" ]; then
+      echo "### Adding Moonlight to Estuary menu ###"
+      patch -d ${INSTALL}/usr/share/kodi/addons/skin.estuary -p1 < ${PKG_DIR}/files/kodi-theme-Estuary-100.05-moonlight-qt-menu.patch
+    fi
+  fi
+
+  # Add Emulationstation shortcut to menu 
+  if [ ! "${OEM_EMULATORS}" = "no" ]; then
+    echo "### Adding Emulationstation to Estuary menu ###"
+    patch -d ${INSTALL}/usr/share/kodi/addons/skin.estuary -p1 < ${PKG_DIR}/files/kodi-theme-Estuary-100.02-emulationstation-menu.patch
+  fi
+
+  # Add Retroarch shortcut to menu 
+  if [ ! "${OEM_LIBRETRO}" = "no" ]; then
+    echo "### Adding Retroarch to Estuary menu ###"
+    patch -d ${INSTALL}/usr/share/kodi/addons/skin.estuary -p1 < ${PKG_DIR}/files/kodi-theme-Estuary-100.03-retroarch-menu.patch
+  fi
+
+  # Add Pegasus Frontend shortcut to menu 
+  if [ ! "${OEM_FRONTENDS_EXTRA}" = "no" ]; then
+    echo "### Adding Pegasus-Frontend to Estuary menu ###"
+    patch -d ${INSTALL}/usr/share/kodi/addons/skin.estuary -p1 < ${PKG_DIR}/files/kodi-theme-Estuary-100.04-pegasus-menu.patch
+  fi
 }

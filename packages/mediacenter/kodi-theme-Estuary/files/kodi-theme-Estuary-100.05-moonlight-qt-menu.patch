@@ -1,0 +1,32 @@
+--- a/xml/Home.xml
++++ b/xml/Home.xml
+@@ -990,6 +990,13 @@
+ 							<property name="id">weather</property>
+ 							<visible>!Skin.HasSetting(HomeMenuNoWeatherButton)</visible>
+ 						</item>
++						<item>
++							<label>Moonlight</label>
++							<onclick>RunScript(/usr/bin/moonlight-qt.py)</onclick>
++							<thumb>DefaultAddonGameMQT.png</thumb>
++							<property name="id">Moonlight</property>
++							<visible>!Skin.HasSetting(HomeMenuNoMoonlightButton)</visible>
++						</item>
+ 					</content>
+ 				</control>
+ 				<control type="grouplist" id="700">
+--- a/xml/SkinSettings.xml
++++ b/xml/SkinSettings.xml
+@@ -237,6 +237,12 @@
+ 					<include>DefaultSettingButton</include>
+ 					<selected>!Skin.HasSetting(HomeMenuNoWeatherButton)</selected>
+ 					<onclick>Skin.ToggleSetting(HomeMenuNoWeatherButton)</onclick>
++				</control>
++				<control type="radiobutton" id="61901">
++					<label>Moonlight</label>
++					<include>DefaultSettingButton</include>
++					<selected>!Skin.HasSetting(HomeMenuNoMoonlightButton)</selected>
++					<onclick>Skin.ToggleSetting(HomeMenuNoMoonlightButton)</onclick>
+ 				</control>
+ 			</control>
+ 			<control type="image">
+

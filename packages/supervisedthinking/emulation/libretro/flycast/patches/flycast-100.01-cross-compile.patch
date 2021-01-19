@@ -1,0 +1,44 @@
+From 1fd6101799eefc7f3b89daf67e71c42dc73560c0 Mon Sep 17 00:00:00 2001
+From: ThinkSupervised <supervisedthinking@gmail.com>
+Date: Sat, 24 Aug 2019 14:22:38 +0200
+Subject: [PATCH] Makefile: fix cross-compile
+
+---
+ Makefile | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index f64cb0599..990ea8768 100644
+--- a/Makefile
++++ b/Makefile
+@@ -26,12 +26,8 @@
+ TARGET_NAME   := flycast
+ 
+ ifeq ($(HAVE_CLANG),1)
+-	CXX      = ${CC_PREFIX}clang++
+-	CC       = ${CC_PREFIX}clang
+ 	SHARED   := -fuse-ld=lld
+ else
+-	CXX      ?= ${CC_PREFIX}g++
+-	CC       ?= ${CC_PREFIX}gcc
+ 	SHARED   :=
+ endif
+ ifeq ($(HAVE_LTCG),1)
+@@ -41,16 +37,12 @@
+ ifneq (${AS},)
+ 	CC_AS := ${AS}
+ endif
+-CC_AS    ?= ${CC_PREFIX}as
+ 
+ MFLAGS   := 
+ ASFLAGS  := 
+-LDFLAGS  :=
+ LDFLAGS_END :=
+ INCFLAGS :=
+ LIBS     :=
+-CFLAGS   := 
+-CXXFLAGS :=
+ 
+ GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
+ ifneq ($(GIT_VERSION)," unknown")
+

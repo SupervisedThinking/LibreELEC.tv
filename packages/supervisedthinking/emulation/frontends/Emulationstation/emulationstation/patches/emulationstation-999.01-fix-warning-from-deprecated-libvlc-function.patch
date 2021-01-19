@@ -1,0 +1,54 @@
+From 007ac890854d1eea82c62c31e35a5c631ef9ba87 Mon Sep 17 00:00:00 2001
+From: Markus Pointner <markus.pointner@mooware.at>
+Date: Tue, 5 Mar 2019 19:10:09 +0100
+Subject: [PATCH] fix warning from deprecated libvlc function
+
+---
+ es-core/src/components/VideoVlcComponent.cpp | 29 +++++++++++++-------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/es-core/src/components/VideoVlcComponent.cpp b/es-core/src/components/VideoVlcComponent.cpp
+index 91f7532e4..7681e7a21 100644
+--- a/es-core/src/components/VideoVlcComponent.cpp
++++ b/es-core/src/components/VideoVlcComponent.cpp
+@@ -297,21 +297,30 @@ void VideoVlcComponent::startVideo()
+ 			mMedia = libvlc_media_new_path(mVLC, path.c_str());
+ 			if (mMedia)
+ 			{
+-				unsigned track_count;
+ 				// Get the media metadata so we can find the aspect ratio
+-				libvlc_media_parse(mMedia);
+-				libvlc_media_track_t** tracks;
+-				track_count = libvlc_media_tracks_get(mMedia, &tracks);
+-				for (unsigned track = 0; track < track_count; ++track)
++				if (libvlc_media_parse_with_options(mMedia, libvlc_media_fetch_local, -1) == 0)
+ 				{
+-					if (tracks[track]->i_type == libvlc_track_video)
++					// Parsing is async, wait for completion
++					libvlc_media_parsed_status_t status;
++					while ((status = libvlc_media_get_parsed_status(mMedia)) == 0)
++						std::this_thread::sleep_for(std::chrono::milliseconds(50));
++
++					if (status == libvlc_media_parsed_status_done)
+ 					{
+-						mVideoWidth = tracks[track]->video->i_width;
+-						mVideoHeight = tracks[track]->video->i_height;
+-						break;
++						libvlc_media_track_t** tracks;
++						unsigned track_count = libvlc_media_tracks_get(mMedia, &tracks);
++						for (unsigned track = 0; track < track_count; ++track)
++						{
++							if (tracks[track]->i_type == libvlc_track_video)
++							{
++								mVideoWidth = tracks[track]->video->i_width;
++								mVideoHeight = tracks[track]->video->i_height;
++								break;
++							}
++						}
++						libvlc_media_tracks_release(tracks, track_count);
+ 					}
+ 				}
+-				libvlc_media_tracks_release(tracks, track_count);
+ 
+ 				// Make sure we found a valid video track
+ 				if ((mVideoWidth > 0) && (mVideoHeight > 0))

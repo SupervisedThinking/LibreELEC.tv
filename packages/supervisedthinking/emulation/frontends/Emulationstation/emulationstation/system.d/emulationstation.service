@@ -1,0 +1,13 @@
+[Unit]
+Description=Emulation Station emulator front-end
+After=graphical.target
+Requires=graphical.target
+
+[Service]
+ExecStart=/usr/bin/emulationstation.start
+TimeoutStopSec=30
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

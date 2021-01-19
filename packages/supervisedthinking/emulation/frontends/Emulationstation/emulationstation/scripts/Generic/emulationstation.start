@@ -1,0 +1,52 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Set common variables
+RR_ES_HOME=/storage/.emulationstation
+RR_ES_HOME_CONFIG=/storage/.config/emulationstation
+RR_ES_HOME_LOG=${RR_ES_HOME_CONFIG}/es_log.txt
+RR_ES_VAR_LOG=/var/log/emulationstation.log
+
+# Check if Emulationstation is already running
+if pidof "emulationstation" > /dev/null; then
+    echo "Emulationstation is already running!"
+else
+  # Announce frontend loading in Kodi
+  show_RR_announcement Emulationstation
+
+  # Create symlink to config dir
+  if [ ! -L ${RR_ES_HOME} ]; then
+    if [ -d ${RR_ES_HOME} ]; then
+      cp -rf ${RR_ES_HOME} ${RR_ES_HOME_CONFIG}
+      rm -rf ${RR_ES_HOME}
+    fi
+    ln -sf ${RR_ES_HOME_CONFIG} ${RR_ES_HOME}
+  fi
+
+  # Create basic links & files
+  set_RR_environment
+
+  # Stop Kodi service / load audio backend config
+  kodi-service.sh --stop
+
+  # Change refresh rate to 50Hz
+  set_refresh_rate_50
+
+  # Set SDL audio driver to Pulseaudio or ALSA
+  set_SDL_audiodriver
+
+  # Create symlink to logfile
+  if [ ! -L ${RR_ES_VAR_LOG} ]; then
+    ln -sf ${RR_ES_HOME_LOG} ${RR_ES_VAR_LOG}
+  fi
+
+  # Run Emulationstation
+  emulationstation "$@"
+
+  # Start Kodi service / unload audio backend config
+  kodi-service.sh --start
+fi

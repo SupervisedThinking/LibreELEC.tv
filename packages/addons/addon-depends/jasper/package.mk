@@ -11,8 +11,6 @@ PKG_DEPENDS_TARGET="toolchain libjpeg-turbo"
 PKG_LONGDESC="A implementation of the ISO/IEC 15444-1 also known as JPEG-2000 standard for image compression."
 PKG_BUILD_FLAGS="+pic"
 
-PKG_CONFIGURE_OPTS_TARGET="--disable-shared --enable-static"
-
 post_makeinstall_target() {
   rm -rf ${INSTALL}/usr/bin
 }

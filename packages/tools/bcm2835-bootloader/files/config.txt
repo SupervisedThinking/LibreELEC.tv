@@ -17,6 +17,9 @@ gpu_mem=76
 # rebooting.
 hdmi_ignore_cec_init=1
 
+# Enable the onboard ALSA audio interface
+dtparam=audio=on
+
 ################################################################################
 # Include distribution specific config file if it exists.
 ################################################################################

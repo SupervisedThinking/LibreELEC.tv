@@ -21,8 +21,6 @@ PKG_CMAKE_OPTS_TARGET="-DCMAKE_POSITION_INDEPENDENT_CODE=1 \
                        -DENABLE_WERROR=0"
 
 post_makeinstall_target() {
-  rm -rf ${INSTALL}
-
-  # delete the shared library as we only want static
-  rm ${SYSROOT_PREFIX}/usr/lib/libarchive.so*
+  safe_remove ${INSTALL}/usr/share
+  safe_remove ${INSTALL}/usr/bin
 }

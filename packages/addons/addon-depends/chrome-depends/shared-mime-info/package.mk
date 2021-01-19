@@ -9,6 +9,6 @@ PKG_SITE="https://freedesktop.org/wiki/Software/shared-mime-info/"
 PKG_URL="https://gitlab.freedesktop.org/xdg/${PKG_NAME}/-/archive/${PKG_VERSION}/${PKG_NAME}-${PKG_VERSION}.tar.bz2"
 PKG_DEPENDS_TARGET="toolchain glib libxml2 gettext itstool:host"
 PKG_LONGDESC="The shared-mime-info package contains the core database of common types."
-PKG_BUILD_FLAGS="-parallel -sysroot"
+PKG_BUILD_FLAGS="-parallel"
 
 PKG_MESON_OPTS_TARGET="-Dupdate-mimedb=false"

@@ -1,0 +1,44 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Set common variables
+RR_PEGASUS_HOME_LOG=/storage/.config/pegasus-frontend/lastrun.log
+RR_PEGASUS_VAR_LOG=/var/log/pegasus-frontend.log
+
+# Check if Pegasus is already running
+if pidof "pegasus-fe" > /dev/null; then
+    echo "Pegasus is already running!"
+else
+  # Announce frontend loading in Kodi
+  show_RR_announcement Pegasus
+
+  # Create basic links & files
+  set_RR_environment
+
+  # Stop Kodi service / load audio backend config
+  kodi-service.sh --stop
+
+  # Change refresh rate to 50Hz
+  set_refresh_rate_50
+
+  # Set SDL audio driver to Pulseaudio or ALSA
+  set_SDL_audiodriver
+
+  # Set Qt5 screen scale environment vars
+  set_QT_environment_vars
+
+  # Create symlink to logfile
+  if [ ! -L ${RR_PEGASUS_VAR_LOG} ]; then
+    ln -sf ${RR_PEGASUS_HOME_LOG} ${RR_PEGASUS_VAR_LOG}
+  fi
+
+  # Run Pegasus
+  pegasus-fe "$@"
+
+  # Start Kodi service / unload audio backend config
+  kodi-service.sh --start
+fi

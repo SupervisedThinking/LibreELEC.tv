@@ -11,5 +11,3 @@ PKG_URL="http://xorg.freedesktop.org/archive/individual/lib/${PKG_NAME}-${PKG_VE
 PKG_DEPENDS_TARGET="toolchain util-macros libX11"
 PKG_LONGDESC="X Fixes Library"
 PKG_BUILD_FLAGS="+pic"
-
-PKG_CONFIGURE_OPTS_TARGET="--enable-static --disable-shared"

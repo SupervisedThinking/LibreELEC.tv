@@ -1,0 +1,13 @@
+[Unit]
+Description=Emulation RAM disk
+After=systemd-tmpfiles-setup.service
+DefaultDependencies=no
+
+[Mount]
+What=tmpfs
+Where=/tmp/emulation
+Options=size=256m
+Type=tmpfs
+
+[Install]
+WantedBy=multi-user.target

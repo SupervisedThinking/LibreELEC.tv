@@ -1,0 +1,31 @@
+From f221db8b1c5ed0d3057ab528e73e7df421bb6082 Mon Sep 17 00:00:00 2001
+From: ThinkSupervised <supervisedthinking@gmail.com>
+Date: Tue, 8 Oct 2019 18:04:40 +0200
+Subject: [PATCH] GNUmakefile: disable openmp
+
+---
+ bsnes/target-libretro/GNUmakefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/bsnes/target-libretro/GNUmakefile b/bsnes/target-libretro/GNUmakefile
+index 9f1343e8..f18566f7 100644
+--- a/bsnes/target-libretro/GNUmakefile
++++ b/bsnes/target-libretro/GNUmakefile
+@@ -1,6 +1,6 @@
+ name := bsnes_libretro
+ local := false
+-openmp := true
++openmp := false
+ flags += -Wno-narrowing -Wno-multichar -g -fPIC
+ 
+ ifeq ($(platform), ios-arm64)
+@@ -23,7 +23,7 @@
+ 
+ all: $(objects)
+ ifeq ($(platform),linux)
+-	$(strip $(compiler) -o out/$(name).so -shared $(objects) -Wl,--no-undefined -Wl,--version-script=target-libretro/link.T -lgomp -Wl,-Bdynamic $(options))
++	$(strip $(compiler) -o out/$(name).so -shared $(objects) -Wl,--no-undefined -Wl,--version-script=target-libretro/link.T -Wl,-Bdynamic $(options))
+ else ifeq ($(platform),windows)
+ 	$(strip $(compiler) -o out/$(name).dll -shared $(objects) -Wl,--no-undefined -Wl,--version-script=target-libretro/link.T -lgomp -Wl,-Bdynamic $(options))
+ else ifeq ($(platform),libnx)
+

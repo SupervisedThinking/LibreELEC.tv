@@ -1,0 +1,42 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Set common paths
+DOLPHIN_HOME_CONFIG=/storage/.config/dolphin-emu/share
+DOLPHIN_HOME_LOCAL=/storage/.local/share/dolphin-emu
+
+# create link to config directory
+if [ -d ${DOLPHIN_HOME_LOCAL} ]; then
+    cp -rf ${DOLPHIN_HOME_LOCAL} ${DOLPHIN_HOME_CONFIG}
+    rm -rf ${DOLPHIN_HOME_LOCAL}
+fi
+
+if [ ! -d ${DOLPHIN_HOME_CONFIG} ]; then
+  mkdir -p ${DOLPHIN_HOME_CONFIG}
+fi
+
+if [ ! -L ${DOLPHIN_HOME_LOCAL} ]; then
+  ln -sf ${DOLPHIN_HOME_CONFIG} ${DOLPHIN_HOME_LOCAL}
+fi
+
+# Stop Kodi service / load audio backend config
+kodi-service.sh --stop
+
+# Change refresh rate to 50Hz(PAL) or 60Hz(NTSC/PAL60)
+set_refresh_rate_DOLPHIN
+
+# Set audio backend to PulseAudio or ALSA
+set_DOLPHIN_audiobackend
+
+# Set Qt5 screen scale environment vars
+set_QT_environment_vars
+
+# Run the emulator
+dolphin-emu "$@"> /var/log/dolphin.log 2>&1
+
+# Switch back to frontends or start Kodi service / unload audio backend config
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start

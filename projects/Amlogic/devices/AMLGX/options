@@ -24,6 +24,9 @@
   # OpenGL-ES implementation to use
     OPENGLES="mesa"
 
+  # Vulkan API support (yes / no)
+    VULKAN_API="no"
+
   # Graphic drivers to use
     GRAPHIC_DRIVERS="lima panfrost"
 
@@ -35,3 +38,25 @@
 
   # Set the addon project
     ADDON_PROJECT="ARMv8"
+
+################################################################################
+# setup LibreELEC-RR defaults
+################################################################################
+
+  # Install applications e.g. Chrome or Spotify (yes / no)
+  OEM_APPLICATIONS="yes"
+
+  # Install standalone emulators e.g. Emulationstation, Amiberry, PPSSPP (yes / no)
+  OEM_EMULATORS="yes"
+
+  # Install additional frontends e.g. Pegasus Frontend (yes / no)
+  OEM_FRONTENDS_EXTRA="yes"
+
+  # Install libretro cores e.g. Retroarch, snes9x, mame2003-plus (yes / no)
+  OEM_LIBRETRO="yes"
+
+  # Install tools e.g. additional tools like mc or htop (yes / no)
+  OEM_TOOLS="yes"
+
+  # Add non-free packages i.e. fdk-aac (yes / no)
+  NON_FREE_PKG_SUPPORT="no"

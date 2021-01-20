@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="RPCS3"
-PKG_VERSION="62cb532460d504533c2c3cbf5b32a8c1249d70a3" # v0.0.14+
+PKG_VERSION="241989c5fa9eb46dbe74d030bdbf3e612cd61453" # v0.0.14+
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://rpcs3.net"

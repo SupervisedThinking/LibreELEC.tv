@@ -99,6 +99,7 @@ show_config() {
   config_message+="\n   - OEM Emulators (Emulationstation):\t $OEM_EMULATORS"
   config_message+="\n   - OEM Frontends Extra:\t\t $OEM_FRONTENDS_EXTRA"
   config_message+="\n   - OEM Libretro (Retroarch):\t\t $OEM_LIBRETRO"
+  config_message+="\n   - OEM Streaming clients:\t\t $OEM_STREAMING_CLIENTS" 
   config_message+="\n   - OEM Tools:\t\t\t\t $OEM_TOOLS"
   config_message+="\n - Add non-free packages:\t\t $NON_FREE_PKG_SUPPORT"
   config_message+="\n - Default ROOT Password:\t\t $ROOT_PASSWORD"

@@ -16,7 +16,6 @@ PKG_TOOLCHAIN="manual"
 # Applications
 OEM_APPLICATIONS_GENERIC=" \
   google-chrome \
-  moonlight-qt \
   spotify"
 
 # Libretro cores
@@ -85,6 +84,10 @@ OEM_EMULATORS_STANDALONE_GENERIC=" \
 OEM_FRONTENDS_EXTRA_GENERIC=" \
   pegasus-frontend"
 
+# Streaming clients
+OEM_STREAMING_CLIENTS_GENERIC=" \
+  moonlight-qt" 
+
 # Tools
 OEM_TOOLS_GENERIC=" \
   dhrystone-benchmark \
@@ -128,6 +131,11 @@ configure_package() {
     # Add Retroarch frontend & libretro core packages 
     if [ "${OEM_LIBRETRO}" = "yes" ]; then
       PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_GENERIC}"
+    fi
+
+    # Add tool packages
+    if [ "${OEM_STREAMING_CLIENTS}" = "yes" ]; then
+      PKG_DEPENDS_TARGET+=" ${OEM_STREAMING_CLIENTS_GENERIC}"
     fi
 
     # Add tool packages

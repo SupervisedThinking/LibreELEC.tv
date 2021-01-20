@@ -16,15 +16,15 @@ makeinstall_target() {
     cp -a $(get_install_dir kodi)/.noinstall/skin.estuary $INSTALL/usr/share/kodi/addons/
 
   # Add Chrome & Spotify shortcuts to menu
-  if [ ! "${OEM_APPLICATIONS}" = "no" ]; then
+  if [ ! "${OEM_APPLICATIONS}" = "no" ] && [ "$PROJECT" = "Generic" ]; then
     echo "### Adding Chrome & Spotify to Estuary menu ###"
     patch -d ${INSTALL}/usr/share/kodi/addons/skin.estuary -p1 < ${PKG_DIR}/files/kodi-theme-Estuary-100.01-application-menu.patch
+  fi
 
-    # Add Moonlight shortcut to menu 
-    if [ "${PROJECT}" = "Generic" ]; then
-      echo "### Adding Moonlight to Estuary menu ###"
-      patch -d ${INSTALL}/usr/share/kodi/addons/skin.estuary -p1 < ${PKG_DIR}/files/kodi-theme-Estuary-100.05-moonlight-qt-menu.patch
-    fi
+  # Add Moonlight shortcut to menu 
+  if [ ! "${OEM_STREAMING_CLIENTS}" = "no" ]; then
+    echo "### Adding Moonlight-Qt to Estuary menu ###"
+    patch -d ${INSTALL}/usr/share/kodi/addons/skin.estuary -p1 < ${PKG_DIR}/files/kodi-theme-Estuary-100.05-moonlight-qt-menu.patch
   fi
 
   # Add Emulationstation shortcut to menu 

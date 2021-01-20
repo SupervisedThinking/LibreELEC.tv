@@ -26,6 +26,7 @@ post_makeinstall_target() {
   #install libs for chrome
   mkdir -p ${INSTALL}/usr/lib
     cp -PR lib/libwx_baseu-${PKG_VERSION:0:3}*      ${INSTALL}/usr/lib
+    cp -PR lib/libwx_gtk3u_adv-${PKG_VERSION:0:3}* ${INSTALL}/usr/lib
     cp -PR lib/libwx_gtk3u_core-${PKG_VERSION:0:3}* ${INSTALL}/usr/lib
 
   # fix wx-config paths                              

@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="mupen64plus-nx"
-PKG_VERSION="8ef9dfeb8957ad08430e67f8ff41d3225f573053"
-PKG_SHA256="f8d088c90438864090024cfc6257c339741911f739f9a73780862464314d0d4b"
+PKG_VERSION="1b80c7616da42df6365f731e801a38e2db9aea29"
+PKG_SHA256="b91397dc139210eda9c3d535f7d081b90b9ddf2aefdf3f1f57174430af4be61f"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/mupen64plus-libretro-nx"
 PKG_URL="https://github.com/libretro/mupen64plus-libretro-nx/archive/${PKG_VERSION}.tar.gz"
@@ -61,9 +61,6 @@ pre_configure_target() {
         ;;
       AMLGX*)
         PKG_MAKE_OPTS_TARGET+=" platform=AMLGX"
-        if [ "${OPENGLES}" = "mesa" ]; then
-          PKG_MAKE_OPTS_TARGET+="-mesa"
-        fi
         ;;
     esac
   elif [ "${PROJECT}" = "Rockchip" ]; then
@@ -97,6 +94,13 @@ pre_configure_target() {
     if target_has_feature neon; then
       PKG_MAKE_OPTS_TARGET+=" HAVE_NEON=1"
     fi
+  fi
+
+  # Fix Mesa 3D based OpenGL ES builds
+  if [ "${OPENGLES}" = "mesa" ]; then
+    PKG_MAKE_OPTS_TARGET+="-mesa"
+	CFLAGS="$CFLAGS -DEGL_NO_X11"
+    CXXFLAGS="$CXXFLAGS -DEGL_NO_X11"
   fi
 }
 

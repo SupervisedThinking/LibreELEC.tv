@@ -10,7 +10,7 @@ PKG_URL="http://curl.haxx.se/download/curl-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain glibc zlib gnutls rtmpdump nettle libidn2 nghttp2"
 PKG_LONGDESC="An URL retrieval library linked against gnutls without versioned symbols"
 PKG_TOOLCHAIN="configure"
-PKG_BUILD_FLAGS="-gold"
+PKG_BUILD_FLAGS="-gold -sysroot"
 
 pre_configure_target() {
   PKG_CONFIGURE_OPTS_TARGET="ac_cv_lib_rtmp_RTMP_Init=yes \

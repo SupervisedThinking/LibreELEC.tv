@@ -11,17 +11,18 @@ PKG_DEPENDS_TARGET="toolchain linux glibc systemd pulseaudio llvm mesa openal-so
 PKG_LONGDESC="RPCS3 is an experimental open-source Sony PlayStation 3 emulator and debugger."
 GET_HANDLER_SUPPORT="git"
 
-PKG_CMAKE_OPTS_TARGET="-D USE_NATIVE_INSTRUCTIONS=off \
-                       -D BUILD_LLVM_SUBMODULE=off \
-                       -D USE_DISCORD_RPC=off \
-                       -D CMAKE_SKIP_RPATH=on \
-                       -D USE_SYSTEM_FFMPEG=on \
-                       -D USE_SYSTEM_LIBPNG=on \
-                       -D USE_SYSTEM_ZLIB=on"
+PKG_CMAKE_OPTS_TARGET="-D USE_NATIVE_INSTRUCTIONS=OFF \
+                       -D BUILD_LLVM_SUBMODULE=OFF \
+                       -D USE_DISCORD_RPC=OFF \
+                       -D CMAKE_SKIP_RPATH=ON \
+                       -D USE_SYSTEM_FFMPEG=ON \
+                       -D USE_SYSTEM_LIBPNG=ON \
+                       -D USE_SYSTEM_ZLIB=ON \
+                       -D USE_SYSTEM_CURL=ON"
 
 pre_make_target() {
   # fix cross compiling
-  find ${PKG_BUILD} -name flags.make -exec sed -i "s:isystem :I:g" \{} \;
+  find ${PKG_BUILD} -name flags.make  -exec sed -i "s:isystem :I:g" \{} \;
   find ${PKG_BUILD} -name build.ninja -exec sed -i "s:isystem :I:g" \{} \;
 }
 

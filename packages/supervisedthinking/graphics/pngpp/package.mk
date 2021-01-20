@@ -9,13 +9,10 @@ PKG_SITE="https://savannah.nongnu.org/projects/pngpp/"
 PKG_URL="https://download.savannah.nongnu.org/releases/pngpp/png++-${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain libpng"
 PKG_LONGDESC="PNG++ aims to provide simple yet powerful C++ interface to libpng, the PNG reference implementation library."
-
-pre_configure_target() {
-  LDFLAGS+=" -lz"
-  sed "s/0.2.9/${PKG_VERSION}/g" -i ${PKG_BUILD}/Makefile
-}
+PKG_TOOLCHAIN="manual"
 
 makeinstall_target() {
-  make PREFIX=${SYSROOT_PREFIX}/usr install
+  mkdir -p ${SYSROOT_PREFIX}/usr/include/png++
+  cp ${PKG_BUILD}/*.hpp ${SYSROOT_PREFIX}/usr/include/png++
 }
 

@@ -59,13 +59,17 @@ OEM_EMULATORS_STANDALONE_AMLOGIC=" \
   amiberry \
   dosbox-sdl2 \
   hatari \
-  moonlight-qt \
+
   openbor \
   ppsspp"
 
 # Frontends
 OEM_FRONTENDS_EXTRA_AMLOGIC=" \
   pegasus-frontend"
+
+# Streaming clients
+OEM_STREAMING_CLIENTS_AMLOGIC=" \
+  moonlight-qt" 
 
 # Tools
 OEM_TOOLS_AMLOGIC=" \
@@ -105,6 +109,11 @@ configure_package() {
     # Add Retroarch frontend & libretro core packages 
     if [ "${OEM_LIBRETRO}" = "yes" ]; then
       PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_AMLOGIC}"
+    fi
+
+    # Add tool packages
+    if [ "${OEM_STREAMING_CLIENTS}" = "yes" ]; then
+      PKG_DEPENDS_TARGET+=" ${OEM_STREAMING_CLIENTS_AMLOGIC}"
     fi
 
     # Add tool packages

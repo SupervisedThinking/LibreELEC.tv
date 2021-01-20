@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="gst-libav"
-PKG_VERSION="1.18.2"
-PKG_SHA256="36969ad44c5f0756a8a90215410710d6c39713d58f6cee13d663be9774557f49"
+PKG_VERSION="1.18.3"
+PKG_SHA256="ad20546bcd78ac1e7cf194666d73c4f33efeb62647d2b6af22993b540699e91c"
 PKG_LICENSE="GPL"
 PKG_SITE="https://gstreamer.freedesktop.org/modules/gst-libav.html"
 PKG_URL="https://gstreamer.freedesktop.org/src/gst-libav/${PKG_NAME}-${PKG_VERSION}.tar.xz"

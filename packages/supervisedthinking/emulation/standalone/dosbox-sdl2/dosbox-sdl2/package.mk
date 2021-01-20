@@ -31,8 +31,15 @@ pre_configure_target() {
   PKG_CONFIGURE_OPTS_TARGET="--prefix=/usr \
                              --enable-core-inline \
                              --enable-dynrec \
-                             --enable-unaligned_memory \
-                             --with-sdl-prefix=${SYSROOT_PREFIX}/usr"
+                             --enable-unaligned_memory"
+
+  # Disable OpenGL if not supported
+  if [ ! "${OPENGL_SUPPORT}" = "yes" ]; then
+    PKG_CONFIGURE_OPTS_TARGET=" --disable-opengl"
+  fi
+
+  export SDL_CONFIG=${SYSROOT_PREFIX}/usr/bin/sdl2-config
+
   # Define target CPU arch
   case ${TARGET_CPU} in
     arm1176jzf-s)

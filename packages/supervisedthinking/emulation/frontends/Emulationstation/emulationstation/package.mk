@@ -18,11 +18,24 @@ configure_package() {
     PKG_DEPENDS_TARGET+=" xorg-server unclutter-xfixes"
   fi
 
-  # Build with OpenGL / OpenGLES support
+  # Add depends for OpenGL / OpenGLES support
   if [ "${OPENGL_SUPPORT}" = "yes" ]; then
     PKG_DEPENDS_TARGET+=" ${OPENGL}"
   elif [ "${OPENGLES_SUPPORT}" = "yes" ]; then
     PKG_DEPENDS_TARGET+=" ${OPENGLES}"
+  fi
+}
+
+pre_configure_target() {
+  # Build with OpenGL / OpenGLES support
+  if [ "${OPENGL_SUPPORT}" = "yes" ]; then
+    PKG_CMAKE_OPTS_TARGET+="-DGL=on"
+  elif [ "${OPENGLES_SUPPORT}" = "yes" ]; then
+    PKG_CMAKE_OPTS_TARGET+=" -DGL=off \
+                             -DGLES=on"
+    if [ "${OPENGLES}" = "mesa" ]; then
+      PKG_CMAKE_OPTS_TARGET+=" -DUSE_MESA_GLES=on"
+    fi
   fi
 }
 

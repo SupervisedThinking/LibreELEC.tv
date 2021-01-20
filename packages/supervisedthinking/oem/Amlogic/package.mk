@@ -59,7 +59,7 @@ OEM_EMULATORS_STANDALONE_AMLOGIC=" \
   amiberry \
   dosbox-sdl2 \
   hatari \
-  moonlight-embedded \
+  moonlight-qt \
   openbor \
   ppsspp"
 

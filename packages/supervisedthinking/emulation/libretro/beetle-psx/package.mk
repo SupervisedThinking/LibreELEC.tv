@@ -30,11 +30,11 @@ make_target() {
   make GIT_VERSION=${PKG_VERSION:0:7}
 
   # Build with OpenGL/Vulkan support if available
-  if [ "${OPENGL_SUPPORT}" = "yes" ];then
+  if [ "${OPENGL_SUPPORT}" = "yes" ]; then
     mkdir -p tmp
     mv ${PKG_LIBNAME} tmp/
     make clean
-    if [ "${VULKAN_SUPPORT}" = "yes" ];then
+    if [ "${VULKAN_SUPPORT}" = "yes" ]; then
       make HAVE_HW=1 GIT_VERSION=${PKG_VERSION:0:7}
     else
       make HAVE_OPENGL=1 GIT_VERSION=${PKG_VERSION:0:7}

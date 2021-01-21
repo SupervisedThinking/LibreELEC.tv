@@ -35,7 +35,7 @@ pre_configure_target() {
                              --enable-vfs-tar \
                              --without-x"
 
-  LDFLAGS="${LDFLAGS} -lcrypto -lssl"
+  LDFLAGS+=" -lcrypto -lssl"
   ${PKG_BUILD}/autogen.sh
 }
 

@@ -25,14 +25,14 @@ PKG_MESON_OPTS_TARGET="-Dx11_backend=true \
                        -Dbuiltin_immodules=yes"
 
 pre_configure_target() {
-  # $TOOLCHAIN/bin/glib-compile-resources requires $TOOLCHAIN/lib/libffi.so.6
+  # ${TOOLCHAIN}/bin/glib-compile-resources requires ${TOOLCHAIN}/lib/libffi.so.6
   export LD_LIBRARY_PATH="${TOOLCHAIN}/lib:${LD_LIBRARY_PATH}"
   export GLIB_COMPILE_RESOURCES=glib-compile-resources GLIB_MKENUMS=glib-mkenums GLIB_GENMARSHAL=glib-genmarshal
 }
 
 post_makeinstall_target() {
   # compile GSettings XML schema files
-  ${TOOLCHAIN}/${TARGET_NAME}/sysroot/usr/bin/glib-compile-schemas ${INSTALL}/usr/share/glib-2.0/schemas
+  ${PKG_ORIG_SYSROOT_PREFIX}/usr/bin/glib-compile-schemas ${INSTALL}/usr/share/glib-2.0/schemas
 
   # GTK basic theme configuration
   cp -PR ${PKG_DIR}/config/* ${INSTALL}/etc/gtk-3.0/

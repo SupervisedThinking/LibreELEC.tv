@@ -27,6 +27,7 @@ OEM_EMULATORS_LIBRETRO_RPI=" \
   chailove \
   desmume \
   dosbox-libretro \
+  dosbox-pure \
   fbneo \
   fceumm \
   flycast \
@@ -63,6 +64,10 @@ OEM_EMULATORS_STANDALONE_RPI=" \
 # Extra frontends
 OEM_FRONTENDS_EXTRA_RPI=" \
   pegasus-frontend"
+
+# Streaming clients
+OEM_STREAMING_CLIENTS_RPI=" \
+  moonlight-qt" 
 
 # Tools
 OEM_TOOLS_RPI=" \
@@ -102,6 +107,11 @@ configure_package() {
     # Add Retroarch frontend & libretro core packages 
     if [ "${OEM_LIBRETRO}" = "yes" ]; then
       PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_RPI}"
+    fi
+
+    # Add streaming packages
+    if [ "${OEM_STREAMING_CLIENTS}" = "yes" ]; then
+      PKG_DEPENDS_TARGET+=" ${OEM_STREAMING_CLIENTS_AMLOGIC}"
     fi
 
     # Add tool packages

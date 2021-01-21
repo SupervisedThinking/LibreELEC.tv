@@ -192,7 +192,7 @@ post_makeinstall_target() {
   for PKG_QT5_QML in \
     QtGamepad QtGraphicalEffects QtMultimedia QtQuick QtQuick.2 QtTest
   do
-    cp -PR ${PKG_ORIG_SYSROOT_PREFIX:-${SYSROOT_PREFIX}}/usr/qml/${PKG_QT5_QML} $INSTALL/usr/qml
+    cp -PR ${PKG_ORIG_SYSROOT_PREFIX:-${SYSROOT_PREFIX}}/usr/qml/${PKG_QT5_QML} ${INSTALL}/usr/qml
   done
 
   # Install XCB libs & plugins if Displayserver is X11 

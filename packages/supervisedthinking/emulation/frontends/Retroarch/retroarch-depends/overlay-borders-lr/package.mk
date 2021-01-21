@@ -12,7 +12,7 @@ PKG_LONGDESC="A place for collecting decorative/cosmetic overlays for use with R
 PKG_TOOLCHAIN="manual"
 
 makeinstall_target() {
-  PKG_OVERLAY_INSTALL_PATH=$INSTALL/usr/share/retroarch/overlay/borders/systems
+  PKG_OVERLAY_INSTALL_PATH=${INSTALL}/usr/share/retroarch/overlay/borders/systems
   mkdir -p ${PKG_OVERLAY_INSTALL_PATH}
   # Install overlay borders
   for PKG_OVERLAY_FILE in \

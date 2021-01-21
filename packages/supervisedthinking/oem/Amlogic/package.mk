@@ -27,6 +27,7 @@ OEM_EMULATORS_LIBRETRO_AMLOGIC=" \
   chailove \
   desmume \
   dosbox-libretro \
+  dosbox-pure \
   fbneo \
   fceumm \
   flycast \
@@ -111,7 +112,7 @@ configure_package() {
       PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_AMLOGIC}"
     fi
 
-    # Add tool packages
+    # Add streaming packages
     if [ "${OEM_STREAMING_CLIENTS}" = "yes" ]; then
       PKG_DEPENDS_TARGET+=" ${OEM_STREAMING_CLIENTS_AMLOGIC}"
     fi

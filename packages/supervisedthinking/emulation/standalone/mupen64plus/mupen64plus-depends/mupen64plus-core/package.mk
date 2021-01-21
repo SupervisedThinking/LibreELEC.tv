@@ -22,7 +22,7 @@ configure_package() {
 }
 
 pre_configure_target() {
-  export SYSROOT_PREFIX=$SYSROOT_PREFIX
+  export SYSROOT_PREFIX=${SYSROOT_PREFIX}
 
   # ARCH arm
   if [ "${ARCH}" = "arm" ]; then
@@ -45,5 +45,5 @@ pre_configure_target() {
 }
 
 makeinstall_target() {
-  mv $PKG_BUILD/projects/unix/*.so* $PKG_BUILD/
+  mv ${PKG_BUILD}/projects/unix/*.so* ${PKG_BUILD}/
 }

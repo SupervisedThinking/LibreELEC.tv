@@ -13,5 +13,5 @@ PKG_TOOLCHAIN="manual"
 
 makeinstall_target() {
   cd ${PKG_BUILD}
-  make install INSTALLDIR="$INSTALL/usr/share/retroarch/shaders/Vulkan-Shaders"
+  make install INSTALLDIR="${INSTALL}/usr/share/retroarch/shaders/Vulkan-Shaders"
 }

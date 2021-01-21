@@ -99,8 +99,8 @@ pre_configure_target() {
   # Fix Mesa 3D based OpenGL ES builds
   if [ "${OPENGLES}" = "mesa" ]; then
     PKG_MAKE_OPTS_TARGET+="-mesa"
-	CFLAGS="$CFLAGS -DEGL_NO_X11"
-    CXXFLAGS="$CXXFLAGS -DEGL_NO_X11"
+	CFLAGS+=" -DEGL_NO_X11"
+    CXXFLAGS+=" -DEGL_NO_X11"
   fi
 }
 

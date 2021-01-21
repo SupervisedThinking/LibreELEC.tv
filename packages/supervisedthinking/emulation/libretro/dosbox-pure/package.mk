@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="dosbox-pure"
-PKG_VERSION="33e6bf25e83320a32e43336f13f896c4edae6b30"
-PKG_SHA256="e8deffcf88175070f115511481bc8380e00d123971fac032c0f3493bc0349314"
+PKG_VERSION="3f85348b7ae43bbc2d1d6b96112e9416287d0cf4" #v0.9+
+PKG_SHA256="2fe9bfe243a101fb3c824fcedbdca74288e8bd4f1f228ae27b23b3863c1b479f"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/dosbox-pure"
 PKG_URL="https://github.com/libretro/dosbox-pure/archive/${PKG_VERSION}.tar.gz"

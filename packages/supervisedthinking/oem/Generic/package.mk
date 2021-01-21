@@ -133,7 +133,7 @@ configure_package() {
       PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_GENERIC}"
     fi
 
-    # Add tool packages
+    # Add streaming packages
     if [ "${OEM_STREAMING_CLIENTS}" = "yes" ]; then
       PKG_DEPENDS_TARGET+=" ${OEM_STREAMING_CLIENTS_GENERIC}"
     fi

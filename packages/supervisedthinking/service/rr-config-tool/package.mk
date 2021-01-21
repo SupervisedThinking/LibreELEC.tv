@@ -19,14 +19,14 @@ PKG_MAINTAINER="ThinkSupervised"
 
 makeinstall_target() {
   # Create directories
-  mkdir -p $INSTALL/usr/share/$MEDIACENTER/addons/$PKG_SECTION.$PKG_NAME
-  mkdir -p $INSTALL/usr/share/$MEDIACENTER/addons/$PKG_SECTION.$PKG_NAME/resources
+  mkdir -p ${INSTALL}/usr/share/${MEDIACENTER}/addons/${PKG_SECTION}.${PKG_NAME}
+  mkdir -p ${INSTALL}/usr/share/${MEDIACENTER}/addons/${PKG_SECTION}.${PKG_NAME}/resources
  
   # Install files
-  cp $PKG_DIR/icons/* $INSTALL/usr/share/$MEDIACENTER/addons/$PKG_SECTION.$PKG_NAME/resources
-  install_addon_files $INSTALL/usr/share/$MEDIACENTER/addons/$PKG_SECTION.$PKG_NAME
+  cp ${PKG_DIR}/icons/* ${INSTALL}/usr/share/${MEDIACENTER}/addons/${PKG_SECTION}.${PKG_NAME}/resources
+  install_addon_files ${INSTALL}/usr/share/${MEDIACENTER}/addons/${PKG_SECTION}.${PKG_NAME}
 
   if [ ! "${PROJECT}" = "Generic" ]; then
-    cp -rf $PKG_DIR/files/${PROJECT}/* $INSTALL/usr/share/$MEDIACENTER/addons/$PKG_SECTION.$PKG_NAME
+    cp -rf ${PKG_DIR}/files/${PROJECT}/* ${INSTALL}/usr/share/${MEDIACENTER}/addons/${PKG_SECTION}.${PKG_NAME}
   fi
 }

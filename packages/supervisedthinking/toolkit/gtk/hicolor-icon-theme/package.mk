@@ -10,7 +10,3 @@ PKG_URL="https://icon-theme.freedesktop.org/releases/${PKG_NAME}-${PKG_VERSION}.
 PKG_DEPENDS_TARGET="toolchain gtk3-system"
 PKG_LONGDESC="icon-theme contains the standard also references the default icon theme called hicolor."
 PKG_BUILD_FLAGS="-sysroot"
-
-post_makeinstall_target() {
-  $TOOLCHAIN/$TARGET_NAME/sysroot/usr/bin/gtk-update-icon-cache $INSTALL/usr/share/icons/hicolor
-}

@@ -12,7 +12,7 @@ PKG_LONGDESC="This is a sample library which allows you to use TrueType fonts in
 PKG_TOOLCHAIN="configure"
 
 # Disable OpenGL if not supported
-if [ ! $OPENGL_SUPPORT = "yes" ]; then
+if [ ! ${OPENGL_SUPPORT} = "yes" ]; then
   PKG_PATCH_DIRS="no-opengl"
 fi
 

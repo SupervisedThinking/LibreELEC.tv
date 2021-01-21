@@ -10,7 +10,7 @@ PKG_URL="https://github.com/wxWidgets/wxWidgets/archive/v${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain libSM gtk3-system"
 PKG_LONGDESC="wxWidgets is a free and open source cross-platform C++ framework for writing advanced GUI applications using native controls."
 PKG_TOOLCHAIN="configure"
-PKG_DEPENDS_CONFIG="pango shared-mime-info"
+PKG_DEPENDS_CONFIG="pango"
 
 pre_configure_target() {
   PKG_CONFIGURE_OPTS_TARGET="--disable-option-checking \
@@ -31,8 +31,8 @@ post_makeinstall_target() {
 
   # fix wx-config paths                              
   WX_CONFIG_PATH=${SYSROOT_PREFIX}/usr/lib/wx/config/${TARGET_NAME}-gtk3-unicode-${PKG_VERSION:0:3}
-    sed -e "s:^prefix=.*:prefix=${TOOLCHAIN}/${TARGET_NAME}/sysroot/usr:g"                         -i ${WX_CONFIG_PATH}
-    sed -e "s:^wxconfdir=.*:wxconfdir=\"${TOOLCHAIN}/${TARGET_NAME}/sysroot/usr/lib/wx/config\":g" -i ${WX_CONFIG_PATH}
-    sed -e "s:^libdir=.*:libdir=\"${TOOLCHAIN}/${TARGET_NAME}/sysroot/usr/lib\":g"                 -i ${WX_CONFIG_PATH}
-    sed -e "s:^bindir=.*:bindir=\"${TOOLCHAIN}/${TARGET_NAME}/sysroot/usr/bin\":g"                 -i ${WX_CONFIG_PATH}
+    sed -e "s:^prefix=.*:prefix=${PKG_ORIG_SYSROOT_PREFIX}/usr:g"                         -i ${WX_CONFIG_PATH}
+    sed -e "s:^wxconfdir=.*:wxconfdir=\"${PKG_ORIG_SYSROOT_PREFIX}/usr/lib/wx/config\":g" -i ${WX_CONFIG_PATH}
+    sed -e "s:^libdir=.*:libdir=\"${PKG_ORIG_SYSROOT_PREFIX}/usr/lib\":g"                 -i ${WX_CONFIG_PATH}
+    sed -e "s:^bindir=.*:bindir=\"${PKG_ORIG_SYSROOT_PREFIX}/usr/bin\":g"                 -i ${WX_CONFIG_PATH}
 }

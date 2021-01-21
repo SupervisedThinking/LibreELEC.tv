@@ -11,12 +11,12 @@ PKG_DEPENDS_TARGET="toolchain gdk-pixbuf pango libcroco"
 PKG_LONGDESC="This is librsvg - A small library to render Scalable Vector Graphics (SVG), associated with the GNOME Project."
 
 pre_configure_target() {
-  PKG_CONFIGURE_OPTS_TARGET="ac_cv_path_GDK_PIXBUF_QUERYLOADERS="$TOOLCHAIN/$TARGET_NAME/sysroot/usr/bin/gdk-pixbuf-query-loaders" \
+  PKG_CONFIGURE_OPTS_TARGET="ac_cv_path_GDK_PIXBUF_QUERYLOADERS="${SYSROOT_PREFIX}/usr/bin/gdk-pixbuf-query-loaders" \
                             --enable-installed-tests=no \
                             --disable-tools \
                             --enable-introspection=no"
 }
 
 pre_make_target() {
-  sed -e "s:^GLIB_MKENUMS =.*:GLIB_MKENUMS = $TOOLCHAIN/$TARGET_NAME/sysroot/usr/bin/glib-mkenums:g" -i ${PKG_BUILD}/.${TARGET_NAME}/Makefile
+  sed -e "s:^GLIB_MKENUMS =.*:GLIB_MKENUMS = ${SYSROOT_PREFIX}/usr/bin/glib-mkenums:g" -i ${PKG_BUILD}/.${TARGET_NAME}/Makefile
 }

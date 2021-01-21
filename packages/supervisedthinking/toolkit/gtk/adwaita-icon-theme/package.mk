@@ -12,5 +12,5 @@ PKG_LONGDESC="The Adwaita Icon Theme package contains an icon theme for Gtk+ 3 a
 PKG_BUILD_FLAGS="-sysroot"
 
 post_makeinstall_target() {
-  ${TOOLCHAIN}/${TARGET_NAME}/sysroot/usr/bin/gtk-update-icon-cache ${INSTALL}/usr/share/icons/Adwaita
+  ${PKG_ORIG_SYSROOT_PREFIX}/usr/bin/gtk-update-icon-cache ${INSTALL}/usr/share/icons/Adwaita
 }

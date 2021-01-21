@@ -15,5 +15,5 @@ PKG_MESON_OPTS_TARGET="-Dupdate-mimedb=false"
 
 post_makeinstall_target() {
   # Create /usr/share/mime/mime.cache
-  ${TOOLCHAIN}/${TARGET_NAME}/sysroot/usr/bin/update-mime-database ${INSTALL}/usr/share/mime
+  ${SYSROOT_PREFIX}/usr/bin/update-mime-database ${INSTALL}/usr/share/mime
 }

@@ -12,11 +12,11 @@ PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC="The lm-sensors package, version 3, provides user-space support for the hardware monitoring drivers in Linux 2.6.5 and later."
 PKG_TOOLCHAIN="make"
 
-PKG_MAKEINSTALL_OPTS_TARGET="ARCH="$ARCH" PREFIX=/usr"
+PKG_MAKEINSTALL_OPTS_TARGET="ARCH="${ARCH}" PREFIX=/usr"
 
 pre_make_target() {
-  PKG_MAKE_OPTS_TARGET="PREFIX=/usr CC=$CC AR=$AR"
+  PKG_MAKE_OPTS_TARGET="PREFIX=/usr CC=${CC} AR=${AR}"
 
-  export CFLAGS="$TARGET_CFLAGS"
-  export CPPFLAGS="$TARGET_CPPFLAGS"
+  export CFLAGS="${TARGET_CFLAGS}"
+  export CPPFLAGS="${TARGET_CPPFLAGS}"
 }

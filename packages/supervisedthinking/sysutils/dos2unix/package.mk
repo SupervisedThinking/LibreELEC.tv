@@ -12,9 +12,9 @@ PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC="DOS/Mac to Unix text file format converter"
 
 makeinstall_host() {
-  make prefix=$TOOLCHAIN install-bin
+  make prefix=${TOOLCHAIN} install-bin
 }
 
 makeinstall_target() {
-  make prefix=$INSTALL install-bin
+  make prefix=${INSTALL} install-bin
 }

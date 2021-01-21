@@ -137,7 +137,7 @@ pre_configure_target() {
 make_target() {
   # Build Retroarch & exit if build fails
   make GIT_VERSION=${PKG_VERSION:0:7}
-  if [ ! -f ${PKG_BUILD}/retroarch ] ; then
+  if [ ! -f ${PKG_BUILD}/retroarch ]; then
     exit 0
   fi
 
@@ -157,8 +157,8 @@ makeinstall_target() {
     cp ${PKG_BUILD}/libretro-common/audio/dsp_filters/*.dsp ${INSTALL}/usr/share/retroarch/filters/audio
   mkdir -p ${INSTALL}/usr/bin
     cp ${PKG_BUILD}/retroarch ${INSTALL}/usr/bin
-    cp -rf $PKG_DIR/scripts/common/*     $INSTALL/usr/bin/
-    cp -rf $PKG_DIR/scripts/${PROJECT}/* $INSTALL/usr/bin/
+    cp -rf ${PKG_DIR}/scripts/common/*     ${INSTALL}/usr/bin/
+    cp -rf ${PKG_DIR}/scripts/${PROJECT}/* ${INSTALL}/usr/bin/
 
   if [ "${PROJECT}" = "Generic" ]; then
     mkdir -p ${INSTALL}/usr/config/retroarch
@@ -198,17 +198,17 @@ makeinstall_target() {
   sed -e "s/# video_gpu_screenshot = true/video_gpu_screenshot = false/"                          -i ${INSTALL}/etc/retroarch.cfg
 
   # Audio
-  if [ "$DEVICE" = "RPi4" ]; then
-    sed -i -e "s/# audio_driver =/audio_driver = \"alsa\"/" $INSTALL/etc/retroarch.cfg
+  if [ "${DEVICE}" = "RPi4" ]; then
+    sed -i -e "s/# audio_driver =/audio_driver = \"alsa\"/" ${INSTALL}/etc/retroarch.cfg
   else
-    sed -i -e "s/# audio_driver =/audio_driver = \"alsathread\"/" $INSTALL/etc/retroarch.cfg
+    sed -i -e "s/# audio_driver =/audio_driver = \"alsathread\"/" ${INSTALL}/etc/retroarch.cfg
   fi
-  sed -i -e "s/# audio_filter_dir =/audio_filter_dir =\/usr\/share\/audio_filters/" $INSTALL/etc/retroarch.cfg
-  if [ "$PROJECT" = "OdroidXU3" -o "$DEVICE" = "RPi4" ]; then # workaround the 55fps bug + fix no audio for RPi4
-    sed -i -e "s/# audio_out_rate = 48000/audio_out_rate = 44100/" $INSTALL/etc/retroarch.cfg
+  sed -i -e "s/# audio_filter_dir =/audio_filter_dir =\/usr\/share\/audio_filters/" ${INSTALL}/etc/retroarch.cfg
+  if [ "${PROJECT}" = "OdroidXU3" -o "${DEVICE}" = "RPi4" ]; then # workaround the 55fps bug + fix no audio for RPi4
+    sed -i -e "s/# audio_out_rate = 48000/audio_out_rate = 44100/" ${INSTALL}/etc/retroarch.cfg
   fi
-  if [ "$DEVICE" = "RPi4" ]; then
-    sed -i -e "s/# audio_device =/audio_device = \"hw:0,1\"/" $INSTALL/etc/retroarch.cfg
+  if [ "${DEVICE}" = "RPi4" ]; then
+    sed -i -e "s/# audio_device =/audio_device = \"hw:0,1\"/" ${INSTALL}/etc/retroarch.cfg
   fi
 
   # Input

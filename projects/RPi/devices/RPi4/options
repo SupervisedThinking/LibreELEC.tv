@@ -13,3 +13,28 @@
 
   # set the addon project
     ADDON_PROJECT="ARMv8"
+
+################################################################################
+# setup LibreELEC-RR defaults
+################################################################################
+
+  # Install applications e.g. Chrome or Spotify (yes / no)
+  OEM_APPLICATIONS="no"
+
+  # Install standalone emulators e.g. Emulationstation, Amiberry, PPSSPP (yes / no)
+  OEM_EMULATORS="yes"
+
+  # Install additional frontends e.g. Pegasus Frontend (yes / no)
+  OEM_FRONTENDS_EXTRA="yes"
+
+  # Install libretro cores e.g. Retroarch, snes9x, mame2003-plus (yes / no)
+  OEM_LIBRETRO="yes"
+
+  # Install streaming clients e.g. Moonlight-Qt (yes / no)
+  OEM_STREAMING_CLIENTS="yes"
+
+  # Install tools e.g. additional tools like mc or htop (yes / no)
+  OEM_TOOLS="yes"
+
+  # Add non-free packages i.e. fdk-aac (yes / no)
+  NON_FREE_PKG_SUPPORT="no"

@@ -30,11 +30,11 @@ configure_package() {
 
 configure_target() {
   export SYSROOT_PREFIX=${SYSROOT_PREFIX}
-  echo "#define GUI_VERSION" \"${PKG_VERSION:0:7}\" > $PKG_BUILD/version.h
+  echo "#define GUI_VERSION" \"${PKG_VERSION:0:7}\" > ${PKG_BUILD}/version.h
 }
 
 make_target() {
-  mkdir -p $PKG_BUILD/.${TARGET_NAME}
+  mkdir -p ${PKG_BUILD}/.${TARGET_NAME}
   cd .${TARGET_NAME}
   qmake ${PKG_BUILD}/mupen64plus-gui.pro INCLUDEPATH="$(get_build_dir mupen64plus-core)/src/api"
   make -j${CONCURRENCY_MAKE_LEVEL}

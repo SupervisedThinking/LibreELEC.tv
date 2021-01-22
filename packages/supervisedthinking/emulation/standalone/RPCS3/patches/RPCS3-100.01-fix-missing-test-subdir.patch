@@ -1,0 +1,11 @@
+--- a/llvm/CMakeLists.txt
++++ b/llvm/CMakeLists.txt
+@@ -1058,7 +1056,6 @@
+       ALWAYS_CLEAN)
+   endif()
+   add_subdirectory(utils/lit)
+-  add_subdirectory(test)
+   add_subdirectory(unittests)
+   if( LLVM_INCLUDE_UTILS )
+     add_subdirectory(utils/unittest)
+

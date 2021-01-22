@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="RPCS3"
-PKG_VERSION="241989c5fa9eb46dbe74d030bdbf3e612cd61453" # v0.0.14+
+PKG_VERSION="2b8eb8deb6e86deca9c677c8b300da3762532075" # v0.0.14
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://rpcs3.net"
@@ -12,7 +12,8 @@ PKG_LONGDESC="RPCS3 is an experimental open-source Sony PlayStation 3 emulator a
 GET_HANDLER_SUPPORT="git"
 
 PKG_CMAKE_OPTS_TARGET="-D USE_NATIVE_INSTRUCTIONS=OFF \
-                       -D BUILD_LLVM_SUBMODULE=OFF \
+                       -D BUILD_LLVM_SUBMODULE=ON \
+                       -D LLVM_TABLEGEN="${TOOLCHAIN}/bin/llvm-tblgen" \
                        -D USE_DISCORD_RPC=OFF \
                        -D CMAKE_SKIP_RPATH=ON \
                        -D USE_SYSTEM_FFMPEG=ON \

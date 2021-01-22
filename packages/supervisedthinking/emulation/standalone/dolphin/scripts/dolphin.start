@@ -24,7 +24,7 @@ if [ ! -L ${DOLPHIN_HOME_LOCAL} ]; then
 fi
 
 # Stop Kodi service / load audio backend config
-kodi-service.sh --stop
+kodictrl --stop
 
 # Change refresh rate to 50Hz(PAL) or 60Hz(NTSC/PAL60)
 set_refresh_rate_DOLPHIN
@@ -39,4 +39,4 @@ set_QT_environment_vars
 dolphin-emu "$@"> /var/log/dolphin.log 2>&1
 
 # Switch back to frontends or start Kodi service / unload audio backend config
-pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodictrl --start

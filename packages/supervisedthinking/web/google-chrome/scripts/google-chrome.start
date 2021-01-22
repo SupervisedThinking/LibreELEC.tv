@@ -81,9 +81,9 @@ fi
 
 if [ -f /opt/google/chrome/chrome ]; then 
   echo "Starting Google Chrome..." >> $CHROME_LOG 2>&1
-  kodi-service.sh --mute
+  kodictrl --mute
   systemctl stop pulseaudio
   run_chrome "$@" >> $CHROME_LOG 2>&1
   systemctl start pulseaudio
-  kodi-service.sh --unmute
+  kodictrl --unmute
 fi

@@ -6,7 +6,7 @@
 . /etc/profile
 
 # Stop Kodi service / load audio backend config
-kodi-service.sh --stop
+kodictrl --stop
 
 # Set SDL audio driver to Pulseaudio or ALSA
 set_SDL_audiodriver
@@ -39,4 +39,4 @@ set_SDL_audiodriver
   moonlight ${MOONLIGHT_ARGS} -app "${MOONLIGHT_APP_ID}" >> /var/log/moonlight.log 2>&1
 
 # Switch back to frontends or start Kodi service / unload audio backend config
-pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodictrl --start

@@ -31,7 +31,7 @@ else
   set_RR_environment
 
   # Stop Kodi service / load audio backend config
-  kodi-service.sh --stop
+  kodictrl --stop
 
   # Change refresh rate to 50Hz
   set_refresh_rate_50
@@ -48,5 +48,5 @@ else
   emulationstation "$@"
 
   # Start Kodi service / unload audio backend config
-  kodi-service.sh --start
+  kodictrl --start
 fi

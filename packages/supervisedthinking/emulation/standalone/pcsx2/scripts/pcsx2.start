@@ -5,8 +5,12 @@
 # Source environment variables
 . /etc/profile
 
+# Set common paths
+PCSX2_HOME_LOG=/storage/.config/PCSX2/logs/emuLog.txt
+PCSX2_VAR_LOG=/var/log/pcsx2.log
+
 # Stop Kodi service / load audio backend config
-kodi-service.sh --stop
+kodictrl --stop
 
 # Change refresh rate to 50Hz(PAL) or 60Hz(NTSC/PAL60)
 set_refresh_rate_PCSX2
@@ -14,8 +18,13 @@ set_refresh_rate_PCSX2
 # Set audio backend to PulseAudio or ALSA
 set_PCSX2_audiodriver
 
+# Create symlink to logfile
+if [ ! -L ${PCSX2_VAR_LOG} ]; then
+  ln -sf ${PCSX2_HOME_LOG} ${PCSX2_VAR_LOG}
+fi
+
 # Run the emulator
-PCSX2 "$@"> /var/log/pcsx2.log 2>&1
+PCSX2 "$@"
 
 # Switch back to frontends or start Kodi service / unload audio backend config
-pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodictrl --start

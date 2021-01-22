@@ -97,9 +97,9 @@ update_spotify() {
 run_spotify() {
   kodi-send --action="Notification(Spotify,Now starting "${RR_SPOTIFY_BRANCH}" client v"$(cat ${SPOTIFY_VERSION})",250,${ICON})"
   usleep 250000
-  kodi-service.sh --stop
+  kodictrl --stop
   ${SPOTIFY_HOME}/spotify "$@"
-  kodi-service.sh --start
+  kodictrl --start
 }
 
 ################################################################################

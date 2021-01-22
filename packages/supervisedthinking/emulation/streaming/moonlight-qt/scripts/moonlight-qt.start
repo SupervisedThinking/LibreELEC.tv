@@ -16,7 +16,7 @@ else
   set_RR_environment
 
   # Stop Kodi service / load audio backend config
-  kodi-service.sh --stop
+  kodictrl --stop
 
   # Change refresh rate to 50Hz
   set_refresh_rate_60
@@ -31,5 +31,5 @@ else
   moonlight-qt "$@" > /var/log/moonlight-qt.log 2>&1
 
   # Start Kodi service / unload audio backend config
-  kodi-service.sh --start
+  kodictrl.sh --start
 fi

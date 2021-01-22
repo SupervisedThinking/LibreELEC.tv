@@ -16,7 +16,7 @@ else
   set_RR_environment
 
   # Stop Kodi service / load audio backend config
-  kodi-service.sh --stop
+  kodictrl --stop
 
   # Change refresh rate to 60Hz
   set_refresh_rate_60
@@ -25,8 +25,8 @@ else
   set_RA_audiodriver
 
   # Run RetroArch
-  /usr/bin/retroarch -v "$@" > /var/log/retroarch.log 2>&1
+  retroarch -v "$@" > /var/log/retroarch.log 2>&1
 
   # Switch back to frontends or start Kodi service / unload audio backend config
-  pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start
+  pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodictrl --start
 fi

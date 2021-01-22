@@ -20,13 +20,13 @@ kodi_cleanup_mute_state() {
 }
 
 kodi_service_mute() {
-  kodi-send --action="RunScript(/usr/bin/kodi-service-mute.py)" > /dev/null
+  kodi-send --action="RunScript(/usr/bin/kodictrl-mute.py)" > /dev/null
   echo "rr-config-script: Kodi service muted"
   touch ${RR_KODI_MUTE_STATE}
 }
 
 kodi_service_unmute() {
-  kodi-send --action="RunScript(/usr/bin/kodi-service-unmute.py)" > /dev/null
+  kodi-send --action="RunScript(/usr/bin/kodictrl-unmute.py)" > /dev/null
   echo "rr-config-script: Kodi service unmuted"
   kodi_cleanup_mute_state
 }

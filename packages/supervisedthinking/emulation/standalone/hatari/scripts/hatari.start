@@ -16,7 +16,7 @@ MAX_DRIVES=2
 i=0
 
 # Stop Kodi service / load audio backend config
-kodi-service.sh --stop > ${HATARI_LOG}
+kodictrl --stop > ${HATARI_LOG}
 
 # Change refresh rate to 50Hz(PAL) or 60Hz(NTSC/PAL60)
 set_refresh_rate_ATARI >> ${HATARI_LOG}
@@ -88,4 +88,4 @@ fi
 rm -rf "${HATARI_TMP_DIR}"
 
 # Switch back to frontends or start Kodi service / unload audio backend config
-pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodictrl --start

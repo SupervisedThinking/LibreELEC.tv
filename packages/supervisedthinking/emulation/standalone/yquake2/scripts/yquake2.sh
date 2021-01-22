@@ -19,7 +19,7 @@ if [ ! -L ${YQ2_HOME} ]; then
 fi
 
 # Stop Kodi service / load audio backend config
-kodi-service.sh --stop
+kodictrl --stop
 
 # Set OpenAL audio driver to Pulseaudio or ALSA
 set_OpenAL_audiodriver
@@ -34,4 +34,4 @@ quake2 "$@" > /var/log/yquake2.log 2>&1
 rm /storage/.alsoftrc
 
 # Switch back to frontends or start Kodi service / unload audio backend config
-pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodi-service.sh --start
+pidof emulationstation > /dev/null 2>&1 || pidof pegasus-fe > /dev/null 2>&1 || kodictrl --start

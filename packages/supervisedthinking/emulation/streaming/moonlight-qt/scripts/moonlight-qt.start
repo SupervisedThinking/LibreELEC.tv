@@ -31,5 +31,5 @@ else
   moonlight-qt "$@" > /var/log/moonlight-qt.log 2>&1
 
   # Start Kodi service / unload audio backend config
-  kodictrl.sh --start
+  kodictrl --start
 fi

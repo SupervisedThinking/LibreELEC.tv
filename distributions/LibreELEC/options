@@ -11,7 +11,7 @@
 
 # Welcome Message for e.g. SSH Server (up to 5 Lines)
   GREETING0="##############################################"
-  GREETING1="#           LibreELEC-RR pre-10.x            #"
+  GREETING1="#            LibreELEC-RR 10-dev             #"
   GREETING2="#           https://bit.ly/3qdHoNp           #"
   GREETING3="#        based on https://libreelec.tv       #"
   GREETING4="##############################################"

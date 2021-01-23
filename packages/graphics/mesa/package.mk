@@ -3,8 +3,8 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="mesa"
-PKG_VERSION="20.3.4"
-PKG_SHA256="dc21a987ec1ff45b278fe4b1419b1719f1968debbb80221480e44180849b4084"
+PKG_VERSION="21.0.0-rc2"
+PKG_SHA256="b1a069336b984495fabdef9b0939d3a9d0a09549e26f8ce86f3d1878b3733aeb"
 PKG_LICENSE="OSS"
 PKG_SITE="http://www.mesa3d.org/"
 PKG_URL="https://mesa.freedesktop.org/archive/mesa-${PKG_VERSION}.tar.xz"
@@ -31,7 +31,7 @@ PKG_MESON_OPTS_TARGET="-Ddri-drivers=${DRI_DRIVERS// /,} \
                        -Dlmsensors=disabled \
                        -Dbuild-tests=false \
                        -Dselinux=false \
-                       -Dosmesa=none"
+                       -Dosmesa=false"
 
 if [ "${DISPLAYSERVER}" = "x11" ]; then
   PKG_DEPENDS_TARGET+=" xorgproto libXext libXdamage libXfixes libXxf86vm libxcb libX11 libxshmfence libXrandr libglvnd"

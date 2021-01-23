@@ -59,7 +59,6 @@ OEM_EMULATORS_STANDALONE_ROCKCHIP=" \
   amiberry \
   dosbox-sdl2 \
   hatari \
-  moonlight-embedded \
   openbor \
   ppsspp"
 

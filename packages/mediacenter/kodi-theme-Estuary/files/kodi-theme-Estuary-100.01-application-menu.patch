@@ -5,11 +5,11 @@
  							<visible>!Skin.HasSetting(HomeMenuNoWeatherButton)</visible>
  						</item>
 +						<item>
-+							<label>Chrome</label>
-+							<onclick>RunScript(/usr/bin/app-google-chrome.py)</onclick>
-+							<thumb>DefaultAddonWebSkinChrome.png</thumb>
-+							<property name="id">chrome</property>
-+							<visible>!Skin.HasSetting(HomeMenuNoChromeButton)</visible>
++							<label>Brave</label>
++							<onclick>RunScript(/usr/bin/app-brave-browser.py)</onclick>
++							<thumb>DefaultAddonWebSkinBrave.png</thumb>
++							<property name="id">brave</property>
++							<visible>!Skin.HasSetting(HomeMenuNoBraveButton)</visible>
 +						</item>
 +						<item>
 +							<label>Spotify</label>
@@ -28,10 +28,10 @@
  					<onclick>Skin.ToggleSetting(HomeMenuNoWeatherButton)</onclick>
  				</control>
 +				<control type="radiobutton" id="61800">
-+					<label>Chrome</label>
++					<label>Brave</label>
 +					<include>DefaultSettingButton</include>
-+					<selected>!Skin.HasSetting(HomeMenuNoChromeButton)</selected>
-+					<onclick>Skin.ToggleSetting(HomeMenuNoChromeButton)</onclick>
++					<selected>!Skin.HasSetting(HomeMenuNoBraveButton)</selected>
++					<onclick>Skin.ToggleSetting(HomeMenuNoBraveButton)</onclick>
 +				</control>
 +				<control type="radiobutton" id="61900">
 +					<label>Spotify</label>

@@ -57,7 +57,6 @@ OEM_EMULATORS_STANDALONE_RPI=" \
   amiberry \
   dosbox-sdl2 \
   hatari \
-  moonlight-embedded \
   openbor \
   ppsspp"
 

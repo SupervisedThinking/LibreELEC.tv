@@ -1,0 +1,111 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0
+# Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
+
+# Source environment variables
+. /etc/profile
+
+# Define common variables
+BRAVE_ICON_CACHE="/storage/.cache/app.brave-browser/product_logo_256.png"
+BRAVE_ICON_CONFIG="/storage/.config/BraveSoftware/Brave-Browser/brave-icon.png"
+BRAVE_HOME="/storage/.cache/app.brave-browser"
+BRAVE_TMP="/tmp/brave-browser"
+BRAVE_BIN="/opt/brave.com/brave/brave"
+BRAVE_LOG="/var/log/brave-browser.log"
+BRAVE_VERSION_INSTALLED=${BRAVE_HOME}/brave.version
+
+# Extract recent version & create download URL
+BRAVE_RELEASE_URL=https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=brave-bin
+BRAVE_VERSION_RELEASE=$(curl -s "${BRAVE_RELEASE_URL}" | grep -E '^pkgver=' | cut -f2- -d"=") || exit 1
+BRAVE_GIT_URL=https://github.com/brave/brave-browser/releases/download/v${BRAVE_VERSION_RELEASE}/brave-browser_${BRAVE_VERSION_RELEASE}_amd64.deb
+BRAVE_GIT_URL_STATUS=$(curl -s --head ${BRAVE_GIT_URL} | head -n 1 | grep "HTTP/2\ [23]0[0-6]")
+
+# Setting icon for Kodi
+if [ -f ${BRAVE_ICON_CACHE} ];then
+  BRAVE_ICON=${BRAVE_ICON_CACHE}
+else
+  BRAVE_ICON=${BRAVE_ICON_CONFIG}
+fi
+
+# Define functions
+
+# Install
+install_brave() {
+  echo "Installing Brave-Browser..." >> ${BRAVE_LOG} 2>&1
+  kodi-send --action="Notification(Brave,This is the first time you are starting Brave - it will be downloaded in the background...,13000,${BRAVE_ICON})"
+  mkdir -p ${BRAVE_TMP} ; cd ${BRAVE_TMP}
+  wget -q ${BRAVE_GIT_URL} || exit 1
+  kodi-send --action="Notification(Brave,Download finished - installing Brave...,8000,${BRAVE_ICON})"
+  ar -x *.deb && tar -Jxf data.tar.xz
+  mv opt/brave.com/brave ${BRAVE_HOME}
+  echo ${BRAVE_VERSION_RELEASE} > ${BRAVE_VERSION_INSTALLED} 2>&1
+  cp usr/share/applications/brave-browser.desktop ${BRAVE_HOME}/
+  cd ~ ; rm -rf ${BRAVE_TMP}
+}
+
+# Update
+update_brave() {
+  echo "Updating Brave-Browser..." >> ${BRAVE_LOG} 2>&1
+  kodi-send --action="Notification(Brave,Update to v${BRAVE_VERSION_RELEASE} availabe - it will be downloaded in the background.,10000,${BRAVE_ICON})"
+  mkdir -p ${BRAVE_TMP} ; cd ${BRAVE_TMP}
+  wget -q ${BRAVE_GIT_URL} || exit 1
+  kodi-send --action="Notification(Brave,Download finished - updating Brave.,8000,${BRAVE_ICON})"
+  ar -x *.deb && tar -Jxf data.tar.xz
+  rm -rf ${BRAVE_HOME}
+  mv opt/brave.com/brave ${BRAVE_HOME}
+  echo ${BRAVE_VERSION_RELEASE} > ${BRAVE_VERSION_INSTALLED} 2>&1
+  cp usr/share/applications/brave-browser.desktop ${BRAVE_HOME}/
+  cd ~ ; rm -rf ${BRAVE_TMP}
+}
+
+# Run
+run_brave() {
+  BRAVE_USER_FLAGS="$(cat ~/.config/BraveSoftware/Brave-Browser/brave-flags.conf)"
+  ${BRAVE_BIN} ${BRAVE_USER_FLAGS} "$@"
+}
+
+# Clean up
+
+if [ -f ${BRAVE_LOG} ];then
+  rm ${BRAVE_LOG} ; touch ${BRAVE_LOG}
+elif [ -d ${BRAVE_TMP} ];then
+  rm -rf ${BRAVE_TMP}
+fi
+
+# Checking versions
+
+if [ -f ${BRAVE_VERSION_INSTALLED} ];then
+  echo -e "Brave PKG Version Local:" $(cat ${BRAVE_VERSION_INSTALLED}) >> ${BRAVE_LOG} 2>&1
+fi
+
+if [ ! -z "${BRAVE_VERSION_RELEASE}" ]; then
+  echo -e "Brave PKG Version Repo:  ${BRAVE_VERSION_RELEASE}\n" >> ${BRAVE_LOG} 2>&1
+elif [ -z "${BRAVE_VERSION_RELEASE}" ]; then
+  echo -e "Brave PKG Version Repo: Could not receive version!\n" >> ${BRAVE_LOG} 2>&1
+fi
+
+# Checking PKG URL & installed files, update if possible
+
+if [ ! -z "${BRAVE_GIT_URL_STATUS}" ]; then
+  if [ ! -x ${BRAVE_HOME} ]; then
+    install_brave "${BRAVE_VERSION_RELEASE}" >> ${BRAVE_LOG} 2>&1
+  elif [ "${BRAVE_VERSION_RELEASE}" != "$(cat ${BRAVE_VERSION_INSTALLED})" ]; then
+    update_brave "${BRAVE_VERSION_RELEASE}" >> ${BRAVE_LOG} 2>&1
+  fi
+elif [ -z "${BRAVE_GIT_URL_STATUS}" ] && [ ! -f ${BRAVE_BIN} ];then
+  kodi-send --action="Notification(Brave,Could not receive package URL - can't install Brave! ,11500,${BRAVE_ICON})"
+  echo -e "##################################################################################################################################################" >> ${BRAVE_LOG} 2>&1
+  echo -e "# The download URL is not valid. If the Repo PKG version is available & seems legit check back later. Otherwise the script might need an update. #" >> ${BRAVE_LOG} 2>&1
+  echo -e "##################################################################################################################################################\n" >> ${BRAVE_LOG} 2>&1
+fi
+
+# Mute Kodi, stop PulseAudio & start Brave
+
+if [ -f ${BRAVE_BIN} ]; then 
+  echo "Starting Brave-Browser..." >> ${BRAVE_LOG} 2>&1
+  kodictrl --mute
+  systemctl stop pulseaudio
+  run_brave "$@" >> ${BRAVE_LOG} 2>&1
+  systemctl start pulseaudio
+  kodictrl --unmute
+fi

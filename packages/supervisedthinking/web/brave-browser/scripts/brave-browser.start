@@ -15,8 +15,8 @@ BRAVE_LOG="/var/log/brave-browser.log"
 BRAVE_VERSION_INSTALLED=${BRAVE_HOME}/brave.version
 
 # Extract recent version & create download URL
-BRAVE_RELEASE_URL=https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=brave-bin
-BRAVE_VERSION_RELEASE=$(curl -s "${BRAVE_RELEASE_URL}" | grep -E '^pkgver=' | cut -f2- -d"=") || exit 1
+BRAVE_RELEASE_URL=https://brave-browser-downloads.s3.brave.com/latest/release.version
+BRAVE_VERSION_RELEASE=$(curl -s ${BRAVE_RELEASE_URL}) || exit 1
 BRAVE_GIT_URL=https://github.com/brave/brave-browser/releases/download/v${BRAVE_VERSION_RELEASE}/brave-browser_${BRAVE_VERSION_RELEASE}_amd64.deb
 BRAVE_GIT_URL_STATUS=$(curl -s --head ${BRAVE_GIT_URL} | head -n 1 | grep "HTTP/2\ [23]0[0-6]")
 

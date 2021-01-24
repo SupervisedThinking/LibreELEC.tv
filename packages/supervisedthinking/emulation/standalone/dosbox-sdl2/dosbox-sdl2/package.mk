@@ -8,7 +8,7 @@ PKG_LICENSE="GPL-2.0"
 PKG_SITE="https://github.com/moralrecordings/dosbox"
 PKG_URL="https://github.com/moralrecordings/dosbox/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc glib systemd dbus alsa-lib SDL2-system SDL2_net SDL_sound libpng zlib libvorbis-system flac-system libogg-system fluidsynth-system munt"
-PKG_LONGDESC="This is an enhanced fork of DOSBox. It is currently in sync with revision 4156."
+PKG_LONGDESC="This is an enhanced fork of DOSBox. It is currently in sync with v0.74-3 / r4250"
 PKG_TOOLCHAIN="autotools"
 PKG_BUILD_FLAGS="+lto"
 

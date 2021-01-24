@@ -15,7 +15,7 @@ PKG_TOOLCHAIN="manual"
 
 # Applications
 OEM_APPLICATIONS_GENERIC=" \
-  google-chrome \
+  brave-browser \
   spotify"
 
 # Libretro cores

@@ -4,7 +4,7 @@
 PKG_NAME="brave-browser"
 PKG_VERSION="latest"
 PKG_ARCH="x86_64"
-PKG_LICENSE="Freeware"
+PKG_LICENSE="MPL-2.0"
 PKG_SITE="https://brave.com"
 PKG_DEPENDS_TARGET="toolchain gtk3-system libXcomposite libXcursor libxss nss scrnsaverproto atk cups unclutter-xfixes"
 PKG_LONGDESC="Web browser that blocks ads and trackers by default"

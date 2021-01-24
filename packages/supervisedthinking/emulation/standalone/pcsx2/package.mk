@@ -2,7 +2,7 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="pcsx2"
-PKG_VERSION="2ffc6b3acddc9500106da73175a2604f98476493"
+PKG_VERSION="ff0c9334e6f8cfed46a163f1c0b750bab4c06c7e"
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/PCSX2/pcsx2"
@@ -16,14 +16,12 @@ pre_configure_target() {
                          -DCMAKE_INSTALL_DATADIR=/usr/share \
                          -DCMAKE_INSTALL_LIBDIR=/usr/lib \
                          -DDISABLE_ADVANCE_SIMD=ON \
-                         -DDISABLE_BUILD_DATE=ON \
                          -DDISABLE_PCSX2_WRAPPER=ON \
                          -DENABLE_TESTS=OFF \
-                         -DEXTRA_PLUGINS=ON \
                          -DSDL2_API=ON \
                          -DPACKAGE_MODE=ON \
+                         -DUSE_LTO=ON \
                          -DREBUILD_SHADER=ON \
-                         -DUSE_LTO=OFF \
                          -DUSE_SYSTEM_YAML=ON \
                          -DUSE_VTUNE=OFF \
                          -DXDG_STD=ON \

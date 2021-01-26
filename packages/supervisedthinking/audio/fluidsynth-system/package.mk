@@ -27,7 +27,7 @@ post_makeinstall_target() {
   # Create symlinks & install config file
   cp -a ${PKG_DIR}/config/* ${INSTALL}/usr/config/fluidsynth/
   ln -s /storage/.config/fluidsynth/fluidsynth.conf ${INSTALL}/etc/fluidsynth/
-  echo "Place your SoundFonts here!" >> ${INSTALL}/usr/config/fluidsynth/soundfonts/readme.txt
+  echo "Place your SoundFonts here!" >>             ${INSTALL}/usr/config/fluidsynth/soundfonts/readme.txt
 
   # Create symlink to SoundFont
   ln -s /usr/share/soundfonts/GeneralUser.sf2  ${INSTALL}/usr/config/fluidsynth/soundfonts/

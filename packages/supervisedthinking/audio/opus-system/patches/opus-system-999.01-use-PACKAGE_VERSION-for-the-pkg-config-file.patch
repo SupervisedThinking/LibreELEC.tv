@@ -1,0 +1,27 @@
+From 6d29f51a40be64e03acc2619f35b4971ba00617c Mon Sep 17 00:00:00 2001
+From: DeadSix27 <DeadSix27@users.noreply.github.com>
+Date: Thu, 5 Dec 2019 06:00:58 +0100
+Subject: [PATCH] CMake: use PACKAGE_VERSION for the pkg-config file
+
+The old variable `OPUS_LIBRARY_VERSION`, does not line up with what's used in autoconf, which uses the PACKAGE_VERSION instead, which in turn lines up with what version the projects `opusfile` and `libsndfile` check for, for example.
+While at it, I also cleaned up the accidental double up in code.
+
+Signed-off-by: Jean-Marc Valin <jmvalin@jmvalin.ca>
+---
+ CMakeLists.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5c9df2480..ba86939a9 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -326,8 +326,7 @@ if(OPUS_INSTALL_PKG_CONFIG_MODULE)
+   set(exec_prefix ${CMAKE_INSTALL_PREFIX})
+   set(libdir ${CMAKE_INSTALL_FULL_LIBDIR})
+   set(includedir ${CMAKE_INSTALL_FULL_INCLUDEDIR})
+-  set(VERSION ${OPUS_LIBRARY_VERSION})
+-  set(VERSION ${OPUS_LIBRARY_VERSION})
++  set(VERSION ${PACKAGE_VERSION})
+   if(HAVE_LIBM)
+     set(LIBM "-lm")
+   endif()

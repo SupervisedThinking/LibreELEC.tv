@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="RPCS3"
-PKG_VERSION="2b8eb8deb6e86deca9c677c8b300da3762532075" # v0.0.14
+PKG_VERSION="eb72cc9f04a99890974bb32d239db3cefa144f5c" # v0.0.14+
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://rpcs3.net"
@@ -13,7 +13,10 @@ GET_HANDLER_SUPPORT="git"
 
 PKG_CMAKE_OPTS_TARGET="-D USE_NATIVE_INSTRUCTIONS=OFF \
                        -D BUILD_LLVM_SUBMODULE=ON \
-                       -D LLVM_TABLEGEN="${TOOLCHAIN}/bin/llvm-tblgen" \
+                       -D CMAKE_C_FLAGS="${CFLAGS}" \
+                       -D CMAKE_CXX_FLAGS="${CXXFLAGS}" \
+                       -D LLVM_TARGET_ARCH="${TARGET_ARCH}" \
+                       -D LLVM_TABLEGEN=${TOOLCHAIN}/bin/llvm-tblgen \
                        -D USE_DISCORD_RPC=OFF \
                        -D CMAKE_SKIP_RPATH=ON \
                        -D USE_SYSTEM_FFMPEG=ON \

@@ -57,7 +57,7 @@ OEM_EMULATORS_LIBRETRO_ROCKCHIP=" \
 OEM_EMULATORS_STANDALONE_ROCKCHIP=" \
   emulationstation \
   amiberry \
-  dosbox-sdl2 \
+  dosbox-staging \
   hatari \
   openbor \
   ppsspp"

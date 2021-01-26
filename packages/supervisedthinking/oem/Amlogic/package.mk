@@ -58,7 +58,7 @@ OEM_EMULATORS_LIBRETRO_AMLOGIC=" \
 OEM_EMULATORS_STANDALONE_AMLOGIC=" \
   emulationstation \
   amiberry \
-  dosbox-sdl2 \
+  dosbox-staging \
   hatari \
 
   openbor \

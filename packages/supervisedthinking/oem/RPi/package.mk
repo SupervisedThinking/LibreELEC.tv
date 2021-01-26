@@ -55,7 +55,7 @@ OEM_EMULATORS_LIBRETRO_RPI=" \
 OEM_EMULATORS_STANDALONE_RPI=" \
   emulationstation \
   amiberry \
-  dosbox-sdl2 \
+  dosbox-staging \
   hatari \
   openbor \
   ppsspp"

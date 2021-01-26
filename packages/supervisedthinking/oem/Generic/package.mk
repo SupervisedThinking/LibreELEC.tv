@@ -70,7 +70,7 @@ OEM_EMULATORS_STANDALONE_GENERIC=" \
   emulationstation \
   citra \
   dolphin \
-  dosbox-sdl2 \
+  dosbox-staging \
   fs-uae \
   hatari \
   mupen64plus \

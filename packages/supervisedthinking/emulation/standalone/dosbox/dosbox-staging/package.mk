@@ -19,7 +19,7 @@ configure_package() {
   fi
 
   if [ "${OPENGL_SUPPORT}" = "yes" ]; then
-    PKG_DEPENDS_TARGET+="  ${OPENGL} glew-cmake"
+    PKG_DEPENDS_TARGET+="  ${OPENGL} dosbox-svn-shaders"
   fi
 }
 

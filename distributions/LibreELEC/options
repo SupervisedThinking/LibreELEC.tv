@@ -313,7 +313,7 @@
 "/tmp/cores/bluemsx_libretro.so;"\
 "/tmp/cores/vice_x64_libretro.so;"\
 "/tmp/cores/prboom_libretro.so;"\
-"/tmp/cores/dosbox_libretro.so;"\
+"/tmp/cores/dosbox_pure_libretro.so;"\
 "/tmp/cores/fbaneo_libretro.so;"\
 "/tmp/cores/vecx_libretro.so;"\
 "/tmp/cores/lutro_libretro.so;"\

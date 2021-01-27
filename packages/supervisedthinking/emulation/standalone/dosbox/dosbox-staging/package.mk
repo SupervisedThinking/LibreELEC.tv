@@ -4,7 +4,7 @@
 PKG_NAME="dosbox-staging"
 PKG_VERSION="a827baa1b2cddd6cea166cafd6b597c568eac58d" #v0.76.0+ r4422
 PKG_SHA256="853bf387b0e3da9262f44d3f9964d93f8b0dcff998fe499c5a5aa83f10bcce67"
-PKG_LICENSE="GPL-2.0"
+PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://dosbox-staging.github.io/"
 PKG_URL="https://github.com/dosbox-staging/dosbox-staging/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux alsa-lib SDL2-system SDL2_net opusfile libpng fluidsynth-system munt"

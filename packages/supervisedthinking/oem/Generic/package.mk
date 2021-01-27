@@ -35,7 +35,6 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   citra-libretro \
   desmume \
   dolphin-libretro \
-  dosbox-libretro \
   dosbox-pure \
   fbneo \
   fceumm \

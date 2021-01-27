@@ -26,7 +26,6 @@ OEM_EMULATORS_LIBRETRO_ROCKCHIP=" \
   bluemsx \
   chailove \
   desmume \
-  dosbox-libretro \
   dosbox-pure \
   fbneo \
   fceumm \

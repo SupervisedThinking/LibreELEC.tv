@@ -26,7 +26,6 @@ OEM_EMULATORS_LIBRETRO_RPI=" \
   bluemsx \
   chailove \
   desmume \
-  dosbox-libretro \
   dosbox-pure \
   fbneo \
   fceumm \

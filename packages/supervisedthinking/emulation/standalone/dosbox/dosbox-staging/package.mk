@@ -36,7 +36,7 @@ pre_configure_target() {
 
   # Disable OpenGL if not supported
   if [ ! "${OPENGL_SUPPORT}" = "yes" ]; then
-    PKG_CONFIGURE_OPTS_TARGET=" --disable-opengl"
+    PKG_CONFIGURE_OPTS_TARGET+=" --disable-opengl"
   fi
 
   # Define target CPU arch

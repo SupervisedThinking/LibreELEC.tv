@@ -101,7 +101,6 @@ OEM_TOOLS_GENERIC=" \
   skyscraper \
   smartmontools \
   spectre-meltdown-checker \
-  strace-system \
   tigervnc-system \
   vulkan-tools"
 

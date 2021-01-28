@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="flycast"
-PKG_VERSION="8954f06ef476747a86b0a16e62de357ef348420f"
-PKG_SHA256="6a76e6c94d640f918fd2a3e5abc18663b8a0859c404bc7de2c65cf894452658e"
+PKG_VERSION="ea1278ee1faf31068ff3b9122779ad5d771d88cc"
+PKG_SHA256="9d0f8f1c378c2ced6163dd4e0e0b7b940b7d522a2d49efcc7df005a6c2eb52f3"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/flycast"
 PKG_URL="https://github.com/libretro/flycast/archive/${PKG_VERSION}.tar.gz"
@@ -38,10 +38,7 @@ pre_configure_target() {
     Amlogic)
       case ${DEVICE} in
         AMLG12)
-          PKG_MAKE_OPTS_TARGET+=" platform=AMLG12B"
-          ;;
-        AMLGX*)
-          PKG_MAKE_OPTS_TARGET+=" platform=AMLGX"
+          PKG_MAKE_OPTS_TARGET+=" platform=AMLG"
           ;;
       esac
       ;;
@@ -83,9 +80,17 @@ pre_configure_target() {
           PKG_MAKE_OPTS_TARGET+="-neon"
         fi
       else
+        # OpenGL support
         if [ "${OPENGL_SUPPORT}" = "yes" ]; then
           PKG_MAKE_OPTS_TARGET+=" HAVE_OIT=1"
         fi
+        # Vulkan support
+        if [ "${VULKAN_SUPPORT}" = "yes" ]; then
+          PKG_MAKE_OPTS_TARGET+=" HAVE_VULKAN=1"
+        else
+          PKG_MAKE_OPTS_TARGET+=" HAVE_VULKAN=0"
+        fi
+        # Set dynarec arch
         PKG_MAKE_OPTS_TARGET+=" WITH_DYNAREC=${ARCH}"
       fi
       ;;

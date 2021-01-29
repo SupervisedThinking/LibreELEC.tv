@@ -31,11 +31,13 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   bsnes \
   bsnes-mercury-accuracy \
   bsnes-mercury-balanced \
+  boom3 \
   chailove \
   citra-libretro \
   desmume \
   dolphin-libretro \
   dosbox-pure \
+  ecwolf \
   fbneo \
   fceumm \
   flycast \
@@ -62,6 +64,8 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   tyrquake \
   uae \
   vice-libretro \
+  vitaquake2 \
+  vitaquake3 \
   yabasanshiro"
 
 # Standalone emulators

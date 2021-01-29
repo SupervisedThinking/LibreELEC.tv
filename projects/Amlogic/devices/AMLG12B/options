@@ -1,0 +1,65 @@
+################################################################################
+# setup device defaults
+################################################################################
+
+  # The TARGET_CPU variable controls which processor should be targeted for
+  # generated code.
+    case $TARGET_ARCH in
+      aarch64)
+        TARGET_CPU="cortex-a73.cortex-a53"
+        TARGET_CPU_FLAGS="+crc+fp+simd"
+        TARGET_FEATURES="64bit"
+        ;;
+      arm)
+        TARGET_KERNEL_ARCH="arm64"
+        TARGET_PATCH_ARCH="aarch64"
+        TARGET_FLOAT="hard"
+        TARGET_CPU="cortex-a73.cortex-a53"
+        TARGET_CPU_FLAGS="+crc"
+        TARGET_FPU="neon-fp-armv8"
+        TARGET_FEATURES="32bit"
+        ;;
+    esac
+
+  # OpenGL-ES implementation to use
+    OPENGLES="mesa"
+
+  # Vulkan API support (yes / no)
+    VULKAN_API="no"
+
+  # Graphic drivers to use
+    GRAPHIC_DRIVERS="panfrost"
+
+  # KODI Player implementation to use
+    KODIPLAYER_DRIVER="$OPENGLES"
+
+  # Mali GPU family
+    MALI_FAMILY="g52"
+
+  # Set the addon project
+    ADDON_PROJECT="ARMv8"
+
+################################################################################
+# setup LibreELEC-RR defaults
+################################################################################
+
+  # Install applications e.g. Chrome or Spotify (yes / no)
+  OEM_APPLICATIONS="no"
+
+  # Install standalone emulators e.g. Emulationstation, Amiberry, PPSSPP (yes / no)
+  OEM_EMULATORS="yes"
+
+  # Install additional frontends e.g. Pegasus Frontend (yes / no)
+  OEM_FRONTENDS_EXTRA="yes"
+
+  # Install libretro cores e.g. Retroarch, snes9x, mame2003-plus (yes / no)
+  OEM_LIBRETRO="yes"
+
+  # Install streaming clients e.g. Moonlight-Qt (yes / no)
+  OEM_STREAMING_CLIENTS="yes"
+
+  # Install tools e.g. additional tools like mc or htop (yes / no)
+  OEM_TOOLS="yes"
+
+  # Add non-free packages i.e. fdk-aac (yes / no)
+  NON_FREE_PKG_SUPPORT="no"

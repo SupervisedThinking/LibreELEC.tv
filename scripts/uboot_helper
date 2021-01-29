@@ -202,6 +202,20 @@ devices = \
         'config': 'odroid-n2_defconfig'
       },
     },
+    'AMLG12B': {
+      'box': {
+        'dtb': '',
+        'config': 'p212_defconfig'
+      },
+      'khadas-vim3': {
+        'dtb': 'meson-g12b-a311d-khadas-vim3.dtb',
+        'config': 'khadas-vim3_defconfig'
+      },
+      'khadas-vim3l': {
+        'dtb': 'meson-sm1-khadas-vim3l.dtb',
+        'config': 'khadas-vim3l_defconfig'
+      },
+    },
   },
   'NXP': {
     'iMX6': {

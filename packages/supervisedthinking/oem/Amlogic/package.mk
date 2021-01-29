@@ -35,7 +35,6 @@ OEM_EMULATORS_LIBRETRO_AMLOGIC=" \
   genesis-plus-gx \
   mame2003-plus \
   mame2010 \
-  mame2016 \
   mesen \
   mgba \
   mrboom \
@@ -53,13 +52,16 @@ OEM_EMULATORS_LIBRETRO_AMLOGIC=" \
   yabasanshiro \
   yabause"
 
+# Libretro cores for A311D & S922X
+OEM_EMULATORS_LIBRETRO_AMLOGIC_AMLG12B=" \
+  mame2016"
+
 # Standalone emulators
 OEM_EMULATORS_STANDALONE_AMLOGIC=" \
   emulationstation \
   amiberry \
   dosbox-staging \
   hatari \
-
   openbor \
   ppsspp"
 
@@ -107,6 +109,10 @@ configure_package() {
     # Add Retroarch frontend & libretro core packages 
     if [ "${OEM_LIBRETRO}" = "yes" ]; then
       PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_AMLOGIC}"
+      # Add device specific libretro core packages 
+      if [ "${DEVICE}" = "AMLG12B" ]; then
+        PKG_DEPENDS_TARGET+=" ${OEM_EMULATORS_LIBRETRO_AMLOGIC_AMLG12B}"
+      fi
     fi
 
     # Add streaming packages

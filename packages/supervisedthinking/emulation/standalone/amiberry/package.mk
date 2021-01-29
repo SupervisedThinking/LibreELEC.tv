@@ -20,9 +20,7 @@ pre_configure_target() {
 
   case ${PROJECT} in
     Amlogic)
-      if [ "${DEVICE}" = "AMLGX" ]; then
-        AMIBERRY_PLATFORM="AMLGX"
-      fi
+      AMIBERRY_PLATFORM="${DEVICE}"
       ;;
     Rockchip)
       case "${DEVICE}" in

@@ -80,8 +80,7 @@ OEM_TOOLS_AMLOGIC=" \
   midnight-commander \
   rr-config-tool \
   sdl-jstest \
-  skyscraper \
-  spectre-meltdown-checker"
+  skyscraper"
 
 ################################################################################
 # Install OEM packages to LibreELEC-RR

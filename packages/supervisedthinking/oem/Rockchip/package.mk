@@ -78,8 +78,7 @@ OEM_TOOLS_ROCKCHIP=" \
   midnight-commander \
   rr-config-tool \
   sdl-jstest \
-  skyscraper \
-  spectre-meltdown-checker"
+  skyscraper"
 
 ################################################################################
 # Install OEM packages to LibreELEC-RR

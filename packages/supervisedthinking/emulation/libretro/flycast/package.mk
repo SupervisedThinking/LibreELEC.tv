@@ -36,11 +36,7 @@ configure_package() {
 pre_configure_target() {
   case ${PROJECT} in
     Amlogic)
-      case ${DEVICE} in
-        AMLG12)
-          PKG_MAKE_OPTS_TARGET+=" platform=AMLG"
-          ;;
-      esac
+      PKG_MAKE_OPTS_TARGET+=" platform=${DEVICE}"
       ;;
     RPi)
       case ${DEVICE} in

@@ -1,0 +1,53 @@
+From 9df7115027b9947c4abdd8c923ed9a9dae7780b5 Mon Sep 17 00:00:00 2001
+From: SupervisedThinking <supervisedthinking@gmail.com>
+Date: Sat, 30 Jan 2021 13:14:31 +0100
+Subject: [PATCH] Makefile: added Mesa OpenGL ES opts for platform AMLG* & RK /
+ fixed libs
+
+---
+ Makefile | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index aebf8a77..d981ee83 100644
+--- a/Makefile
++++ b/Makefile
+@@ -282,17 +282,24 @@ else ifneq (,$(findstring AMLG,$(platform)))
+          CPUFLAGS += -mtune=cortex-a53
+       endif
+       GLES3 = 1
+-      GL_LIB := -lGLESv3
+    else ifneq (,$(findstring AMLGX,$(platform)))
+       CPUFLAGS += -mtune=cortex-a53
+       ifneq (,$(findstring AMLGXM,$(platform)))
+          GLES3 = 1
+-         GL_LIB := -lGLESv3
+       else
+          GLES = 1
+-         GL_LIB := -lGLESv2
+       endif
+    endif
++
++   ifneq (,$(findstring mesa,$(platform)))
++      COREFLAGS += -DEGL_NO_X11
++   endif
++
++   ifneq (,$(findstring mali,$(platform)))
++      GL_LIB := -lGLESv3
++   else
++      GL_LIB := -lGLESv2
++   endif
+   
+    HAVE_NEON = 1
+    WITH_DYNAREC=arm
+@@ -330,6 +337,10 @@ else ifneq (,$(findstring RK,$(platform)))
+       GLES3 = 1
+    endif
+ 
++   ifneq (,$(findstring mesa,$(platform)))
++      COREFLAGS += -DEGL_NO_X11
++   endif
++
+    GL_LIB := -lGLESv2
+    HAVE_NEON = 1
+    WITH_DYNAREC=arm

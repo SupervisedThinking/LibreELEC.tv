@@ -39,68 +39,49 @@ configure_package() {
 
 pre_configure_target() {
   # Set project specific platform flags
-  if [ "${PROJECT}" = "RPi" ]; then
-    case ${DEVICE} in
-      RPi)
-        PKG_MAKE_OPTS_TARGET+=" platform=rpi"
-        ;;
-      RPi2)
-        PKG_MAKE_OPTS_TARGET+=" platform=rpi2"
-        ;;
-      RPi3)
-        PKG_MAKE_OPTS_TARGET+=" platform=rpi3"
-        ;;
-      RPi4)
-        PKG_MAKE_OPTS_TARGET+=" platform=rpi4"
-        ;;
-    esac
-  elif [ "${PROJECT}" = "Amlogic" ]; then
-    case ${DEVICE} in
-      AMLG12)
-        PKG_MAKE_OPTS_TARGET+=" platform=AMLG12B GLES=1"
-        ;;
-      AMLGX*)
-        PKG_MAKE_OPTS_TARGET+=" platform=AMLGX"
-        ;;
-    esac
-  elif [ "${PROJECT}" = "Rockchip" ]; then
-    case ${DEVICE} in
-      RK3328)
-        PKG_MAKE_OPTS_TARGET+=" platform=RK3328"
-        ;;
-      RK3399)
-        PKG_MAKE_OPTS_TARGET+=" platform=RK3399"
-        ;;
-      TinkerBoard|MiQi)
-        PKG_MAKE_OPTS_TARGET+=" platform=RK3288"
-        ;;
-    esac
-  else
-    # OpenGLES 2.0/3.0 Support
-    if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
-      if [ "${OPENGLES}" = "libmali" ]; then
-        PKG_MAKE_OPTS_TARGET+=" FORCE_GLES3=1"
-      else
-        PKG_MAKE_OPTS_TARGET+=" FORCE_GLES=1"
+  case ${PROJECT} in
+    Amlogic)
+      PKG_MAKE_OPTS_TARGET+=" platform=${DEVICE}"
+      ;;
+    RPi)
+      case ${DEVICE} in
+        RPi)
+          PKG_MAKE_OPTS_TARGET+=" platform=rpi"
+          ;;
+        RPi2)
+          PKG_MAKE_OPTS_TARGET+=" platform=rpi2"
+          ;;
+        RPi4)
+          PKG_MAKE_OPTS_TARGET+=" platform=rpi4"
+          ;;
+      esac
+      ;;
+    Rockchip)
+      PKG_MAKE_OPTS_TARGET+=" platform=${DEVICE}"
+      ;;
+    *)
+      # Arch ARM
+      if [ "${ARCH}" = "arm" ]; then
+        PKG_MAKE_OPTS_TARGET+=" WITH_DYNAREC=arm platform=armv"
+        # NEON Support
+        if target_has_feature neon; then
+          PKG_MAKE_OPTS_TARGET+="-neon"
+        fi
       fi
-    fi
-    # Dynarec
-    if [ "${ARCH}" = "arm" ]; then
-      PKG_MAKE_OPTS_TARGET+=" WITH_DYNAREC=arm"
-    elif [ "${ARCH}" = "x86_64" ]; then
-      PKG_MAKE_OPTS_TARGET+=" WITH_DYNAREC=x86_64"
-    fi
-    # NEON Support
-    if target_has_feature neon; then
-      PKG_MAKE_OPTS_TARGET+=" HAVE_NEON=1"
-    fi
-  fi
 
+      # OpenGL ES Support
+      if [ "${OPENGLES_SUPPORT}" = "yes" ]; then
+        PKG_MAKE_OPTS_TARGET+=" FORCE_GLES3=1"
+      fi
+      # Dynarec x86_64    
+      if [ "${ARCH}" = "x86_64" ]; then
+        PKG_MAKE_OPTS_TARGET+=" WITH_DYNAREC=x86_64"
+      fi
+    ;;
+  esac
   # Fix Mesa 3D based OpenGL ES builds
   if [ "${OPENGLES}" = "mesa" ]; then
     PKG_MAKE_OPTS_TARGET+="-mesa"
-	CFLAGS+=" -DEGL_NO_X11"
-    CXXFLAGS+=" -DEGL_NO_X11"
   fi
 }
 

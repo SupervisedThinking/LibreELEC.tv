@@ -8,7 +8,7 @@ import xbmcgui
 dialog = xbmcgui.Dialog()
 strings = xbmcaddon.Addon().getLocalizedString
 cards = [c for c in subprocess.check_output(
-    ['aplay', '-L']).splitlines() if ':CARD=' in c]
+    ['aplay', '-L']).decode('utf8').splitlines() if ':CARD=' in c]
 if len(cards) == 0:
     dialog.ok(xbmcaddon.Addon().getAddonInfo('name'), strings(30020))
 else:

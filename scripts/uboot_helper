@@ -211,10 +211,6 @@ devices = \
         'dtb': 'meson-g12b-a311d-khadas-vim3.dtb',
         'config': 'khadas-vim3_defconfig'
       },
-      'khadas-vim3l': {
-        'dtb': 'meson-sm1-khadas-vim3l.dtb',
-        'config': 'khadas-vim3l_defconfig'
-      },
     },
   },
   'NXP': {

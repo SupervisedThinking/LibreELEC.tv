@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
-PKG_NAME="nSide"
+PKG_NAME="nside"
 PKG_VERSION="5e965d0db4c0d05e7e8fb6449035538781c73473"
 PKG_SHA256="353a3c4643bf9a7c777c2def95d41d10f5407ce68d61522946e52c1494d8f8bb"
 PKG_LICENSE="GPLv3"

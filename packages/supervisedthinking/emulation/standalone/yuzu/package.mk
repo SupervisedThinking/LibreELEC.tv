@@ -7,7 +7,7 @@ PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2+"
 PKG_SITE="https://yuzu-emu.org"
 PKG_URL="https://github.com/yuzu-emu/yuzu.git"
-PKG_DEPENDS_TARGET="toolchain linux glibc zlib libpng xorg-server boost-system qt-everywhere SDL2-system unclutter-xfixes"
+PKG_DEPENDS_TARGET="toolchain linux glibc zlib libpng xorg-server boost-system qt-everywhere sdl2 unclutter-xfixes"
 PKG_LONGDESC="yuzu is an experimental open-source emulator for the Nintendo Switch"
 GET_HANDLER_SUPPORT="git"
 

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
-PKG_NAME="wxWidgets"
+PKG_NAME="wxwidgets"
 PKG_VERSION="3.0.5.1"
 PKG_SHA256="bae4d9f289e33a05fb8553fcc580564d30efe6a882ff08e3d4e09ef01f5f6578"
 PKG_LICENSE="wxWidgets licence"

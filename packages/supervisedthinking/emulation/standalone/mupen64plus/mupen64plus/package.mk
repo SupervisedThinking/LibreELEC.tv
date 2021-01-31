@@ -5,7 +5,7 @@ PKG_NAME="mupen64plus"
 PKG_VERSION="1.0"
 PKG_SITE="https://github.com/mupen64plus"
 PKG_URL=""
-PKG_DEPENDS_TARGET="toolchain mupen64plus-core mupen64plus-rsp-hle mupen64plus-rsp-cxd4 mupen64plus-input-sdl mupen64plus-audio-sdl2 mupen64plus-ui-console GLideN64"
+PKG_DEPENDS_TARGET="toolchain mupen64plus-core mupen64plus-rsp-hle mupen64plus-rsp-cxd4 mupen64plus-input-sdl mupen64plus-audio-sdl2 mupen64plus-ui-console gliden64"
 PKG_LONGDESC="mupen64plus + GLideN64 + a GUI"
 PKG_TOOLCHAIN="manual"
 
@@ -33,12 +33,12 @@ makeinstall_target() {
 
   # Install config files
   cp ${PKG_DIR}/config/*                             ${INSTALL}/usr/config/mupen64plus
-  cp $(get_build_dir GLideN64)/ini/*.ini             ${INSTALL}/usr/config/mupen64plus
+  cp $(get_build_dir gliden64)/ini/*.ini             ${INSTALL}/usr/config/mupen64plus
   cp $(get_build_dir mupen64plus-core)/data/*        ${INSTALL}/usr/config/mupen64plus
   cp $(get_build_dir mupen64plus-input-sdl)/data/*   ${INSTALL}/usr/config/mupen64plus
 
   # Install libs
-  cp -v $(get_build_dir GLideN64)/plugin/*/*.so       ${INSTALL}/usr/lib/mupen64plus
+  cp -v $(get_build_dir gliden64)/plugin/*/*.so       ${INSTALL}/usr/lib/mupen64plus
   cp -v $(get_build_dir mupen64plus-audio-sdl2)/*.so  ${INSTALL}/usr/lib/mupen64plus
   cp -Pv $(get_build_dir mupen64plus-core)/*.so*      ${INSTALL}/usr/lib/mupen64plus
   cp -v $(get_build_dir mupen64plus-input-sdl)/*.so   ${INSTALL}/usr/lib/mupen64plus

@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
-PKG_NAME="RPCS3"
+PKG_NAME="rpcs3"
 PKG_VERSION="1078626eeabf7a3010488867a7027a91d55dd57d" # v0.0.14+
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://rpcs3.net"
 PKG_URL="https://github.com/RPCS3/rpcs3.git"
-PKG_DEPENDS_TARGET="toolchain linux glibc systemd pulseaudio llvm mesa openal-soft-system libevdev curl ffmpeg libpng zlib vulkan-loader glew-cmake libSM enet-system qt-everywhere unclutter-xfixes"
+PKG_DEPENDS_TARGET="toolchain linux glibc systemd pulseaudio llvm mesa openal-soft-system libevdev curl ffmpeg libpng zlib vulkan-loader glew-cmake libSM sdl2 enet-system qt-everywhere unclutter-xfixes"
 PKG_LONGDESC="RPCS3 is an experimental open-source Sony PlayStation 3 emulator and debugger."
 GET_HANDLER_SUPPORT="git"
 

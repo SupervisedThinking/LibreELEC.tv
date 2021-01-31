@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
-PKG_NAME="SDL_GameControllerDB"
+PKG_NAME="sdl_gamecontrollerdb"
 PKG_VERSION="49abd3b88102de231cc51f80fe791219bb40c2ba"
 PKG_SHA256="512fd4fb41093c7bf08feb9b330d18ab853a628828229f01f72224c6aa5d72e2"
 PKG_LICENSE="OSS"

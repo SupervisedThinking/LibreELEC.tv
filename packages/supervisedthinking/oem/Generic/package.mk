@@ -52,7 +52,7 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   mrboom \
   mupen64plus-nx \
   nestopia \
-  nSide \
+  nside \
   parallel-n64 \
   pcsx_rearmed \
   ppsspp-libretro \
@@ -79,7 +79,7 @@ OEM_EMULATORS_STANDALONE_GENERIC=" \
   mupen64plus \
   openbor \
   pcsx2 \
-  RPCS3 \
+  rpcs3 \
   ppsspp \
   vice"
 

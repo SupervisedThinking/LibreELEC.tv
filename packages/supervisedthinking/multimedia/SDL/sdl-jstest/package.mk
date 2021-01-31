@@ -6,7 +6,7 @@ PKG_VERSION="53b89cc2" #v0.2.1
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://gitlab.com/sdl-jstest/sdl-jstest"
 PKG_URL="https://gitlab.com/sdl-jstest/sdl-jstest.git"
-PKG_DEPENDS_TARGET="toolchain SDL2-system SDL_GameControllerDB ncurses"
+PKG_DEPENDS_TARGET="toolchain sdl2 sdl_gamecontrollerdb ncurses"
 PKG_LONGDESC="Simple SDL joystick test application for the console"
 GET_HANDLER_SUPPORT="git"
 

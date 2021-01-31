@@ -7,7 +7,7 @@ PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2+"
 PKG_SITE="https://github.com/citra-emu/citra"
 PKG_URL="https://github.com/citra-emu/citra.git"
-PKG_DEPENDS_TARGET="toolchain linux glibc systemd dbus zlib pulseaudio ffmpeg mesa xorg-server boost-system qt-everywhere SDL2-system unclutter-xfixes"
+PKG_DEPENDS_TARGET="toolchain linux glibc systemd dbus zlib pulseaudio ffmpeg mesa xorg-server boost-system qt-everywhere sdl2 unclutter-xfixes"
 PKG_LONGDESC="A Nintendo 3DS Emulator"
 GET_HANDLER_SUPPORT="git"
 

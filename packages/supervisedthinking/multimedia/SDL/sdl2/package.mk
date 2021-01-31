@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
-PKG_NAME="SDL2-system"
-PKG_VERSION="b7ab7a43171adbe659cd5844d2fd55ff2207bfac" #2.0.14+
+PKG_NAME="sdl2"
+PKG_VERSION="b7ab7a43171adbe659cd5844d2fd55ff2207bfac" #2.0.15-dev
 PKG_SHA256="d97f4c2016ba2eaf17325752a8da1fdcd1bd9ce84ad1d851bb3fbb7767bf5b1e"
 PKG_LICENSE="GPL"
 PKG_SITE="https://www.libsdl.org/"

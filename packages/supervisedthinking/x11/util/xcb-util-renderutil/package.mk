@@ -7,7 +7,7 @@ PKG_SHA256="c6e97e48fb1286d6394dddb1c1732f00227c70bd1bedb7d1acabefdd340bea5b"
 PKG_LICENSE="GPL"
 PKG_SITE="https://xcb.freedesktop.org/XcbUtil/"
 PKG_URL="https://xcb.freedesktop.org/dist/xcb-util-renderutil-${PKG_VERSION}.tar.bz2"
-PKG_DEPENDS_TARGET="toolchain libxcb"
+PKG_DEPENDS_TARGET="toolchain libxcb xorgproto util-macros"
 PKG_LONGDESC="The xcb-util-renderutil package provides additional extensions to the XCB library."
 
 

@@ -23,9 +23,11 @@ configure_package() {
 }
 
 pre_configure_target() {
+  PKG_MESON_OPTS_TARGET="--wrap-mode=nodownload"
+
   # Disable OpenGL if not supported
   if [ ! "${OPENGL_SUPPORT}" = "yes" ]; then
-    PKG_MESON_OPTS_TARGET="-Duse_opengl=false"
+    PKG_MESON_OPTS_TARGET+=" -Duse_opengl=false"
   fi
 }
 

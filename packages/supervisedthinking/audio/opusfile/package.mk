@@ -10,3 +10,8 @@ PKG_URL="https://github.com/xiph/opusfile/archive/v${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain opus-system libogg-system"
 PKG_LONGDESC="Stand-alone decoder library for .opus streams"
 PKG_TOOLCHAIN="autotools"
+
+post_unpack() {
+  # Fix opusfile version
+  echo PACKAGE_VERSION=\"${PKG_VERSION}\" > ${PKG_BUILD}/package_version
+}

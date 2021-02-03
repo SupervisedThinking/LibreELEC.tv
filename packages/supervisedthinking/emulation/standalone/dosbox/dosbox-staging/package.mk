@@ -2,14 +2,13 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="dosbox-staging"
-PKG_VERSION="e131d5624021e6afe088507f7c7526d404f60be9" #v0.76.0+ r4422
-PKG_SHA256="6672c10b9a8945a7b25859baba57b9bf9f6dc60240dd85cc6a44d65e4fafe223"
+PKG_VERSION="9b3c7cabcca7ac3495112fc7dd576399313eca9b" #v0.77.0 r4412
+PKG_SHA256="b2d793b3e37dd498a81ac661114af196a351adcf525d3afe3ee997083da8c98b"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://dosbox-staging.github.io/"
 PKG_URL="https://github.com/dosbox-staging/dosbox-staging/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux alsa-lib sdl2 sdl2_net opusfile libpng fluidsynth-system munt"
 PKG_LONGDESC="DOSBox Staging is an attempt to revitalize DOSBox's development process. It's not a rewrite, but a continuation and improvement on the existing DOSBox codebase while leveraging modern development tools and practices."
-PKG_TOOLCHAIN="autotools"
 PKG_BUILD_FLAGS="+lto"
 
 configure_package() {
@@ -24,33 +23,15 @@ configure_package() {
 }
 
 pre_configure_target() {
-  # Clean up build directory
-  cd ${PKG_BUILD}
-  safe_remove .${TARGET_NAME}
-
-  PKG_CONFIGURE_OPTS_TARGET="--with-sdl-prefix=${SYSROOT_PREFIX}/usr \
-                             --enable-mt32 \
-                             --enable-core-inline \
-                             --enable-dynrec \
-                             --enable-unaligned_memory"
-
   # Disable OpenGL if not supported
   if [ ! "${OPENGL_SUPPORT}" = "yes" ]; then
-    PKG_CONFIGURE_OPTS_TARGET+=" --disable-opengl"
+    PKG_MESON_OPTS_TARGET="-Duse_opengl=false"
   fi
+}
 
-  # Define target CPU arch
-  case ${TARGET_CPU} in
-    arm1176jzf-s)
-      PKG_CONFIGURE_OPTS_TARGET+=" --host=armv6l"
-      ;;
-    cortex-a7|cortex-a9|*cortex-a53)
-      PKG_CONFIGURE_OPTS_TARGET+=" --host=armv7l"
-      ;;
-    *)
-      PKG_CONFIGURE_OPTS_TARGET+=" --host=${ARCH}"
-      ;;
-  esac
+makeinstall_target() {
+ mkdir -p ${INSTALL}/usr/bin
+ cp -a ${PKG_BUILD}/.${TARGET_NAME}/dosbox ${INSTALL}/usr/bin/
 }
 
 post_makeinstall_target() {
@@ -61,6 +42,7 @@ post_makeinstall_target() {
 
   # Enable OpenGL output if supported
   if [ "${OPENGL_SUPPORT}" = "yes" ]; then
-    sed -e "s/output           = texture/output           = opengl/" -i ${INSTALL}/usr/config/dosbox/dosbox-staging*.conf
+    sed -e "s/output           = texture/output           = opengl/"   -i ${INSTALL}/usr/config/dosbox/dosbox-staging*.conf
+    sed -e "s/glshader           = none/glshader           = default/" -i ${INSTALL}/usr/config/dosbox/dosbox-staging*.conf
   fi
 }

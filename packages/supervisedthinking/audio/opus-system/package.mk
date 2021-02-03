@@ -2,13 +2,18 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="opus-system"
-PKG_VERSION="e85ed7726db5d677c9c0677298ea0cb9c65bdd23" #v1.3.1
+PKG_VERSION="1.3.1"
+PKG_SHA256="4834a8944c33a7ecab5cad9454eeabe4680ca1842cb8f5a2437572dbf636de8f"
 PKG_LICENSE="BSD"
 PKG_SITE="http://www.opus-codec.org"
-PKG_URL="https://github.com/xiph/opus.git"
+PKG_URL="https://github.com/xiph/opus/archive/v${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC="Codec designed for interactive speech and audio transmission over the Internet."
-GET_HANDLER_SUPPORT="git"
+
+post_unpack() {
+  # Fix opus version
+  echo PACKAGE_VERSION=\"${PKG_VERSION}\" > ${PKG_BUILD}/package_version
+}
 
 pre_configure_target() {
   PKG_CMAKE_OPTS_TARGET="-D BUILD_SHARED_LIBS=ON"

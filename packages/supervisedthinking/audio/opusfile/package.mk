@@ -15,3 +15,11 @@ post_unpack() {
   # Fix opusfile version
   echo PACKAGE_VERSION=\"${PKG_VERSION}\" > ${PKG_BUILD}/package_version
 }
+
+pre_configure_target() {
+  if [ "${TARGET_ARCH}" = "arm" ]; then
+    if ! target_has_feature neon; then
+      PKG_CONFIGURE_OPTS_TARGET+=" --enable-fixed-point"
+    fi
+  fi
+}

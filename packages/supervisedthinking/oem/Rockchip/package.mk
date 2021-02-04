@@ -33,8 +33,9 @@ OEM_EMULATORS_LIBRETRO_ROCKCHIP=" \
   fuse-libretro \
   gambatte \
   genesis-plus-gx \
-  mame2016 \
   mame2003-plus \
+  mame2010 \
+  mame2016 \
   mesen \
   mgba \
   mrboom \

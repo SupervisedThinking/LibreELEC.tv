@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="2048"
-PKG_VERSION="57f401f40dc34def95027e3727dcb4c274bcabb3"
-PKG_SHA256="21df9fb853f5f8f1f6ca8d2170fb0f78137989e9ae29212ff4a3ea5453bd15e4"
+PKG_VERSION="607f1fe8f687246d1eec8982fe29513a7a4a60fc"
+PKG_SHA256="991d5f9e1c96bc5205be404e7648a2e176e68ff60eed6f656414a407ed0d2044"
 PKG_LICENSE="Public domain"
 PKG_SITE="https://github.com/libretro/libretro-2048"
 PKG_URL="https://github.com/libretro/libretro-2048/archive/${PKG_VERSION}.tar.gz"
@@ -25,5 +25,5 @@ makeinstall_target() {
   #create Retroarch Playlist
   cp ${PKG_DIR}/files/*   ${INSTALL}/usr/config/retroarch/playlists
   cp ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin
-  cp ${PKG_LIBPATH}       ${INSTALL}/usr/lib/libretro/
+  cp -v ${PKG_LIBPATH}    ${INSTALL}/usr/lib/libretro/
 }

@@ -17,6 +17,6 @@ PKG_LIBPATH="libretro/${PKG_LIBNAME}"
 PKG_MAKE_OPTS_TARGET=" -C libretro GIT_VERSION=${PKG_VERSION:0:7}"
 
 makeinstall_target() {
-    mkdir -p ${INSTALL}/usr/lib/libretro
-    cp -v ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/
+  mkdir -p ${INSTALL}/usr/lib/libretro
+  cp -v ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/
 }

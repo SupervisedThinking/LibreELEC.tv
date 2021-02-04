@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="stella2014"
-PKG_VERSION="005260ce7ebad93b980b9c16c91da70d7dd7c691"
-PKG_SHA256="5b774d12884912b6e17d67760072699a8168d4da85a3c72d5ea5dcd843c0672f"
+PKG_VERSION="62e9468239576a3f3bc64845066aed2dea6ea6b1"
+PKG_SHA256="cd5716fd447ed80e12f374d063c771a16f2b8e07af469a84c73ca770925698b8"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/stella2014-libretro"
 PKG_URL="https://github.com/libretro/stella2014-libretro/archive/${PKG_VERSION}.tar.gz"

@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="atari800"
-PKG_VERSION="373bf577033e8ae98aed33c7bed7fad3f3353eab"
-PKG_SHA256="5a44c281d07e52ac6ea92c5b8dd2c654342068d629519720d7035916e45e52b5"
+PKG_VERSION="2f077a6e3afeccbc0fa9e5282dc351d736e172e0"
+PKG_SHA256="d22217cbfa6ed224e6705695c114e39b33e1eceb009b57e032df39ac10862d36"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/libretro-atari800"
 PKG_URL="https://github.com/libretro/libretro-atari800/archive/${PKG_VERSION}.tar.gz"
@@ -18,5 +18,5 @@ PKG_MAKE_OPTS_TARGET="GIT_VERSION=${PKG_VERSION:0:7}"
 
 makeinstall_target() {
   mkdir -p ${INSTALL}/usr/lib/libretro
-  cp ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/
+  cp -v ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/
 }

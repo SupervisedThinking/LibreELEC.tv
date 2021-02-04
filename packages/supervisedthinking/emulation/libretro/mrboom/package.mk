@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="mrboom"
-PKG_VERSION="5ee93c663d8adec1e93f92d3b0a5b4920b01df2e" #v5.2
+PKG_VERSION="67a20a4ac0dff6d3285f7fe8d563919b8f875609" #v5.2
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/Javanaise/mrboom-libretro"
 PKG_URL="https://github.com/Javanaise/mrboom-libretro.git"

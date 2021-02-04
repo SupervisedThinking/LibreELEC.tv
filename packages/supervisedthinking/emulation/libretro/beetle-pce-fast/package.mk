@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="beetle-pce-fast"
-PKG_VERSION="ccb886310e816ad3cf71d5addacff9018ee3b24a"
-PKG_SHA256="bab56accba65678fa1a3b0381b37354704e62874f4fb41e4b14731c5f5966565"
+PKG_VERSION="60d4f2814c1ae4ace74e215807733ef29feccb65"
+PKG_SHA256="7ffa3d467fab9f47290e10e28893069937287a7d0ac247a062a339cc4f435efe"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/beetle-pce-fast-libretro"
 PKG_URL="https://github.com/libretro/beetle-pce-fast-libretro/archive/${PKG_VERSION}.tar.gz"
@@ -19,5 +19,5 @@ PKG_MAKE_OPTS_TARGET="GIT_VERSION=${PKG_VERSION:0:7}"
 
 makeinstall_target() {
   mkdir -p ${INSTALL}/usr/lib/libretro
-  cp ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/
+  cp -v ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/
 }

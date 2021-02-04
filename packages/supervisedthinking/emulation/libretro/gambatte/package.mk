@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="gambatte"
-PKG_VERSION="2d0f75162384867fccff9236db5725c1987300a2"
-PKG_SHA256="8b97677862216bf0809f42ccca031432f4c598bb2be7a0f95f5e7feefffd6f6e"
+PKG_VERSION="2960cc981e42ed717d2209e68c32d7fad5c02e38"
+PKG_SHA256="393e4c8ba8689a1f3d618ed490dd8c74eaa5b72cb150e359c56bed49d0d6bfd3"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/gambatte-libretro"
 PKG_URL="https://github.com/libretro/gambatte-libretro/archive/${PKG_VERSION}.tar.gz"
@@ -15,6 +15,6 @@ PKG_LIBNAME="gambatte_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"
 
 makeinstall_target() {
-    mkdir -p ${INSTALL}/usr/lib/libretro
-    cp -v ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/
+  mkdir -p ${INSTALL}/usr/lib/libretro
+  cp -v ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/
 }

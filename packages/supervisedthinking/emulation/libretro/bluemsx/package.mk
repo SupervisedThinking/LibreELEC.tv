@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="bluemsx"
-PKG_VERSION="5b8718c8bba44ff4adda1bcc575895d342c1ba6a"
-PKG_SHA256="6304ea92a694af3cf86afc082a7f1ad99f380b4f2a637f5410837874a45f8c44"
+PKG_VERSION="f48a1b50bb35c23bd638eaa1af82313fed2a6898"
+PKG_SHA256="ff39cdf9517ff8a833704b7eee58a828425b384239124d227f953d89b4214ccf"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/blueMSX-libretro"
 PKG_URL="https://github.com/libretro/blueMSX-libretro/archive/${PKG_VERSION}.tar.gz"

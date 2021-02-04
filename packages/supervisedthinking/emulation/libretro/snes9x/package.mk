@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="snes9x"
-PKG_VERSION="a15898e40ad31c40695e8eddcdc5c91e637d04f9"
-PKG_SHA256="7cf54a24fe9eb7f3ded3c6c22c7cb20091ef2ebd05a620431cc28114ea562090"
+PKG_VERSION="73aa34813a06eb12780b547bee4b80e6475235ce"
+PKG_SHA256="554e7bea7e7ad87065a6c2790993d412421e2fa52b7ccd11b2da74f87f045804"
 PKG_LICENSE="GPLv3"
 PKG_SITE="https://github.com/libretro/snes9x"
 PKG_URL="https://github.com/libretro/snes9x/archive/${PKG_VERSION}.tar.gz"

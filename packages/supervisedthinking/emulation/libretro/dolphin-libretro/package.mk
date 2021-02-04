@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="dolphin-libretro"
-PKG_VERSION="35550fda6363caae476b3889e7e667900b737c05"
-PKG_SHA256="90b4604646b4404846f6ea983d4640392485d2e6af78078f155a68cd16c52c9d"
+PKG_VERSION="d9e0f1ab8aeb29bc76a1d309edd5ed4dff090553"
+PKG_SHA256="490d9519f21e1ed58dafea108d3e9f8bfc75162adaafbb50fe7407721508aae9"
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/dolphin"
@@ -24,7 +24,7 @@ pre_configure_target() {
 
 pre_make_target() {
   # fix cross compiling
-  find ${PKG_BUILD} -name flags.make -exec sed -i "s:isystem :I:g" \{} \;
+  find ${PKG_BUILD} -name flags.make -exec sed  -i "s:isystem :I:g" \{} \;
   find ${PKG_BUILD} -name build.ninja -exec sed -i "s:isystem :I:g" \{} \;
 }
 

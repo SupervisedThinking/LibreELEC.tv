@@ -50,17 +50,17 @@ post_makeinstall_target() {
   ln -s /usr/config/emulationstation/themes         ${INSTALL}/etc/emulationstation/themes
 
   # Install scripts
-  cp -rf ${PKG_DIR}/scripts/common/*     ${INSTALL}/usr/bin/
-  cp -rf ${PKG_DIR}/scripts/${PROJECT}/* ${INSTALL}/usr/bin/
+  cp -rf ${PKG_DIR}/scripts/*     ${INSTALL}/usr/bin/
 
   # Install resources
   cp -r ${PKG_DIR}/files/*     ${INSTALL}/usr/config/emulationstation/
   cp -a ${PKG_BUILD}/resources ${INSTALL}/usr/config/emulationstation/
 
-  # Install config files
+  # Install ES config files
   cp ${PKG_DIR}/config/es_input.cfg          ${INSTALL}/usr/config/emulationstation/
   cp ${PKG_DIR}/config/es_settings.cfg       ${INSTALL}/usr/config/emulationstation/
 
+  # Install ES system config files
   if [ ! -z ${DEVICE} ] && [ -d ${PKG_DIR}/config/device/${DEVICE} ]; then
     cp -v ${PKG_DIR}/config/device/${DEVICE}/es_systems.cfg                 ${INSTALL}/usr/config/emulationstation/
     cp -v ${PKG_DIR}/config/device/${DEVICE}/userdirs-emulationstation.conf ${INSTALL}/usr/lib/tmpfiles.d/

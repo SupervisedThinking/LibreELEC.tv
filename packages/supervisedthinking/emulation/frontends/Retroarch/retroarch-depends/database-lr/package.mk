@@ -2,11 +2,11 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="database-lr"
-PKG_VERSION="1.9.0"
-PKG_SHA256="4b04c973aff056a101086bd46439c75e524f4f697dd09011118435871d340ddd"
+PKG_VERSION="37a9c5f66ec620ea9e18ee657eea09f834c27fe4"
+PKG_SHA256="ee691c8c578ac6cd685360f6410504bc8cb1ef1ba165ae19a4756e0af51f1cff"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/libretro/libretro-database"
-PKG_URL="https://github.com/libretro/libretro-database/archive/v${PKG_VERSION}.tar.gz"
+PKG_URL="https://github.com/libretro/libretro-database/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="gcc:host"
 PKG_LONGDESC="RetroArch database containing cheatcode files, content data files, etc."
 PKG_TOOLCHAIN="manual"
@@ -27,7 +27,6 @@ post_makeinstall_target() {
 
   # Remove additional unnecessary databases
   if [ ! "${PROJECT}" = "Generic" ]; then
-    safe_remove ${INSTALL}/usr/share/retroarch/database/rdb/MAME*2016.rdb
     safe_remove ${INSTALL}/usr/share/retroarch/database/rdb/Nintendo*GameCube*.rdb
     safe_remove ${INSTALL}/usr/share/retroarch/database/rdb/Nintendo*Nintendo*3DS*.rdb
     safe_remove ${INSTALL}/usr/share/retroarch/database/rdb/Nintendo*Wii*.rdb

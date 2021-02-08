@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="dosbox-staging"
-PKG_VERSION="c7eccbe9e0b3ff8214b223370956d9fda4ae1c12" #v0.77.0-dev r4412
-PKG_SHA256="8fcc9163ebc37b4d3f1b8515031554dfc232edd88db472937412edf0b955c26c"
+PKG_VERSION="98258e6b5b4889f646faf411c5aac5542cac7283" #v0.77.0-dev r4412
+PKG_SHA256="33e95834a9c2dcd3ed93d97a6a1c78b1ee8ddbf48665254531245e3764b02fb9"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://dosbox-staging.github.io/"
 PKG_URL="https://github.com/dosbox-staging/dosbox-staging/archive/${PKG_VERSION}.tar.gz"
@@ -31,16 +31,14 @@ pre_configure_target() {
   fi
 }
 
-makeinstall_target() {
- mkdir -p ${INSTALL}/usr/bin
- cp -a ${PKG_BUILD}/.${TARGET_NAME}/dosbox ${INSTALL}/usr/bin/
-}
-
 post_makeinstall_target() {
   # Create config directory & install config
   mkdir -p ${INSTALL}/usr/config/dosbox
   cp -a ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin/
   cp -a ${PKG_DIR}/config/*  ${INSTALL}/usr/config/dosbox/
+
+  # Clean-up
+  safe_remove ${INSTALL}/usr/share
 
   # Enable OpenGL output if supported
   if [ "${OPENGL_SUPPORT}" = "yes" ]; then

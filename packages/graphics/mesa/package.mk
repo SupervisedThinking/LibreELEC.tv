@@ -9,9 +9,9 @@ PKG_DEPENDS_TARGET="toolchain expat libdrm Mako:host"
 PKG_LONGDESC="Mesa is a 3-D graphics library with an API."
 PKG_TOOLCHAIN="meson"
 
-if [ "${OPENGLES}" = "mesa" ] && [ ${GRAPHIC_DRIVERS} = "panfrost" ] || [ ${GRAPHIC_DRIVERS} = "lima" ]; then
-  PKG_VERSION="8a9162c85a7b9140ead8ddc6eb1c99fdb2c89191" #21.1.0-devel
-  PKG_SHA256="f2496fb9fef5e8033a100cf4389ea7298789297ee709110e8347b7914a24ad7d"
+if [ "${OPENGLES}" = "mesa" ]; then
+  PKG_VERSION="27ad9fd5da3f113aaa4995fe46c0ee9586372225" #21.1.0-devel
+  PKG_SHA256="3aac63a0f91d37d2306cc5d950d3d6cb73f10166725b227a0d75261cbf0ad04c"
   PKG_URL="https://github.com/mesa3d/mesa/archive/${PKG_VERSION}.tar.gz"
 else
   PKG_VERSION="21.0.0-rc4"

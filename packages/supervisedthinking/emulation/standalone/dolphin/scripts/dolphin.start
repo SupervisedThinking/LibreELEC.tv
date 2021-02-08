@@ -10,17 +10,20 @@ DOLPHIN_HOME_CONFIG=/storage/.config/dolphin-emu/share
 DOLPHIN_HOME_LOCAL=/storage/.local/share/dolphin-emu
 
 # create link to config directory
-if [ -d ${DOLPHIN_HOME_LOCAL} ]; then
-    cp -rf ${DOLPHIN_HOME_LOCAL} ${DOLPHIN_HOME_CONFIG}
-    rm -rf ${DOLPHIN_HOME_LOCAL}
-fi
-
 if [ ! -d ${DOLPHIN_HOME_CONFIG} ]; then
   mkdir -p ${DOLPHIN_HOME_CONFIG}
+  echo created ${DOLPHIN_HOME_CONFIG}
+fi
+
+if [ -d ${DOLPHIN_HOME_LOCAL} ] && [ ! -L ${DOLPHIN_HOME_LOCAL} ]; then
+    cp -rf ${DOLPHIN_HOME_LOCAL} ${DOLPHIN_HOME_CONFIG}
+    rm -rf ${DOLPHIN_HOME_LOCAL}
+    echo moved ${DOLPHIN_HOME_LOCAL} to ${DOLPHIN_HOME_CONFIG}
 fi
 
 if [ ! -L ${DOLPHIN_HOME_LOCAL} ]; then
   ln -sf ${DOLPHIN_HOME_CONFIG} ${DOLPHIN_HOME_LOCAL}
+  echo created symlink from ${DOLPHIN_HOME_CONFIG} to ${DOLPHIN_HOME_LOCAL}
 fi
 
 # Stop Kodi service / load audio backend config

@@ -13,7 +13,6 @@ PKG_LONGDESC="OpenAL Soft is a software implementation of the OpenAL 3D audio AP
 configure_package() {
   PKG_CMAKE_OPTS_TARGET="-DALSOFT_BACKEND_OSS=off \
                          -DALSOFT_BACKEND_PORTAUDIO=off \
-                         -DALSOFT_BACKEND_PULSEAUDIO=on \
                          -DALSOFT_BACKEND_WAVE=off \
                          -DALSOFT_EXAMPLES=off \
                          -DALSOFT_UTILS=off"

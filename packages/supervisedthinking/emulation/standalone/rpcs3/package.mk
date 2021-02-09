@@ -10,6 +10,7 @@ PKG_URL="https://github.com/RPCS3/rpcs3.git"
 PKG_DEPENDS_TARGET="toolchain linux glibc systemd pulseaudio llvm mesa openal-soft-system libevdev curl ffmpeg libpng zlib vulkan-loader glew-cmake libSM sdl2 enet-system qt-everywhere unclutter-xfixes"
 PKG_LONGDESC="RPCS3 is an experimental open-source Sony PlayStation 3 emulator and debugger."
 GET_HANDLER_SUPPORT="git"
+PKG_BUILD_FLAGS="+lto"
 
 PKG_CMAKE_OPTS_TARGET="-D USE_NATIVE_INSTRUCTIONS=OFF \
                        -D BUILD_LLVM_SUBMODULE=ON \

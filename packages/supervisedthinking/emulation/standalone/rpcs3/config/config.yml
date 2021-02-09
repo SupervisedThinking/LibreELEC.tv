@@ -5,10 +5,12 @@ Core:
   Save LLVM logs: false
   Use LLVM CPU: ""
   Max LLVM Compile Threads: 0
+  PPU LLVM Greedy Mode: false
   Enable thread scheduler: false
   Set DAZ and FTZ: false
-  SPU Decoder: Recompiler (ASMJIT)
+  SPU Decoder: Recompiler (LLVM)
   Lower SPU thread priority: false
+  SPU GETLLAR polling detection: false
   SPU Debug: false
   Preferred SPU Threads: 0
   SPU delay penalty: 3
@@ -16,20 +18,36 @@ Core:
   Max SPURS Threads: 6
   SPU Block Size: Safe
   Accurate GETLLAR: false
-  Accurate PUTLLUC: false
+  Accurate SPU DMA: false
+  Accurate Cache Line Stores: false
+  Accurate RSX reservation access: false
   SPU Verification: true
   SPU Cache: true
-  Enable TSX: Enabled
+  SPU Profiler: false
+  Enable TSX: Disabled
   Accurate xfloat: false
   Approximate xfloat: true
+  LLVM Accurate DFMA: true
+  PPU LLVM Java Mode Handling: false
+  Accurate PPU 128-byte Reservation Op Max Length: 0
+  PPU LLVM Accurate Vector NaN values: false
+  Stub PPU Traps: 0
   Debug Console Mode: false
-  Lib Loader: Load liblv2.sprx only
   Hook static functions: false
-  Load libraries:
-    []
+  Libraries Control:
+    - liblv2.sprx:hle
   HLE lwmutex: false
+  SPU LLVM Lower Bound: 0
+  SPU LLVM Upper Bound: 18446744073709551615
+  TSX Transaction First Limit: 800
+  TSX Transaction Second Limit: 2000
   Clocks scale: 100
   Sleep Timers Accuracy: Usleep Only
+  Performance Report Threshold: 500
+  Enable Performance Report: false
+  Accurate PUTLLUC: false
+  Lib Loader: Load liblv2.sprx only
+  Load libraries: []
 VFS:
   $(EmulatorDir): /storage/roms/ps3/
   /dev_hdd0/: $(EmulatorDir)dev_hdd0/
@@ -48,12 +66,13 @@ Video:
   Aspect ratio: 16:9
   Frame limit: Off
   MSAA: Auto
+  Shader Mode: Async Shader Recompiler
   Write Color Buffers: false
   Write Depth Buffer: false
   Read Color Buffers: false
   Read Depth Buffer: false
   Log shader programs: false
-  VSync: false
+  VSync: true
   Debug output: false
   Debug overlay: false
   Use Legacy OpenGL Buffers: false
@@ -69,25 +88,31 @@ Video:
   Disable On-Disk Shader Cache: false
   Disable Vulkan Memory Allocator: false
   Use full RGB output range: true
-  Disable Asynchronous Shader Compiler: false
   Strict Texture Flushing: false
   Disable native float16 support: false
   Multithreaded RSX: false
+  Relaxed ZCULL Sync: false
+  Enable 3D: false
+  Debug Program Analyser: false
   Consecutive Frames To Draw: 1
   Consecutive Frames To Skip: 1
   Resolution Scale: 100
   Anisotropic Filter Override: 0
+  Texture LOD Bias Addend: 0
   Minimum Scalable Dimension: 16
+  Shader Compiler Threads: 0
   Driver Recovery Timeout: 1000000
+  Driver Wake-Up Delay: 1
   Vblank Rate: 60
-  D3D12:
-    Adapter: ""
+  DECR memory layout: false
   Vulkan:
     Adapter: ""
     Force FIFO present mode: false
     Force primitive restart flag: false
   Performance Overlay:
     Enabled: false
+    Enable Framerate Graph: false
+    Enable Frametime Graph: false
     Detail level: Medium
     Metrics update interval (ms): 350
     Font size (px): 10
@@ -109,11 +134,14 @@ Video:
     Allow custom background: true
     Darkening effect strength: 30
     Blur effect strength: 0
+  Disable Asynchronous Shader Compiler: false
+  D3D12:
+    Adapter: ""
 Audio:
   Renderer: OpenAL
   Dump to file: false
   Convert to 16 bit: false
-  Downmix to Stereo: true
+  Audio Channels: Downmix to Stereo
   Start Threshold: 1
   Master Volume: 100
   Enable Buffering: true
@@ -123,27 +151,38 @@ Audio:
   Time Stretching Threshold: 75
   Microphone Type: "Null"
   Microphone Devices: "@@@@@@@@@@@@"
+  Downmix to Stereo: true
 Input/Output:
   Keyboard: "Null"
   Mouse: Basic
-  Pad: Keyboard
   Camera: "Null"
   Camera type: Unknown
   Move: "Null"
+  Pad: Keyboard
 System:
+  License Area: SCEE
   Language: English (US)
   Keyboard Type: English keyboard (US standard)
   Enter button assignment: Enter with cross
+  Console time offset (s): 0
 Net:
-  Connection status: Disconnected
+  Internet enabled: Connected
   IP address: 192.168.1.1
+  DNS address: 8.8.8.8
+  IP swap list: ""
+  PSN status: Disconnected
+  Connection status: Disconnected
 Miscellaneous:
   Automatically start games after boot: true
   Exit RPCS3 when process finishes: false
   Start games in fullscreen mode: true
-  Show FPS counter in window title: true
+  Prevent display sleep while running games: true
   Show trophy popups: true
   Show shader compilation hint: true
   Use native user interface: true
+  GDB Server: 127.0.0.1:2345
+  Silence All Logs: false
+  Window Title Format: "FPS: %F | %R | %V | %T [%t]"
+  Show FPS counter in window title: true
   Port: 2345
 Log: {}

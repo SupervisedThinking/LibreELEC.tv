@@ -17,6 +17,11 @@ PKG_MESON_OPTS_TARGET="-Dgdk-pixbuf=disabled \
                        -Dtests=disabled \
                        -Dnls=disabled"
 
+  # Fix missing dispmanx
+  if [ "${DEVICE}" = "RPi4" ]; then
+    PKG_MESON_OPTS_TARGET+=" -Drpicamsrc=disabled"
+  fi
+
 post_makeinstall_target(){
   # Clean up
   safe_remove ${INSTALL}/usr/share

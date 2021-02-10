@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="vulkan-tools"
-PKG_VERSION="1.2.166"
-PKG_SHA256="700058b72f9f48321bc0dc1e597bec6528af5c9c7158623459da79c96997cd7b"
+PKG_VERSION="1.2.169"
+PKG_SHA256="ecc7d3eeb5ea92eccd2a1f209818eab7e19e78e976016e6bbafd85988921d73e"
 PKG_LICENSE="Apache 2.0"
 PKG_SITE="https://github.com/KhronosGroup/Vulkan-Tools"
 PKG_URL="https://github.com/KhronosGroup/Vulkan-tools/archive/v${PKG_VERSION}.tar.gz"
@@ -21,6 +21,6 @@ pre_configure_target() {
 
 pre_make_target() {
   # Fix cross compiling
-  find ${PKG_BUILD} -name flags.make -exec sed -i "s:isystem :I:g" \{} \;
+  find ${PKG_BUILD} -name flags.make -exec sed -i  "s:isystem :I:g" \{} \;
   find ${PKG_BUILD} -name build.ninja -exec sed -i "s:isystem :I:g" \{} \;
 }

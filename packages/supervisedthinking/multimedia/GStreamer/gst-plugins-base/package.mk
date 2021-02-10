@@ -14,12 +14,17 @@ PKG_BUILD_FLAGS="-gold"
 pre_configure_target() {
   PKG_MESON_OPTS_TARGET="-Dexamples=disabled \
                          -Dtests=disabled \
+                         -Dgobject-cast-checks=disabled \
                          -Dgtk_doc=disabled \
                          -Dnls=disabled"
 
   # Fix undefined symbol glPointSizePointerOES
   if [ "${OPENGLES}" = "bcm2835-driver" ]; then
     TARGET_LDFLAGS+=" -lEGL -lGLESv2"
+  fi
+  # Fix missing dispmanx
+  if [ "${DEVICE}" = "RPi4" ]; then
+    PKG_MESON_OPTS_TARGET+=" -Dgl_winsys="egl""
   fi
 }
 

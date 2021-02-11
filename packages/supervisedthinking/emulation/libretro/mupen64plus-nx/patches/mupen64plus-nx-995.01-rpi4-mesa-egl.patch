@@ -1,0 +1,21 @@
+From 5bcae99a1a62e30da4acc201f1aaaab55279c94b Mon Sep 17 00:00:00 2001
+From: SupervisedThinking <supervisedthinking@gmail.com>
+Date: Thu, 11 Feb 2021 11:44:47 +0100
+Subject: [PATCH] Makefile: fix RPi4 Mesa build
+
+---
+ Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Makefile b/Makefile
+index d981ee83..3895ff07 100644
+--- a/Makefile
++++ b/Makefile
+@@ -143,6 +143,7 @@ else ifneq (,$(findstring rpi,$(platform)))
+    endif
+    ifneq (,$(findstring rpi4,$(platform)))
+       MESA = 1
++      COREFLAGS += -DEGL_NO_X11
+    endif
+    ifeq ($(MESA), 1)
+       GL_LIB := -lGLESv2

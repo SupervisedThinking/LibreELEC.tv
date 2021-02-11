@@ -23,10 +23,10 @@ post_makeinstall_target() {
   # clean up
   safe_remove ${INSTALL}
 
-  #install libs for chrome
+  # install libs
   mkdir -p ${INSTALL}/usr/lib
     cp -PR lib/libwx_baseu-${PKG_VERSION:0:3}*      ${INSTALL}/usr/lib
-    cp -PR lib/libwx_gtk3u_adv-${PKG_VERSION:0:3}* ${INSTALL}/usr/lib
+    cp -PR lib/libwx_gtk3u_adv-${PKG_VERSION:0:3}*  ${INSTALL}/usr/lib
     cp -PR lib/libwx_gtk3u_core-${PKG_VERSION:0:3}* ${INSTALL}/usr/lib
 
   # fix wx-config paths                              

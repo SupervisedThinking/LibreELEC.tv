@@ -1,0 +1,375 @@
+From 06fe6fd77801e45f51a6ad12ed3d987d4167aa0c Mon Sep 17 00:00:00 2001
+From: Patryk Obara <dreamer.tan@gmail.com>
+Date: Tue, 9 Feb 2021 13:42:30 +0100
+Subject: [PATCH 1/3] Add mt32emu dependency with meson wrap fallback
+
+Add new option (use_mt32emu), to allow users to opt-out of this
+dependency if necessary. Aside of Meson WrapDB fallback, treat it as any
+other dependency.
+---
+ meson.build              | 11 +++++++++++
+ meson_options.txt        |  5 +++++
+ src/config.h.in          |  2 +-
+ src/midi/meson.build     |  2 ++
+ subprojects/.gitignore   |  1 +
+ subprojects/mt32emu.wrap | 13 +++++++++++++
+ 6 files changed, 33 insertions(+), 1 deletion(-)
+ create mode 100644 subprojects/mt32emu.wrap
+
+diff --git a/meson.build b/meson.build
+index d5d7fa7ff..1d570b944 100644
+--- a/meson.build
++++ b/meson.build
+@@ -10,6 +10,8 @@ project('dosbox-staging', 'c', 'cpp',
+ #
+ # - 0.51.0 - remove warning about assertions in buildtype=plain
+ # - 0.56.0 - use meson.current_source_dir() in unit tests
++# - 0.56.0 - subproject wraps are automatically promoted to fallbacks,
++#            stop using: "fallback : ['foo', 'foo_dep']" for dependencies
+ #
+ assert(meson.version().version_compare('>= 0.49.0'),
+        'Expecting meson 0.49.0 or newer.')
+@@ -59,6 +61,7 @@ conf_data.set10('C_MODEM', get_option('use_sdl2_net'))
+ conf_data.set10('C_IPX', get_option('use_sdl2_net'))
+ conf_data.set10('C_OPENGL', get_option('use_opengl'))
+ conf_data.set10('C_FLUIDSYNTH', get_option('use_fluidsynth'))
++conf_data.set10('C_MT32EMU', get_option('use_mt32emu'))
+ conf_data.set10('C_SSHOT', get_option('use_png'))
+ conf_data.set10('C_FPU', true)
+ conf_data.set10('C_FPU_X86', host_machine.cpu_family() in ['x86', 'x86_64'])
+@@ -155,6 +158,7 @@ sdl2_net_dep  = optional_dep
+ opengl_dep    = optional_dep
+ fluid_dep     = optional_dep
+ opus_dep      = optional_dep
++mt32emu_dep   = optional_dep
+ png_dep       = optional_dep
+ z_dep         = optional_dep
+ curses_dep    = optional_dep # necessary for debugger builds
+@@ -180,6 +184,13 @@ if get_option('use_fluidsynth')
+                          not_found_message : msg.format('use_fluidsynth'))
+ endif
+ 
++if get_option('use_mt32emu')
++  # TODO version 2.5.0 will install mt32emu.pc file; upgrade when released
++  mt32emu_dep = dependency('mt32emu', version : '>= 2.4.2',
++                           fallback : ['mt32emu', 'mt32emu_dep'],
++                           not_found_message : msg.format('use_mt32emu'))
++endif
++
+ if get_option('use_opusfile')
+   opus_dep = dependency('opusfile', not_found_message : msg.format('use_opusfile'))
+ endif
+diff --git a/meson_options.txt b/meson_options.txt
+index ebb099812..5aafe7619 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -13,6 +13,11 @@ option('use_fluidsynth',
+        value : true,
+        description : 'Enable built-in MIDI support via FluidSynth')
+ 
++option('use_mt32emu',
++       type : 'boolean',
++       value : true,
++       description : 'Enable built-in MT-32 emulation support')
++
+ option('use_opusfile',
+        type : 'boolean',
+        value : true,
+diff --git a/src/config.h.in b/src/config.h.in
+index 4b671103d..7df28cf2d 100644
+--- a/src/config.h.in
++++ b/src/config.h.in
+@@ -105,7 +105,7 @@
+ #mesondefine C_HEAVY_DEBUG
+ 
+ // Define to 1 to enable MT-32 emulator
+-#define C_MT32EMU 0
++#mesondefine C_MT32EMU
+ 
+ // Compiler supports Core Audio headers
+ #mesondefine C_COREAUDIO
+diff --git a/src/midi/meson.build b/src/midi/meson.build
+index 00b7787ab..f9c11df85 100644
+--- a/src/midi/meson.build
++++ b/src/midi/meson.build
+@@ -1,6 +1,7 @@
+ libmidi_sources = [
+   'midi.cpp',
+   'midi_fluidsynth.cpp',
++  'midi_mt32.cpp',
+   'midi_oss.cpp',
+ ]
+ 
+@@ -9,6 +10,7 @@ libmidi = static_library('midi', libmidi_sources,
+                          dependencies : [
+                            sdl2_dep,
+                            fluid_dep,
++                           mt32emu_dep,
+                            alsa_dep,
+                            coreaudio_dep,
+                            coremidi_dep,
+diff --git a/subprojects/.gitignore b/subprojects/.gitignore
+index 535c01a78..9a2114cf8 100644
+--- a/subprojects/.gitignore
++++ b/subprojects/.gitignore
+@@ -1,2 +1,3 @@
+ googletest-release-*
++munt-libmt32emu*
+ packagecache
+diff --git a/subprojects/mt32emu.wrap b/subprojects/mt32emu.wrap
+new file mode 100644
+index 000000000..52482cb54
+--- /dev/null
++++ b/subprojects/mt32emu.wrap
+@@ -0,0 +1,13 @@
++[wrap-file]
++directory = munt-libmt32emu_2_4_2
++
++source_url = https://github.com/munt/munt/archive/libmt32emu_2_4_2.tar.gz
++source_filename = libmt32emu_2_4_2.tar.gz
++source_hash = 5ba49f416dc1a076ea73e2b0136ec076b0d86537b47125c104e1e8c3716efb3c
++
++patch_url = https://github.com/dreamer/mt32emu/releases/download/test-release/mt32emu-2.4.2-1-wrap.zip
++patch_filename = mt32emu-2.4.2-1-wrap.zip
++patch_hash = 09a8e98aeff8ea5dd7668fa32cd5edcc9b8715ce45798b602a7308ea379c64bc
++
++[provide]
++mt32emu = mt32emu_dep
+
+From 1684470492903be9f444bab39fd3895cdbe027bd Mon Sep 17 00:00:00 2001
+From: Patryk Obara <dreamer.tan@gmail.com>
+Date: Wed, 10 Feb 2021 22:07:31 +0100
+Subject: [PATCH 2/3] Prevent effc++ warnings from affecting subprojects
+
+---
+ meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index 1d570b944..9034233d8 100644
+--- a/meson.build
++++ b/meson.build
+@@ -31,9 +31,9 @@ endif
+ cc = meson.get_compiler('c')
+ cxx = meson.get_compiler('cpp')
+ 
+-add_global_arguments('-Weffc++', language : 'cpp')
++add_project_arguments('-Weffc++', language : 'cpp')
+ if cxx.has_argument('-Wextra-semi')
+-    add_global_arguments('-Wextra-semi', language : 'cpp')
++    add_project_arguments('-Wextra-semi', language : 'cpp')
+ endif
+ 
+ 
+
+From 77f20a595b37859bfecd3369cadfce1f1152ced9 Mon Sep 17 00:00:00 2001
+From: Patryk Obara <dreamer.tan@gmail.com>
+Date: Wed, 10 Feb 2021 22:29:53 +0100
+Subject: [PATCH 3/3] Adjust allowed warning limits after enabling mt32emu
+
+Move 'meson setup' to separate job step, so that build parameters are
+visible directly on GitHub CI job page (makes it easier to see what's
+happening).
+
+Adjust CI for the fact, that mt32emu feature is now enabled by default.
+
+Clang dynamic analyzer builds are failing - that's why the feature is
+disabled in there. Other builds have feature enabled or disabled as
+appropriate for the context.
+---
+ .github/workflows/analysis.yml  | 10 +++++-----
+ .github/workflows/linux.yml     | 34 +++++++++++++++++++++------------
+ .github/workflows/macos.yml     | 19 +++++++++++-------
+ .github/workflows/platforms.yml |  5 ++++-
+ 4 files changed, 43 insertions(+), 25 deletions(-)
+
+diff --git a/.github/workflows/analysis.yml b/.github/workflows/analysis.yml
+index 83c4888bf..29541305b 100644
+--- a/.github/workflows/analysis.yml
++++ b/.github/workflows/analysis.yml
+@@ -69,11 +69,11 @@ jobs:
+       - name: Log environment
+         run:  ./scripts/log-env.sh
+ 
+-      - name: Run scan-build
++      - run:  meson setup build
++
++      - name: Build and run scan-build
+         run: |
+-          # build steps
+           set -x
+-          meson setup build
+           ninja -C build scan-build
+           mv build/meson-logs/scanbuild report
+ 
+@@ -85,7 +85,7 @@ jobs:
+ 
+       - name: Summarize report
+         env:
+-          MAX_BUGS: 183
++          MAX_BUGS: 187
+         run: |
+           # summary
+           echo "Full report is included in build Artifacts"
+@@ -124,7 +124,7 @@ jobs:
+           # UndefinedBehaviorSanitizer at the same time.
+           # See Clang manual to learn more.
+           - name: Clang undefined+address sanitizer
+-            build_flags: -Db_sanitize=address,undefined --native-file=.github/meson/native-clang.ini
++            build_flags: -Db_sanitize=address,undefined --native-file=.github/meson/native-clang.ini -Duse_mt32emu=false
+             logs: clang-uasan-logs
+             max_issues: 4
+     steps:
+diff --git a/.github/workflows/linux.yml b/.github/workflows/linux.yml
+index 328631cc0..d26b8028d 100644
+--- a/.github/workflows/linux.yml
++++ b/.github/workflows/linux.yml
+@@ -17,46 +17,56 @@ jobs:
+       max-parallel: 3
+       matrix:
+         conf:
++
+           - name: Clang, Ubuntu 20.04
+             os: ubuntu-20.04
+             packages: clang
+             build_flags: --native-file=.github/meson/native-clang.ini
+             max_warnings: 0
++
+           - name: GCC, Ubuntu 20.04
+             os: ubuntu-20.04
+-            max_warnings: 0
++            max_warnings: 3
++
+           - name: GCC, Ubuntu 18.04
+             os: ubuntu-18.04
+-            build_flags: -Duse_fluidsynth=false --wrap-mode=nofallback
+-            max_warnings: 0
++            build_flags: -Duse_fluidsynth=false
++            max_warnings: 3
++
+           - name: GCC, Ubuntu 16.04
+             os: ubuntu-16.04
+-            build_flags: -Duse_fluidsynth=false --wrap-mode=nofallback
++            build_flags: -Duse_fluidsynth=false -Duse_mt32emu=false --wrap-mode=nofallback
+             max_warnings: 0
++
+           - name: GCC, +tests
+             os: ubuntu-20.04
+             run_tests: true
+             max_warnings: -1
++
+           - name: GCC, +debugger
+             os: ubuntu-20.04
+             build_flags: -Denable_debugger=normal
+-            max_warnings: 120
++            max_warnings: 123
++
+           - name: GCC, -dyn-x86
+             os: ubuntu-20.04
+             build_flags: -Ddynamic_core=dynrec
+-            max_warnings: 0
++            max_warnings: 3
++
+           - name: GCC, -dyn-x86, +debugger
+             os: ubuntu-20.04
+             build_flags: -Ddynamic_core=dynrec -Denable_debugger=normal
+-            max_warnings: 157
++            max_warnings: 160
++
+           - name: GCC, -network
+             os: ubuntu-20.04
+             build_flags: -Duse_sdl2_net=false
+-            max_warnings: 0
++            max_warnings: 3
++
+           - name: GCC, warning_level=3
+             os: ubuntu-20.04
+             build_flags: -Dwarning_level=3
+-            max_warnings: 113
++            max_warnings: 116
+ 
+     steps:
+       - uses: actions/checkout@v2
+@@ -94,12 +104,12 @@ jobs:
+       - name: Log environment
+         run:  ./scripts/log-env.sh
+ 
++      - run:  meson setup ${{ matrix.conf.build_flags }} build
++
+       - name: Build
+         run: |
+           set -xo pipefail
+-          meson setup ${{ matrix.conf.build_flags }} build
+-          cd build
+-          ninja |& tee ../build.log
++          ninja -C build |& tee build.log
+ 
+       - name: Run tests
+         if:   matrix.conf.run_tests
+diff --git a/.github/workflows/macos.yml b/.github/workflows/macos.yml
+index c8754f5c9..64f09ed50 100644
+--- a/.github/workflows/macos.yml
++++ b/.github/workflows/macos.yml
+@@ -17,23 +17,27 @@ jobs:
+       max-parallel: 3
+       matrix:
+         conf:
++
+           - name: Clang
+             packages: meson
+-            build_flags: --wrap-mode=nofallback
+             max_warnings: 0
++
+           - name: GCC
+             packages: gcc@9
+-            build_flags: --wrap-mode=nofallback --native-file=.github/meson/native-gcc-9.ini
+-            max_warnings: 0
++            build_flags: --native-file=.github/meson/native-gcc-9.ini
++            max_warnings: 3
++
+           - name: Clang, +tests
+             run_tests: true
+             max_warnings: -1
++
+           - name: Clang, +debugger
+-            build_flags: --wrap-mode=nofallback -Denable_debugger=normal
++            build_flags: -Denable_debugger=normal
+             max_warnings: 153
++
+           - name: Clang, warning_level=3
+-            build_flags: --wrap-mode=nofallback -Dwarning_level=3
+-            max_warnings: 167
++            build_flags: -Dwarning_level=3
++            max_warnings: 170
+ 
+     steps:
+       - uses: actions/checkout@v2
+@@ -64,10 +68,11 @@ jobs:
+       - name: Log environment
+         run:  ./scripts/log-env.sh
+ 
++      - run:  meson setup ${{ matrix.conf.build_flags }} build
++
+       - name: Build
+         run: |
+           set -xo pipefail
+-          meson setup ${{ matrix.conf.build_flags }} build
+           meson compile -C build 2>&1 | tee build.log
+ 
+       - name: Run tests
+diff --git a/.github/workflows/platforms.yml b/.github/workflows/platforms.yml
+index 202b6f99e..202821a44 100644
+--- a/.github/workflows/platforms.yml
++++ b/.github/workflows/platforms.yml
+@@ -59,7 +59,10 @@ jobs:
+             apt-get update
+             apt-get install -y $(cat ./.github/packages/ubuntu-20.04-apt.txt)
+             ./scripts/log-env.sh
+-            meson build -Duse_fluidsynth=false --wrap-mode=nofallback
++            meson build \
++              -Duse_fluidsynth=false \
++              -Duse_mt32emu=false \
++              --wrap-mode=nofallback
+             ninja -C build |& tee build.log
+ 
+ 

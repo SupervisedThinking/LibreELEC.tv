@@ -1,0 +1,206 @@
+From bd8f7e9a8d76fc7f525dd8594d8715292ec652d1 Mon Sep 17 00:00:00 2001
+From: kcgen <1557255+kcgen@users.noreply.github.com>
+Date: Thu, 11 Feb 2021 01:21:00 -0800
+Subject: [PATCH 1/2] Use mt32emu's floating-point synthesis with the
+ soft-limiter
+
+The soft-limiter is introduced in-tandem, as it's necessary to
+control possible overages in the float-point rendered output. Per
+Munt's NEWS.TXT: "no clamping is applied in DACInputMode_NICE
+mode for floats, so the output samples may overshoot a little for
+tunes with the volume set too high."
+
+To accomodate the switch to floating-point and soft-limiter, this
+commit makes the following changes:
+
+ - Configures mt32emu to use floating-point math for its
+   synthesis
+
+ - Renders audio to a floating-point array of 1024-frames
+   (4 KiB of data).
+
+ - Bumps the ring size up to 4 buffers, which holds a combined
+   total of 4096 audio frames or ~5 video-frames at 60 FPS.
+
+ - Render floating point buffers are now passed through the
+   soft-limiter (also in the rendering thread).
+
+ - The Mixer's level callback is used to adjust the soft
+   limiter's floating-point scalar and mt32emu's floating-point
+   gain, which moves level control to the sources, which can do a
+   smarter job at adjustment levels versus scaling the integer
+   stream in the mixer.
+---
+ src/midi/midi_mt32.cpp | 38 ++++++++++++++++++++++++++++++++++----
+ src/midi/midi_mt32.h   | 18 ++++++++++++------
+ 2 files changed, 46 insertions(+), 10 deletions(-)
+
+diff --git a/src/midi/midi_mt32.cpp b/src/midi/midi_mt32.cpp
+index 4647eae0f..8a228bd37 100644
+--- a/src/midi/midi_mt32.cpp
++++ b/src/midi/midi_mt32.cpp
+@@ -43,6 +43,8 @@
+ constexpr auto ANALOG_MODE = MT32Emu::AnalogOutputMode_ACCURATE;
+ // DAC Emulation modes: NICE, PURE, GENERATION1, and GENERATION2
+ constexpr auto DAC_MODE = MT32Emu::DACInputMode_NICE;
++// Analog rendering types: BITS16S, FLOAT
++constexpr auto RENDERING_TYPE = MT32Emu::RendererType_FLOAT;
+ // Sample rate conversion quality: FASTEST, FAST, GOOD, BEST
+ constexpr auto RATE_CONVERSION_QUALITY = MT32Emu::SamplerateConversionQuality_BEST;
+ // Use improved amplitude ramp characteristics for sustaining instruments
+@@ -282,9 +284,16 @@ bool MidiHandler_mt32::Open(MAYBE_UNUSED const char *conf)
+ 	                                      this, std::placeholders::_1);
+ 	channel_t mixer_channel(MIXER_AddChannel(mixer_callback, 0, "MT32"),
+ 	                        MIXER_DelChannel);
++
++	// Let the mixer command adjust the MT32's services gain-level
++	const auto set_mixer_level = std::bind(&MidiHandler_mt32::SetMixerLevel,
++	                                       this, std::placeholders::_1);
++	mixer_channel->RegisterLevelCallBack(set_mixer_level);
++
+ 	const auto sample_rate = mixer_channel->GetSampleRate();
+ 
+ 	mt32_service->setAnalogOutputMode(ANALOG_MODE);
++	mt32_service->selectRendererType(RENDERING_TYPE);
+ 	mt32_service->setStereoOutputSampleRate(sample_rate);
+ 	mt32_service->setSamplerateConversionQuality(RATE_CONVERSION_QUALITY);
+ 
+@@ -316,6 +325,26 @@ MidiHandler_mt32::~MidiHandler_mt32()
+ 	Close();
+ }
+ 
++// When the user runs "mixer MT32 <percent-left>:<percent-right>", this function
++// get those percents as floating point ratios (100% being 1.0f). Instead of
++// post-scaling the rendered integer stream in the mixer, we instead provide the
++// desired floating point scalar to the MT32 service via its gain() interface
++// where it can more elegantly adjust the level of the synthesis.
++
++// Another nuance is that MT32's gain interface takes in a single float, but
++// DOSBox's mixer accept left-and-right, so we apply gain using the larger of
++// the two and then use the limiter's left-right ratios to scale down by lesser
++// ratio.
++void MidiHandler_mt32::SetMixerLevel(const AudioFrame &desired) noexcept
++{
++	const float gain = std::max(desired.left, desired.right);
++	if (service)
++		service->setOutputGain(gain);
++
++	limiter_ratio.left = INT16_MAX * desired.left / gain;
++	limiter_ratio.right = INT16_MAX * desired.right / gain;
++}
++
+ void MidiHandler_mt32::Close()
+ {
+ 	if (!is_open)
+@@ -327,7 +356,7 @@ void MidiHandler_mt32::Close()
+ 
+ 	// Stop rendering and drain the ring
+ 	keep_rendering = false;
+-	buffer_t discard_buffer;
++	limited_buffer_t discard_buffer;
+ 	while (ring.size_approx())
+ 		ring.wait_dequeue(discard_buffer);
+ 
+@@ -404,10 +433,11 @@ uint16_t MidiHandler_mt32::GetRemainingFrames()
+ // released in the ring allowing MT-32 to renderer the next "full buffer".
+ void MidiHandler_mt32::Render()
+ {
+-	buffer_t buf;
++	render_buffer_t buf;
+ 	while (keep_rendering) {
+-		service->renderBit16s(buf.data(), FRAMES_PER_BUFFER);
+-		ring.wait_enqueue(buf);
++		service->renderFloat(buf.data(), FRAMES_PER_BUFFER);
++		const auto &out = soft_limiter.Apply(buf, FRAMES_PER_BUFFER);
++		ring.wait_enqueue(out);
+ 	}
+ }
+ 
+diff --git a/src/midi/midi_mt32.h b/src/midi/midi_mt32.h
+index 075253419..a4adfdd20 100644
+--- a/src/midi/midi_mt32.h
++++ b/src/midi/midi_mt32.h
+@@ -38,20 +38,23 @@
+ 
+ #include "mixer.h"
+ #include "../libs/rwqueue/readerwritercircularbuffer.h"
++#include "soft_limiter.h"
+ 
+ class MidiHandler_mt32 final : public MidiHandler {
+ private:
+-	static constexpr int FRAMES_PER_BUFFER = 2048; // synth granularity
++	static constexpr int FRAMES_PER_BUFFER = 1024; // synth granularity
+ 	static constexpr int SAMPLES_PER_BUFFER = FRAMES_PER_BUFFER * 2; // L & R
+ 
+-	using buffer_t = std::array<int16_t, SAMPLES_PER_BUFFER>;
+-	using ring_t = moodycamel::BlockingReaderWriterCircularBuffer<buffer_t>;
++	using render_buffer_t = std::array<float, SAMPLES_PER_BUFFER>;
++	using limited_buffer_t = std::array<int16_t, SAMPLES_PER_BUFFER>;
++	using ring_t = moodycamel::BlockingReaderWriterCircularBuffer<limited_buffer_t>;
+ 	using channel_t = std::unique_ptr<MixerChannel, decltype(&MIXER_DelChannel)>;
+ 	using conditional_t = moodycamel::weak_atomic<bool>;
+ 
+ public:
+ 	using service_t = std::unique_ptr<MT32Emu::Service>;
+ 
++	MidiHandler_mt32() : soft_limiter("MT32", limiter_ratio) {}
+ 	~MidiHandler_mt32() override;
+ 	void Close() override;
+ 	const char *GetName() const override { return "mt32"; }
+@@ -62,15 +65,18 @@ class MidiHandler_mt32 final : public MidiHandler {
+ private:
+ 	uint32_t GetMidiEventTimestamp() const;
+ 	void MixerCallBack(uint16_t len);
++	void SetMixerLevel(const AudioFrame &desired) noexcept;
+ 	uint16_t GetRemainingFrames();
+ 	void Render();
+ 
+ 	// Managed objects
+-	buffer_t buffer{};
+ 	channel_t channel{nullptr, MIXER_DelChannel};
+-	std::thread renderer{};
+-	ring_t ring{3}; // Handle up to three buffers in the ring
++	limited_buffer_t buffer{};
++	ring_t ring{4}; // Handle up to four buffers in the ring
+ 	service_t service{};
++	std::thread renderer{};
++	AudioFrame limiter_ratio = {1.0f, 1.0f};
++	SoftLimiter<FRAMES_PER_BUFFER> soft_limiter;
+ 
+ 	// The following two members let us determine the total number of played
+ 	// frames, which is used by GetMidiEventTimestamp() to calculate a total
+
+From 289a9598ba81fbfc25e3a8616557461864e61fe0 Mon Sep 17 00:00:00 2001
+From: kcgen <1557255+kcgen@users.noreply.github.com>
+Date: Thu, 11 Feb 2021 01:38:11 -0800
+Subject: [PATCH 2/2] Use mt32emu's nice panning and partial mixing settings
+
+---
+ src/midi/midi_mt32.cpp | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/midi/midi_mt32.cpp b/src/midi/midi_mt32.cpp
+index 8a228bd37..a236a4ce8 100644
+--- a/src/midi/midi_mt32.cpp
++++ b/src/midi/midi_mt32.cpp
+@@ -47,8 +47,10 @@ constexpr auto DAC_MODE = MT32Emu::DACInputMode_NICE;
+ constexpr auto RENDERING_TYPE = MT32Emu::RendererType_FLOAT;
+ // Sample rate conversion quality: FASTEST, FAST, GOOD, BEST
+ constexpr auto RATE_CONVERSION_QUALITY = MT32Emu::SamplerateConversionQuality_BEST;
+-// Use improved amplitude ramp characteristics for sustaining instruments
++// Use improved behavior for volume adjustments, panning, and mixing
+ constexpr bool USE_NICE_RAMP = true;
++constexpr bool USE_NICE_PANNING = true;
++constexpr bool USE_NICE_PARTIAL_MIXING = true;
+ 
+ MidiHandler_mt32 mt32_instance;
+ 
+@@ -305,6 +307,8 @@ bool MidiHandler_mt32::Open(MAYBE_UNUSED const char *conf)
+ 
+ 	mt32_service->setDACInputMode(DAC_MODE);
+ 	mt32_service->setNiceAmpRampEnabled(USE_NICE_RAMP);
++	mt32_service->setNicePanningEnabled(USE_NICE_PANNING);
++	mt32_service->setNicePartialMixingEnabled(USE_NICE_PARTIAL_MIXING); 
+ 
+ 	service = std::move(mt32_service);
+ 	channel = std::move(mixer_channel);

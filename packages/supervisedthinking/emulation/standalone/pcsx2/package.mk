@@ -2,13 +2,13 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="pcsx2"
-PKG_VERSION="7c072094ae5712123a5a836879702ae6f58dce49"
+PKG_VERSION="ef6b65afb40ebd855b0cc113ea04b5afe2bf9607" #v1.7.0-dev+
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/PCSX2/pcsx2"
 PKG_URL="https://github.com/PCSX2/pcsx2.git"
-PKG_DEPENDS_TARGET="toolchain gdk-pixbuf libaio alsa-lib libfmt freetype gtk3-system glib mesa glew-cmake libpcap libpng pulseaudio systemd libX11 libxcb libxml2 sdl2 soundtouch xz zlib pngpp yaml-cpp wxwidgets unclutter-xfixes adwaita-icon-theme hicolor-icon-theme"
-PKG_LONGDESC="PCSX2 is a free and open-source PlayStation 2 (PS2) emulator. Its purpose is to emulate the PS2's hardware, using a combination of MIPS CPU Interpreters, Recompilers and a Virtual Machine which manages hardware states and PS2 system memory. This allows you to play PS2 games on your PC, with many additional features and benefits."
+PKG_DEPENDS_TARGET="toolchain alsa-lib adwaita-icon-theme freetype gdk-pixbuf glew-cmake glib gtk3-system hicolor-icon-theme libaio libfmt libpcap libpng libX11 libxcb libxml2 mesa pngpp pulseaudio sdl2 soundtouch systemd wxwidgets xz yaml-cpp zlib unclutter-xfixes"
+PKG_LONGDESC="PCSX2 is a free and open-source PlayStation 2 (PS2) emulator."
 GET_HANDLER_SUPPORT="git"
 
 pre_configure_target() {

@@ -4,7 +4,7 @@
 PKG_NAME="vlc"
 PKG_VERSION="3.0.12"
 PKG_SHA256="eff458f38a92126094f44f2263c2bf2c7cdef271b48192d0fe7b1726388cf879"
-PKG_LICENSE="GPL-2"
+PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="http://www.videolan.org"
 PKG_URL="http://get.videolan.org/vlc/${PKG_VERSION}/vlc-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain dbus gnutls ffmpeg libmpeg2 zlib flac-system libvorbis-system"

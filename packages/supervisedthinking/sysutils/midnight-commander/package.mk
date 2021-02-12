@@ -4,7 +4,7 @@
 PKG_NAME="midnight-commander"
 PKG_VERSION="4.8.25"
 PKG_SHA256="8a4aa1556a528fbe9140c47aa3d0665155187468a17c3b80a824de5fcbbebae1"
-PKG_LICENSE="GPL"
+PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="http://www.midnight-commander.org"
 PKG_URL="https://github.com/MidnightCommander/mc/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain gettext:host glib libssh2-system libtool:host ncurses pcre"

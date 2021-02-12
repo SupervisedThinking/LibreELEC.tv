@@ -4,7 +4,7 @@
 PKG_NAME="skyscraper"
 PKG_VERSION="3.6.7"
 PKG_SHA256="a18c9b09ade7ca4f17e05e9f6e468274579bea02caf2a2a71ab58aae747682d5"
-PKG_LICENSE="GPLv3"
+PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/muldjord/skyscraper"
 PKG_URL="https://github.com/muldjord/skyscraper/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain qt-everywhere"

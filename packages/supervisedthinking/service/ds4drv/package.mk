@@ -4,7 +4,7 @@
 PKG_NAME="ds4drv"
 PKG_VERSION="be7327f"
 PKG_SHA256="d346c5adccab076a9025b5c2a2340a6434a815d55c637164fe554a3ae60d6c62"
-PKG_LICENSE="OSS"
+PKG_LICENSE="MIT"
 PKG_SITE="https://github.com/chrippa/ds4drv"
 PKG_URL="https://github.com/chrippa/ds4drv/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain Python3 distutilscross:host python-evdev pyudev setuptools"

@@ -4,7 +4,7 @@
 PKG_NAME="pyudev"
 PKG_VERSION="0.22"
 PKG_SHA256="245b5717923bed83993cd50761c3f8f1a1a68e2cd09031adbd30beed4dc60077"
-PKG_LICENSE="OSS"
+PKG_LICENSE="LGPL-2.1-or-later"
 PKG_SITE="https://github.com/pyudev/pyudev"
 PKG_URL="https://github.com/pyudev/pyudev/archive/v${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain Python3 distutilscross:host"

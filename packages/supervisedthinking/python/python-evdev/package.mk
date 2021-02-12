@@ -4,7 +4,7 @@
 PKG_NAME="python-evdev"
 PKG_VERSION="1.3.0"
 PKG_SHA256="816367233ee23d86cef9b465bfdbaa778ab01e9a23d7604791acf7ff9434efe2"
-PKG_LICENSE="OSS"
+PKG_LICENSE="BSD"
 PKG_SITE="https://github.com/gvalkov/python-evdev"
 PKG_URL="https://github.com/gvalkov/python-evdev/archive/v${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain Python3 distutilscross:host"

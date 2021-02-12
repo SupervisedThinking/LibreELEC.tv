@@ -2,14 +2,14 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="libcurl-gnutls"
-PKG_VERSION="7.75.0"
-PKG_SHA256="fe0c49d8468249000bda75bcfdf9e30ff7e9a86d35f1a21f428d79c389d55675"
+PKG_VERSION="7_75_0"
+PKG_SHA256="31595df3ab92b918f117ca784da4ccfb92f780e12ed3f2818173ba8638b4d996"
 PKG_LICENSE="MIT"
 PKG_SITE="http://curl.haxx.se"
-PKG_URL="http://curl.haxx.se/download/curl-${PKG_VERSION}.tar.xz"
+PKG_URL="https://github.com/curl/curl/archive/curl-${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain glibc zlib gnutls rtmpdump nettle libidn2 nghttp2"
-PKG_LONGDESC="An URL retrieval library linked against gnutls without versioned symbols"
-PKG_TOOLCHAIN="configure"
+PKG_LONGDESC="An URL retrieval library (linked against gnutls)"
+PKG_TOOLCHAIN="autotools"
 PKG_BUILD_FLAGS="-gold -sysroot"
 
 pre_configure_target() {
@@ -72,7 +72,7 @@ pre_configure_target() {
 makeinstall_target() {
   # Create lib directory & install lib as libcurl-gnutls.so.*
   mkdir -p ${INSTALL}/usr/lib
-  cp -f ${PKG_BUILD}/.${TARGET_NAME}/lib/.libs/libcurl.so.4.?.? ${INSTALL}/usr/lib/libcurl-gnutls.so.4.7.0
+  cp -v -f ${PKG_BUILD}/.${TARGET_NAME}/lib/.libs/libcurl.so.4.?.? ${INSTALL}/usr/lib/libcurl-gnutls.so.4.7.0
 
   # Create symlinks to libcurl-gnutls.so
   for version in \

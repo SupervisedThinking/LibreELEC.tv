@@ -21,3 +21,9 @@ PKG_MESON_OPTS_HOST="-Dlegacy_level=0 \
                      -Dzlib=disabled \
                      -Dlzma=disabled \
                      -Dlz4=disabled"
+
+PKG_MESON_OPTS_TARGET="-Dlegacy_level=0 \
+                       -Dbin_programs=false \
+                       -Dzlib=disabled \
+                       -Dlzma=disabled \
+                       -Dlz4=disabled"

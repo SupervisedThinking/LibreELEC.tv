@@ -4,7 +4,7 @@
 PKG_NAME="mupen64plus-gui"
 PKG_VERSION="f454370d5d7d05e67317ac48fa45aefe0fdedf9f"
 PKG_SHA256="050b72cbe429ce0c1930ddedfb9d3ba644b9995b2f5a5406d83f19e3247147c4"
-PKG_LICENSE="GPLv3"
+PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/m64p/mupen64plus-gui"
 PKG_URL="https://github.com/m64p/mupen64plus-gui/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc sdl2 qt-everywhere p7zip-system libpng zlib mupen64plus-core"

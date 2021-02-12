@@ -4,7 +4,7 @@
 PKG_NAME="gliden64"
 PKG_VERSION="4_0"
 PKG_SHA256="6b379cf109433527155b479d67a32c903bf074003907bea26de224a573501af6"
-PKG_LICENSE="GPLv2"
+PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/gonetz/GLideN64"
 PKG_URL="https://github.com/gonetz/GLideN64/archive/Public_Release_${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc freetype:host zlib bzip2 libpng"

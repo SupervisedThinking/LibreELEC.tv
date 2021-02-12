@@ -4,7 +4,7 @@
 PKG_NAME="mupen64plus-audio-sdl2"
 PKG_VERSION="4922bfa066c375a9b3f7957d38fb1ef04d9fe8f7"
 PKG_SHA256="78caacbaa7f7bcf8d6c96a2728a8d15bf0bbc54bf08beaf583647529b6db60eb"
-PKG_LICENSE="GPLv2"
+PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/m64p/mupen64plus-audio-sdl2"
 PKG_URL="https://github.com/m64p/mupen64plus-audio-sdl2/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc mupen64plus-core libsamplerate sdl2"

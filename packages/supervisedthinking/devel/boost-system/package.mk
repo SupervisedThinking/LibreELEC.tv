@@ -4,7 +4,7 @@
 PKG_NAME="boost-system"
 PKG_VERSION="1_75_0"
 PKG_SHA256="953db31e016db7bb207f11432bef7df100516eeb746843fa0486a222e3fd49cb"
-PKG_LICENSE="OSS"
+PKG_LICENSE="BSL-1.0"
 PKG_SITE="http://www.boost.org/"
 PKG_URL="https://dl.bintray.com/boostorg/release/1.75.0/source/boost_${PKG_VERSION}.tar.bz2"
 PKG_DEPENDS_HOST="toolchain:host"

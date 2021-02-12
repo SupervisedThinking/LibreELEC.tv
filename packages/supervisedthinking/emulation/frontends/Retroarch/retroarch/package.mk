@@ -3,7 +3,7 @@
 
 PKG_NAME="retroarch"
 PKG_VERSION="5e551dd92b79d8127e66939835ea3c2a140c4078" #1.9.0
-PKG_LICENSE="GPLv3"
+PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/libretro/RetroArch"
 PKG_URL="https://github.com/libretro/RetroArch.git"
 PKG_DEPENDS_TARGET="toolchain linux glibc systemd dbus openssl expat alsa-lib libpng libusb libass speex tinyalsa fluidsynth-system freetype zlib bzip2 ffmpeg common-overlays-lr core-info-lr database-lr glsl-shaders-lr overlay-borders-lr samples-lr retroarch-assets retroarch-joypad-autoconfig libxkbcommon"

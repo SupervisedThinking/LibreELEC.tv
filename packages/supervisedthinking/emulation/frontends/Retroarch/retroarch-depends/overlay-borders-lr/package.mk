@@ -4,7 +4,7 @@
 PKG_NAME="overlay-borders-lr"
 PKG_VERSION="9aceca2dd514c589a57d40086557b804851aafcf"
 PKG_SHA256="f78ca10f26a960c902440512a4fa790b411551b1710ae64a3a1418af05fede58"
-PKG_LICENSE="GPL"
+PKG_LICENSE="MIT"
 PKG_SITE="https://github.com/libretro/overlay-borders"
 PKG_URL="https://github.com/libretro/overlay-borders/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET=""

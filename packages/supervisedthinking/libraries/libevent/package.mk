@@ -4,7 +4,7 @@
 PKG_NAME="libevent"
 PKG_VERSION="2.1.12"
 PKG_SHA256="7180a979aaa7000e1264da484f712d403fcf7679b1e9212c4e3d09f5c93efc24"
-PKG_LICENSE="BSD"
+PKG_LICENSE="BSD-3-Clause"
 PKG_SITE="http://libevent.org/"
 PKG_URL="https://github.com/libevent/libevent/archive/release-${PKG_VERSION}-stable.tar.gz"
 PKG_DEPENDS_TARGET="toolchain openssl zlib"

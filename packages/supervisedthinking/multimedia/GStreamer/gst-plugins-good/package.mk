@@ -4,7 +4,7 @@
 PKG_NAME="gst-plugins-good"
 PKG_VERSION="1.18.3"
 PKG_SHA256="9b3b8e05d4d6073bf929fb33e2d8f74dd81ff21fa5b50c3273c78dfa2ab9c5cb"
-PKG_LICENSE="GPL"
+PKG_LICENSE="LGPL-2.1-or-later"
 PKG_SITE="https://gstreamer.freedesktop.org/modules/gst-plugins-good.html"
 PKG_URL="https://gstreamer.freedesktop.org/src/gst-plugins-good/${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain gstreamer gst-plugins-base"

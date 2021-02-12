@@ -3,7 +3,7 @@
 
 PKG_NAME="pegasus-frontend"
 PKG_VERSION="89e3693bce7aea445df68bec04a74c583e557d9e" #weekly_2021w05
-PKG_LICENSE="GPLv3"
+PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/mmatyas/pegasus-frontend"
 PKG_URL="https://github.com/mmatyas/pegasus-frontend.git"
 PKG_DEPENDS_TARGET="toolchain linux glibc zlib libpng sdl2 qt-everywhere pegasus-theme-es2-simple pegasus-theme-gameOS"

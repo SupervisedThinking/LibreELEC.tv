@@ -4,7 +4,7 @@
 PKG_NAME="flac-system"
 PKG_VERSION="1.3.3"
 PKG_SHA256="213e82bd716c9de6db2f98bcadbc4c24c7e2efe8c75939a1a84e28539c4e1748"
-PKG_LICENSE="GPLv2"
+PKG_LICENSE="GFDL-1.2"
 PKG_SITE="https://xiph.org/flac/"
 PKG_URL="http://downloads.xiph.org/releases/flac/flac-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain libogg-system"

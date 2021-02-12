@@ -4,7 +4,7 @@
 PKG_NAME="dolphin"
 PKG_VERSION="c5ee86c75cc4d1057f4f810205a3e5278f100c7f" #5.0-13637
 PKG_ARCH="x86_64"
-PKG_LICENSE="GPLv2"
+PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/dolphin-emu/dolphin"
 PKG_URL="https://github.com/dolphin-emu/dolphin.git"
 PKG_DEPENDS_TARGET="toolchain linux glibc systemd openal-soft-system libevdev curl ffmpeg libpng zlib bzip2 bluez pulseaudio alsa-lib libogg-system libvorbis-system libSM enet-system qt-everywhere unclutter-xfixes"

@@ -4,7 +4,7 @@
 PKG_NAME="capsimg"
 PKG_VERSION="264973530f131f1de586dcf4346871ac633824a3"
 PKG_SHA256="cf1cf13ed2dcc8b3ab091b814279952d36d5f1a597c88b2e51523be2abe97dc5"
-PKG_LICENSE="GPL"
+PKG_LICENSE="MAME"
 PKG_SITE="https://github.com/FrodeSolheim/capsimg"
 PKG_URL="https://github.com/FrodeSolheim/capsimg/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"

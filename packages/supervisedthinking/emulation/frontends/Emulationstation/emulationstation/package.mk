@@ -3,7 +3,7 @@
 
 PKG_NAME="emulationstation"
 PKG_VERSION="be9e0f323ba67b8b18161397a0c739345d4d1936" #v2.9.4
-PKG_LICENSE="OSS"
+PKG_LICENSE="ES"
 PKG_SITE="https://github.com/RetroPie/EmulationStation"
 PKG_URL="https://github.com/RetroPie/EmulationStation.git"
 PKG_DEPENDS_TARGET="toolchain linux glibc systemd dbus openssl zlib libpng alsa-lib sdl2 freetype curl freeimage bzip2 vlc emulationstation-theme-carbon emulationstation-theme-simple-dark "

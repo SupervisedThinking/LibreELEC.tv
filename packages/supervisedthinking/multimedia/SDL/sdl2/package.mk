@@ -2,11 +2,11 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="sdl2"
-PKG_VERSION="4b160ce2c83048f10e34be0a91a18c92529d52a1" #2.0.14
-PKG_SHA256="e6acba4c30451a41ee1814cdd997944d27c5b40ec7b19db6a339b4e3b67f46d0"
-PKG_LICENSE="GPL"
+PKG_VERSION="2.0.14"
+PKG_SHA256="f85233bc8d4f30a7caa5aea7de0f95b8f4b1f7272473aea4b3ec4ede0a27357f"
+PKG_LICENSE="SDL"
 PKG_SITE="https://www.libsdl.org/"
-PKG_URL="https://github.com/spurious/SDL-mirror/archive/${PKG_VERSION}.tar.gz"
+PKG_URL="https://github.com/libsdl-org/SDL/archive/release-${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain alsa-lib systemd dbus"
 PKG_LONGDESC="Simple DirectMedia Layer is a cross-platform development library for portable low-level access to a video framebuffer, audio output, mouse, and keyboard."
 

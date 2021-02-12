@@ -3,7 +3,7 @@
 
 PKG_NAME="moonlight-qt"
 PKG_VERSION="dbfdc2fd149ea4ae9558b6d971674d2b158b7aa9" # v3.0.0+
-PKG_LICENSE="GPLv3"
+PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/moonlight-stream/moonlight-qt"
 PKG_URL="https://github.com/moonlight-stream/moonlight-qt.git"
 PKG_DEPENDS_TARGET="toolchain linux openssl alsa-lib pulseaudio ffmpeg sdl2 sdl2_ttf qt-everywhere opus-system"

@@ -4,7 +4,7 @@
 PKG_NAME="amiberry"
 PKG_VERSION="77f9f926e9d25b6dde666bac08e5f4b68d3f9343" # v3.3
 PKG_ARCH="arm"
-PKG_LICENSE="GPLv3"
+PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/midwan/amiberry"
 PKG_URL="https://github.com/midwan/amiberry.git"
 PKG_DEPENDS_TARGET="toolchain linux glibc bzip2 zlib sdl2 sdl2_image sdl2_ttf capsimg freetype libxml2 flac-system libogg-system mpg123-system libpng libmpeg2 retroarch-joypad-autoconfig"

@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="ppsspp-libretro"
-PKG_VERSION="76a568a4d37539fc13f6f90da9f22ed62a9bdc6a" #v1.11
+PKG_VERSION="d1c4b86e0a5cfa0880ed97f4a08ee2fa2fb01944" #v1.11.1
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/hrydgard/ppsspp"
 PKG_URL="https://github.com/hrydgard/ppsspp.git"

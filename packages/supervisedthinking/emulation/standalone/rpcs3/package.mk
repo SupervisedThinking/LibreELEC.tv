@@ -2,9 +2,9 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="rpcs3"
-PKG_VERSION="195fb1cf66480a9968e979a1c9201503c66cf9af" # v0.0.14+
+PKG_VERSION="5401cb7392fbadfb668897d5454c84f03fe11ecc" # v0.0.14+
 PKG_ARCH="x86_64"
-PKG_LICENSE="GPLv2"
+PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://rpcs3.net"
 PKG_URL="https://github.com/RPCS3/rpcs3.git"
 PKG_DEPENDS_TARGET="toolchain linux glibc systemd pulseaudio llvm mesa openal-soft-system libevdev curl ffmpeg libpng zlib vulkan-loader glew-cmake libSM sdl2 enet-system qt-everywhere unclutter-xfixes"

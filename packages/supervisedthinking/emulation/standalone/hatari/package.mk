@@ -4,7 +4,7 @@
 PKG_NAME="hatari"
 PKG_VERSION="cc33aa897bfc935907703bc94b6038c5483b04d5" #v2.3.1
 PKG_SHA256="f979c5beaec2c47305a8f0d4b0c735f9fe6101d8236bd167b1429b0f2a7f3f13"
-PKG_LICENSE="GPL"
+PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://hatari.tuxfamily.org/"
 PKG_URL="https://github.com/hatari/hatari/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc systemd alsa-lib sdl2 portaudio zlib capsimg libpng"

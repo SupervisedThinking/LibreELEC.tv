@@ -8,6 +8,9 @@
 # Stop Kodi service / load audio backend config
 kodictrl --stop
 
+# Change refresh rate to 60Hz
+set_refresh_rate_60
+
 # Set OpenAL audio driver to Pulseaudio or ALSA
 set_OpenAL_audiodriver RPCS3
 

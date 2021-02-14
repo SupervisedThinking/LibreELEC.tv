@@ -25,12 +25,10 @@ pre_configure_target() {
 }
 
 makeinstall_target() {
-  mkdir -p ${INSTALL}/usr/bin
   mkdir -p ${INSTALL}/usr/config/retroarch/playlists
   mkdir -p ${INSTALL}/usr/lib/libretro
 
   #create Retroarch Playlist
-  cp ${PKG_DIR}/files/*   ${INSTALL}/usr/config/retroarch/playlists
-  cp ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin
+  cp ${PKG_DIR}/config/*   ${INSTALL}/usr/config/retroarch/playlists
   cp -v ${PKG_LIBPATH}    ${INSTALL}/usr/lib/libretro/
 }

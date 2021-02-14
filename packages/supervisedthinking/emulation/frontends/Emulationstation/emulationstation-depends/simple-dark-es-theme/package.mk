@@ -19,14 +19,6 @@ makeinstall_target() {
   cp -r *  ${INSTALL}/${ES_THEME_PATH}
   ln -s    ${ES_THEME_PATH} ${INSTALL}/usr/config/emulationstation/themes/simple-dark
 
-  # Add missing common systems
-  cp -a ${PKG_DIR}/files/2048      ${INSTALL}/${ES_THEME_PATH}/
-  cp -a ${PKG_DIR}/files/chailove  ${INSTALL}/${ES_THEME_PATH}/
-  cp -a ${PKG_DIR}/files/mrboom    ${INSTALL}/${ES_THEME_PATH}/
-  cp -a ${PKG_DIR}/files/moonlight ${INSTALL}/${ES_THEME_PATH}/
-  cp -a ${PKG_DIR}/files/prboom    ${INSTALL}/${ES_THEME_PATH}/
-  cp -a ${PKG_DIR}/files/tyrquake  ${INSTALL}/${ES_THEME_PATH}/
-
   # Add missing generic systems
   if [ "${PROJECT}" = "Generic" ]; then
     cp -a ${PKG_DIR}/files/n3ds ${INSTALL}/${ES_THEME_PATH}/

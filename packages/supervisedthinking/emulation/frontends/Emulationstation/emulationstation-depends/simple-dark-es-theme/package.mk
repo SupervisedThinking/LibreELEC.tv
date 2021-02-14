@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
-PKG_NAME="emulationstation-theme-simple-dark"
+PKG_NAME="simple-dark-es-theme"
 PKG_VERSION="058472cfbc3b4fe9ddf1ab452908fab40e32d29c"
 PKG_SHA256="8e58972134d54cf202109c240452c65f1672ece7cd7955a549b272bea3963094"
 PKG_LICENSE="CC-BY-NC-SA-2.0"

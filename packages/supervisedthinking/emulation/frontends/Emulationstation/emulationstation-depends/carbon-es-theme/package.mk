@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
-PKG_NAME="emulationstation-theme-carbon"
+PKG_NAME="carbon-es-theme"
 PKG_VERSION="b09973e"
 PKG_SHA256="d100082afdfb32bbcd130b6236cbcbb544ed6e2ded7982144329672f54ab0f55"
 PKG_LICENSE="CC-BY-NC-SA-2.0"

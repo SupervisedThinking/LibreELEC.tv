@@ -18,11 +18,9 @@ PKG_LIBPATH="${PKG_LIBNAME}"
 PKG_MAKE_OPTS_TARGET="GIT_VERSION=${PKG_VERSION:0:7}"
 
 makeinstall_target() {
-  mkdir -p ${INSTALL}/usr/bin
   mkdir -p ${INSTALL}/usr/lib/libretro
   mkdir -p ${INSTALL}/usr/share/prboom
 
-  cp ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin
   cp ${PKG_BUILD}/prboom.wad ${INSTALL}/usr/share/prboom
   cp -v ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/
 }

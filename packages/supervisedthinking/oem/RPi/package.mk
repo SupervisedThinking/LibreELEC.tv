@@ -48,6 +48,7 @@ OEM_EMULATORS_LIBRETRO_RPI=" \
   stella2014 \
   tyrquake \
   vice-libretro \
+  yabasanshiro \
   yabause"
 
 # Standalone emulators

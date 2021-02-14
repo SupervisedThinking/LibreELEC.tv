@@ -95,7 +95,7 @@ update_spotify() {
 
 # Freeze Kodi / Stop PulseAudio / Run Spotify
 run_spotify() {
-  kodi-send --action="Notification(Spotify,Now starting "${RR_SPOTIFY_BRANCH}" client v"$(cat ${SPOTIFY_VERSION})",250,${ICON})"
+  kodi-send --action="Notification(Spotify,loading "${RR_SPOTIFY_BRANCH}" client v"$(cat ${SPOTIFY_VERSION})" - stand by,250,${ICON})"
   usleep 250000
   kodictrl --stop
   ${SPOTIFY_HOME}/spotify "$@"

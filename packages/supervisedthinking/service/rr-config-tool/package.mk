@@ -3,7 +3,7 @@
 
 PKG_NAME="rr-config-tool"
 PKG_VERSION="1.0"
-PKG_REV="103"
+PKG_REV="104"
 PKG_ARCH="any"
 PKG_LICENSE="GPLv2"
 PKG_DEPENDS_TARGET="toolchain"
@@ -27,6 +27,6 @@ makeinstall_target() {
   install_addon_files ${INSTALL}/usr/share/${MEDIACENTER}/addons/${PKG_SECTION}.${PKG_NAME}
 
   if [ ! "${PROJECT}" = "Generic" ]; then
-    cp -rf ${PKG_DIR}/files/${PROJECT}/* ${INSTALL}/usr/share/${MEDIACENTER}/addons/${PKG_SECTION}.${PKG_NAME}
+    cp -rf ${PKG_DIR}/config/${PROJECT}/* ${INSTALL}/usr/share/${MEDIACENTER}/addons/${PKG_SECTION}.${PKG_NAME}
   fi
 }

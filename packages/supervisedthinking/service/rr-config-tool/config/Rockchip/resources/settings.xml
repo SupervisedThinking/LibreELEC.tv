@@ -25,12 +25,6 @@
     <setting id="RR_QT_QPA_EGLFS_PHYSICAL_WIDTH"  type="number" label="30204" default="576" />
     <setting id="RR_QT_QPA_EGLFS_PHYSICAL_HEIGHT" type="number" label="30205" default="324" />
   </category>
-  <category  label="30300">
-    <setting label="30301" type="lsep"/>
-    <setting type="sep" />
-    <setting id="RR_EMULATION_DEMOS"    type="bool" label="30302" default="true" />
-    <setting id="RR_EMULATION_ID_GAMES" type="bool" label="30303" default="true" />
-  </category>
   <category  label="30400">
     <setting label="30401" type="lsep"/>
     <setting type="sep" />

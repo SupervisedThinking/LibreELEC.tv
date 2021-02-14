@@ -31,12 +31,6 @@
     <setting id="RR_QT_AUTO_SCREEN_SCALE_FACTOR"  type="bool"   label="30202" default="true" />
     <setting id="RR_QT_SCALE_FACTOR"              type="slider" label="30203" default="1" range="0.5,0.1,2" option="float" visible="eq(-1,false))" />
   </category>
-  <category  label="30300">
-    <setting label="30301" type="lsep"/>
-    <setting type="sep" />
-    <setting id="RR_EMULATION_DEMOS"    type="bool" label="30302" default="true" />
-    <setting id="RR_EMULATION_ID_GAMES" type="bool" label="30303" default="true" />
-  </category>
   <category  label="30400">
     <setting label="30401" type="lsep"/>
     <setting type="sep" />

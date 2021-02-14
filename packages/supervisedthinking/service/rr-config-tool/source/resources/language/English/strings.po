@@ -107,22 +107,6 @@ msgctxt "#30205"
 msgid "Physical TV screen height in millimeters"
 msgstr ""
 
-msgctxt "#30300"
-msgid "Emulation"
-msgstr ""
-
-msgctxt "#30301"
-msgid "Emulationstation Systems"
-msgstr ""
-
-msgctxt "#30302"
-msgid "Show MrBoom & 2048 demos games"
-msgstr ""
-
-msgctxt "#30303"
-msgid "Show id Software emulators"
-msgstr ""
-
 msgctxt "#30400"
 msgid "Misc"
 msgstr ""

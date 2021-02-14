@@ -1,5 +1,8 @@
+104
+- Removed demos / id games menu option
+
 103
--WIP Kodi 19 Matrix compatibility
+- Fixed Kodi 19 Matrix compatibility
 
 102
 - Added refresh rate settings for PCSX2

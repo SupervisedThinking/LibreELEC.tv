@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="dosbox-staging"
-PKG_VERSION="65ca80a9eca491f04e4fec47935c91e63dbf55d5" #v0.77.0-dev r4412 meson-branch
-PKG_SHA256="72c2d88af5c8df78a2b4d0580f540d3106ca2a7a3f50583223614a6eab307b72"
+PKG_VERSION="ffb7e7a2cb6ef0b542ad064550708571a4b43f6a" #v0.77.0-dev r4412 meson-branch
+PKG_SHA256="0faf9d8309458330b6afbfc28fed5968c67e15e0e8a69c224272cb05c9236e54"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://dosbox-staging.github.io/"
 PKG_URL="https://github.com/dosbox-staging/dosbox-staging/archive/${PKG_VERSION}.tar.gz"

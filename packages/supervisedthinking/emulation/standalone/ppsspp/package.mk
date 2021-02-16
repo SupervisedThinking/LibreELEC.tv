@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="ppsspp"
-PKG_VERSION="d1c4b86e0a5cfa0880ed97f4a08ee2fa2fb01944" #v1.11.1
-PKG_LICENSE="GPLv2"
+PKG_VERSION="acd496b6c2e9340bf56faf0811863e0aa045107c" #v1.11.2
+PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/hrydgard/ppsspp"
 PKG_URL="https://github.com/hrydgard/ppsspp.git"
 PKG_DEPENDS_TARGET="toolchain linux glibc sdl2 zlib ffmpeg bzip2 openssl speex"

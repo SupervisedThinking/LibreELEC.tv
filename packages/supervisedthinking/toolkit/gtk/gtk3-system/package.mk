@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="gtk3-system"
-PKG_VERSION="3.24.24"
-PKG_SHA256="55de8ae3233c9bc97d3d00fad9c53d18192624baaffa210679afec209333ab12"
+PKG_VERSION="3.24.25"
+PKG_SHA256="6c2b4d1251bdb1fa7be3ad702c81bdff947c486bfd3e8569608e8052e3ab7e1e"
 PKG_LICENSE="LGPL-2.0-or-later"
 PKG_SITE="http://www.gtk.org/"
 PKG_URL="https://github.com/GNOME/gtk/archive/${PKG_VERSION}.tar.gz"

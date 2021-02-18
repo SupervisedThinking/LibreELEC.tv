@@ -40,6 +40,7 @@ OEM_EMULATORS_LIBRETRO_AMLOGIC=" \
   mrboom \
   mupen64plus-nx \
   nestopia \
+  opera \
   pcsx_rearmed \
   prboom \
   sameboy \
@@ -49,6 +50,7 @@ OEM_EMULATORS_LIBRETRO_AMLOGIC=" \
   stella2014 \
   tyrquake \
   vice-libretro \
+  virtualjaguar \
   yabasanshiro \
   yabause"
 

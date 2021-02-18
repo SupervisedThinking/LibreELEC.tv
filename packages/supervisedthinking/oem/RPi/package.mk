@@ -39,6 +39,7 @@ OEM_EMULATORS_LIBRETRO_RPI=" \
   mrboom \
   mupen64plus-nx \
   nestopia \
+  opera \
   pcsx_rearmed \
   prboom \
   sameboy \
@@ -48,6 +49,7 @@ OEM_EMULATORS_LIBRETRO_RPI=" \
   stella2014 \
   tyrquake \
   vice-libretro \
+  virtualjaguar \
   yabasanshiro \
   yabause"
 

@@ -53,6 +53,7 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   mupen64plus-nx \
   nestopia \
   nside \
+  opera \
   parallel-n64 \
   pcsx_rearmed \
   ppsspp-libretro \
@@ -64,6 +65,7 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   tyrquake \
   uae \
   vice-libretro \
+  virtualjaguar \
   vitaquake2 \
   vitaquake3 \
   yabasanshiro"

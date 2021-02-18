@@ -18,19 +18,12 @@ PKG_LIBPATH="src/burner/libretro/${PKG_LIBNAME}"
 PKG_MAKE_OPTS_TARGET="-C src/burner/libretro/ GIT_VERSION=${PKG_VERSION:0:7}"
 
 pre_configure_target() {
-  if [ "${PROJECT}" = "RPi" ]; then
-    case ${DEVICE} in
-      RPi)
-        PKG_MAKE_OPTS_TARGET+=" platform=armv"
-        ;;
-      RPi2)
-        PKG_MAKE_OPTS_TARGET+=" platform=rpi2"
-        ;;
-    esac
-  else
+  if [ "${ARCH}" = "arm" ]; then
+    PKG_MAKE_OPTS_TARGET+=" platform=armv"
+
     # NEON Support ?
     if target_has_feature neon; then
-      PKG_MAKE_OPTS_TARGET+=" HAVE_NEON=1"
+      PKG_MAKE_OPTS_TARGET+="-neon"
     fi
   fi
 }

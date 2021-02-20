@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="dolphin"
-PKG_VERSION="f79e6291199c443308e334acc424e3b161dc6335" #5.0-13667
+PKG_VERSION="6f71a1ec5054d74890974b64ed65bdf5e9d4b16c" #5.0-13690
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/dolphin-emu/dolphin"
@@ -12,13 +12,13 @@ PKG_LONGDESC="Dolphin is a GameCube / Wii emulator, allowing you to play games f
 GET_HANDLER_SUPPORT="git"
 
 pre_configure_target() {
-  PKG_CMAKE_OPTS_TARGET="-DDISTRIBUTOR=SupervisedThinking
-                         -DUSE_SHARED_ENET=on \
-                         -DENABLE_NOGUI=off \
-                         -DENABLE_LTO=off \
-                         -DENABLE_TESTS=off \
-                         -DUSE_DISCORD_PRESENCE=off \
-                         -DENABLE_ANALYTICS=off"
+  PKG_CMAKE_OPTS_TARGET="-D DISTRIBUTOR=SupervisedThinking
+                         -D USE_SHARED_ENET=on \
+                         -D ENABLE_NOGUI=off \
+                         -D ENABLE_LTO=off \
+                         -D ENABLE_TESTS=off \
+                         -D USE_DISCORD_PRESENCE=off \
+                         -D ENABLE_ANALYTICS=off"
 }
 
 pre_make_target() {

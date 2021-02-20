@@ -23,6 +23,7 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   retroarch \
   2048 \
   atari800 \
+  beetle-lynx \
   beetle-pce-fast \
   beetle-psx \
   beetle-saturn \

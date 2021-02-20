@@ -21,6 +21,7 @@ OEM_EMULATORS_LIBRETRO_ROCKCHIP=" \
   retroarch \
   2048 \
   atari800 \
+  beetle-lynx \
   beetle-pce-fast \
   beetle-wswan \
   bluemsx \

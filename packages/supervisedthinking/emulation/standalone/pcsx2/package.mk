@@ -2,9 +2,9 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="pcsx2"
-PKG_VERSION="4b722cc253e1605d633d2642fed186f8e9095853" #v1.7.0-dev+
+PKG_VERSION="84913da5b9b6ed0f7b00f7cefca64d8270ceea53" #v1.8.0-dev
 PKG_ARCH="x86_64"
-PKG_LICENSE="GPLv2"
+PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/PCSX2/pcsx2"
 PKG_URL="https://github.com/PCSX2/pcsx2.git"
 PKG_DEPENDS_TARGET="toolchain alsa-lib adwaita-icon-theme freetype gdk-pixbuf glew-cmake glib gtk3-system hicolor-icon-theme libaio libfmt libpcap libpng libX11 libxcb libxml2 mesa pngpp pulseaudio sdl2 soundtouch systemd wxwidgets xz yaml-cpp zlib unclutter-xfixes"
@@ -12,19 +12,19 @@ PKG_LONGDESC="PCSX2 is a free and open-source PlayStation 2 (PS2) emulator."
 GET_HANDLER_SUPPORT="git"
 
 pre_configure_target() {
-  PKG_CMAKE_OPTS_TARGET="-DCMAKE_INSTALL_DOCDIR=/usr/share/doc \
-                         -DCMAKE_INSTALL_DATADIR=/usr/share \
-                         -DCMAKE_INSTALL_LIBDIR=/usr/lib \
-                         -DDISABLE_ADVANCE_SIMD=ON \
-                         -DDISABLE_PCSX2_WRAPPER=ON \
-                         -DENABLE_TESTS=OFF \
-                         -DSDL2_API=ON \
-                         -DPACKAGE_MODE=ON \
-                         -DUSE_LTO=ON \
-                         -DREBUILD_SHADER=ON \
-                         -DUSE_SYSTEM_YAML=ON \
-                         -DUSE_VTUNE=OFF \
-                         -DXDG_STD=ON \
+  PKG_CMAKE_OPTS_TARGET="-D CMAKE_INSTALL_DOCDIR=/usr/share/doc \
+                         -D CMAKE_INSTALL_DATADIR=/usr/share \
+                         -D CMAKE_INSTALL_LIBDIR=/usr/lib \
+                         -D DISABLE_ADVANCE_SIMD=ON \
+                         -D DISABLE_PCSX2_WRAPPER=ON \
+                         -D ENABLE_TESTS=OFF \
+                         -D SDL2_API=ON \
+                         -D PACKAGE_MODE=ON \
+                         -D USE_LTO=ON \
+                         -D REBUILD_SHADER=ON \
+                         -D USE_SYSTEM_YAML=ON \
+                         -D USE_VTUNE=OFF \
+                         -D XDG_STD=ON \
                          -Wno-dev"
 }
 

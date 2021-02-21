@@ -2,13 +2,13 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="x264-system"
-PKG_VERSION="d4099dd4c722f52c4f3c14575d7d39eb8fadb97f"
-PKG_SHA256="9b6688b81e13cf342fc9b6b7adf1759eebd300c243c0707566ffe7ea9f0ccc7e"
+PKG_VERSION="b86ae3c66f51ac9eab5ab7ad09a9d62e67961b8a"
+PKG_SHA256="d3b0b9e4b0a6c1522e131f74f577d28ad7a5f8574dfc28909241b7c3e881eda2"
 PKG_LICENSE="GPL-1.0-or-later"
 PKG_SITE="http://www.videolan.org/developers/x264.html"
-PKG_URL="http://repo.or.cz/x264.git/snapshot/${PKG_VERSION}.tar.gz"
+PKG_URL="https://code.videolan.org/videolan/x264/-/archive/master/x264-${PKG_VERSION}.tar.bz2"
 PKG_DEPENDS_TARGET="toolchain"
-PKG_LONGDESC="x264 is a free library for encoding H264/AVC video streams."
+PKG_LONGDESC="x264, the best and fastest H.264 encoder"
 
 if [ "${TARGET_ARCH}" = "x86_64" ]; then
   PKG_DEPENDS_TARGET+=" nasm:host"

@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="gtk3-system"
-PKG_VERSION="3.24.25"
-PKG_SHA256="6c2b4d1251bdb1fa7be3ad702c81bdff947c486bfd3e8569608e8052e3ab7e1e"
+PKG_VERSION="3.24.26"
+PKG_SHA256="7a3e189ed5934aac3669a2dc50b5eac9d8026b733b5b79bd98e651daf8b3b2d6"
 PKG_LICENSE="LGPL-2.0-or-later"
 PKG_SITE="http://www.gtk.org/"
 PKG_URL="https://github.com/GNOME/gtk/archive/${PKG_VERSION}.tar.gz"
@@ -12,17 +12,17 @@ PKG_DEPENDS_CONFIG="libXft gdk-pixbuf"
 PKG_LONGDESC="GTK is a multi-platform toolkit for creating graphical user interfaces."
 PKG_TOOLCHAIN="meson"
 
-PKG_MESON_OPTS_TARGET="-Dx11_backend=true \
-                       -Dwayland_backend=false \
-                       -Dquartz_backend=false \
-                       -Dxinerama=no \
-                       -Dprint_backends=auto \
-                       -Dcolord=no \
-                       -Dintrospection=false \
-                       -Ddemos=false \
-                       -Dexamples=false \
-                       -Dtests=false \
-                       -Dbuiltin_immodules=yes"
+PKG_MESON_OPTS_TARGET="-D x11_backend=true \
+                       -D wayland_backend=false \
+                       -D quartz_backend=false \
+                       -D xinerama=no \
+                       -D print_backends=auto \
+                       -D colord=no \
+                       -D introspection=false \
+                       -D demos=false \
+                       -D examples=false \
+                       -D tests=false \
+                       -D builtin_immodules=yes"
 
 pre_configure_target() {
   # ${TOOLCHAIN}/bin/glib-compile-resources requires ${TOOLCHAIN}/lib/libffi.so.6

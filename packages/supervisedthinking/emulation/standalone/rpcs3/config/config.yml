@@ -49,11 +49,11 @@ Core:
   Lib Loader: Load liblv2.sprx only
   Load libraries: []
 VFS:
-  $(EmulatorDir): /storage/roms/ps3/
+  $(EmulatorDir): /storage/.config/rpcs3/
   /dev_hdd0/: $(EmulatorDir)dev_hdd0/
-  /dev_hdd1/: $(EmulatorDir)dev_hdd1/
-  /dev_flash/: ""
-  /dev_usb000/: $(EmulatorDir)dev_usb000/
+  /dev_hdd1/: $(EmulatorDir)rpcs3/dev_hdd1/
+  /dev_flash/: $(EmulatorDir)rpcs3/dev_flash/
+  /dev_usb000/: $(EmulatorDir)rpcs3/dev_usb000/
   /dev_bdvd/: ""
   /app_home/: ""
   Enable /host_root/: false

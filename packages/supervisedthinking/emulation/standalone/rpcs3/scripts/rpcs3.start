@@ -6,7 +6,7 @@
 . /etc/profile
 
 # Set common paths
-RPCS3_CACHE_LOG=storage/.cache/rpcs3/RPCS3.log
+RPCS3_CACHE_LOG=/storage/.cache/rpcs3/RPCS3.log
 RPCS3_VAR_LOG=/var/log/RPCS3.log
 
 # Stop Kodi service / load audio backend config

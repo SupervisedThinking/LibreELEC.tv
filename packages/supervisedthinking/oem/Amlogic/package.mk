@@ -34,6 +34,7 @@ OEM_EMULATORS_LIBRETRO_AMLOGIC=" \
   fuse-libretro \
   gambatte \
   genesis-plus-gx \
+  genesis-plus-gx-wide \
   mame2003-plus \
   mame2010 \
   mesen \

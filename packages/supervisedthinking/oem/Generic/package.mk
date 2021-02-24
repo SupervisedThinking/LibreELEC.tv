@@ -45,6 +45,7 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   fuse-libretro \
   gambatte \
   genesis-plus-gx \
+  genesis-plus-gx-wide \
   kronos \
   mame2003-plus \
   mame2016 \

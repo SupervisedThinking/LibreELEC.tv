@@ -10,6 +10,7 @@ PKG_URL="https://github.com/SupervisedThinking/es-theme-pixel/archive/${PKG_VERS
 PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC="Emulationstation theme 'pixel' v2.1-dev"
 PKG_TOOLCHAIN="make"
+PKG_BUILD_FLAGS="-sysroot"
 
 PKG_MAKE_OPTS_TARGET="install DESTDIR=${INSTALL}"
 

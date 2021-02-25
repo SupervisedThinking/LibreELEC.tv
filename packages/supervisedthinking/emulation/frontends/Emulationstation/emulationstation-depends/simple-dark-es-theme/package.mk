@@ -10,6 +10,7 @@ PKG_URL="https://github.com/SupervisedThinking/es-theme-simple-dark/archive/${PK
 PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC="Simple dark theme for Emulationstation based on Theme 'simple' v1.3 - 11-29-2014"
 PKG_TOOLCHAIN="make"
+PKG_BUILD_FLAGS="-sysroot"
 
 PKG_MAKE_OPTS_TARGET="install DESTDIR=${INSTALL}"
 

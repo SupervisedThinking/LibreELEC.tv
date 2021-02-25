@@ -10,6 +10,7 @@ PKG_URL="https://github.com/SupervisedThinking/es-theme-carbon//archive/${PKG_VE
 PKG_DEPENDS_TARGET="toolchain"
 PKG_LONGDESC="Theme 'carbon' v2.4 - 08-16-2016 by Rookervik"
 PKG_TOOLCHAIN="make"
+PKG_BUILD_FLAGS="-sysroot"
 
 PKG_MAKE_OPTS_TARGET="install DESTDIR=${INSTALL}"
 

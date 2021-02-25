@@ -15,3 +15,8 @@ PKG_MESON_OPTS_TARGET="-Dlibunwind=disabled \
                        -Dexamples=disabled \
                        -Dtests=disabled \
                        -Dnls=disabled"
+
+post_makeinstall_target() {
+  # clean up
+  safe_remove ${INSTALL}/usr/share
+}

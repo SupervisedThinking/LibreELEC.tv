@@ -12,3 +12,8 @@ PKG_LONGDESC="yaml-cpp is a YAML parser and emitter in C++ matching the YAML 1.2
 
 PKG_CMAKE_OPTS_TARGET="-DYAML_BUILD_SHARED_LIBS=ON \
                        -DYAML_CPP_BUILD_TESTS=Off"
+
+post_makeinstall_target() {
+  # clean up
+  safe_remove ${INSTALL}/usr/share
+}

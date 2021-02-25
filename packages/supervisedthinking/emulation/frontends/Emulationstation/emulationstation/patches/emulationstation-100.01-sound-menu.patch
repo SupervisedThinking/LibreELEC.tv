@@ -1,6 +1,17 @@
+From b54e17d1dd328e5efd28583bb64bcc2ea0a0b841 Mon Sep 17 00:00:00 2001
+From: SupervisedThinking <supervisedthinking@gmail.com>
+Date: Thu, 25 Feb 2021 20:44:58 +0100
+Subject: [PATCH] Gui: remove volume & card options
+
+---
+ es-app/src/guis/GuiMenu.cpp | 80 -------------------------------------
+ 1 file changed, 80 deletions(-)
+
+diff --git a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
+index cd60ff09f..8a0a26229 100644
 --- a/es-app/src/guis/GuiMenu.cpp
 +++ b/es-app/src/guis/GuiMenu.cpp
-@@ -87,67 +87,8 @@
+@@ -91,63 +91,8 @@ void GuiMenu::openSoundSettings()
  {
  	auto s = new GuiSettings(mWindow, "SOUND SETTINGS");
  
@@ -16,12 +27,6 @@
 -		// audio card
 -		auto audio_card = std::make_shared< OptionListComponent<std::string> >(mWindow, "AUDIO CARD", false);
 -		std::vector<std::string> audio_cards;
--	#ifdef _RPI_
--		// RPi Specific  Audio Cards
--		audio_cards.push_back("local");
--		audio_cards.push_back("hdmi");
--		audio_cards.push_back("both");
--	#endif
 -		audio_cards.push_back("default");
 -		audio_cards.push_back("sysdefault");
 -		audio_cards.push_back("dmix");
@@ -46,6 +51,8 @@
 -		auto vol_dev = std::make_shared< OptionListComponent<std::string> >(mWindow, "AUDIO DEVICE", false);
 -		std::vector<std::string> transitions;
 -		transitions.push_back("PCM");
+-		transitions.push_back("HDMI");
+-		transitions.push_back("Headphone");
 -		transitions.push_back("Speaker");
 -		transitions.push_back("Master");
 -		transitions.push_back("Digital");
@@ -68,7 +75,7 @@
  		// disable sounds
  		auto sounds_enabled = std::make_shared<SwitchComponent>(mWindow);
  		sounds_enabled->setState(Settings::getInstance()->getBool("EnableSounds"));
-@@ -167,30 +108,6 @@
+@@ -167,31 +112,6 @@ void GuiMenu::openSoundSettings()
  		video_audio->setState(Settings::getInstance()->getBool("VideoAudio"));
  		s->addWithLabel("ENABLE VIDEO AUDIO", video_audio);
  		s->addSaveFunc([video_audio] { Settings::getInstance()->setBool("VideoAudio", video_audio->getState()); });
@@ -81,6 +88,7 @@
 -		omx_cards.push_back("local");
 -		omx_cards.push_back("hdmi");
 -		omx_cards.push_back("both");
+-		omx_cards.push_back("alsa");
 -		omx_cards.push_back("alsa:hw:0,0");
 -		omx_cards.push_back("alsa:hw:1,0");
 -		if (Settings::getInstance()->getString("OMXAudioDev") != "") {
@@ -99,4 +107,3 @@
  	}
  
  	mWindow->pushGui(s);
-

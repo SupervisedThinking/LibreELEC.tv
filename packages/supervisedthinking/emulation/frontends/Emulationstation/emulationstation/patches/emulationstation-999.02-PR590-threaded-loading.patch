@@ -1,0 +1,735 @@
+From f09e8675bb127c165ddda91c7c8b133c16378a50 Mon Sep 17 00:00:00 2001
+From: Fabrice CARUSO <fabrice.caruso@free.fr>
+Date: Sat, 17 Aug 2019 10:56:59 +0200
+Subject: [PATCH] Added a progressbar during loading + threaded loading when
+ processor threads > 2
+
+---
+ es-app/src/CollectionSystemManager.cpp |   6 +-
+ es-app/src/CollectionSystemManager.h   |   2 +-
+ es-app/src/SystemData.cpp              | 230 ++++++++++++++++++-------
+ es-app/src/SystemData.h                |   7 +-
+ es-app/src/main.cpp                    |   8 +-
+ es-app/src/views/ViewController.cpp    |  16 +-
+ es-core/CMakeLists.txt                 |   2 +
+ es-core/src/Settings.cpp               |   2 +
+ es-core/src/ThemeData.cpp              |   4 +-
+ es-core/src/ThemeData.h                |   3 +
+ es-core/src/Window.cpp                 |  25 ++-
+ es-core/src/Window.h                   |   2 +-
+ es-core/src/utils/ThreadPool.cpp       |  93 ++++++++++
+ es-core/src/utils/ThreadPool.h         |  32 ++++
+ 14 files changed, 348 insertions(+), 84 deletions(-)
+ create mode 100644 es-core/src/utils/ThreadPool.cpp
+ create mode 100644 es-core/src/utils/ThreadPool.h
+
+diff --git a/es-app/src/CollectionSystemManager.cpp b/es-app/src/CollectionSystemManager.cpp
+index aa7f75d0e..8f3bbb797 100644
+--- a/es-app/src/CollectionSystemManager.cpp
++++ b/es-app/src/CollectionSystemManager.cpp
+@@ -124,7 +124,7 @@ void CollectionSystemManager::saveCustomCollection(SystemData* sys)
+ 
+ /* Methods to load all Collections into memory, and handle enabling the active ones */
+ // loads all Collection Systems
+-void CollectionSystemManager::loadCollectionSystems()
++void CollectionSystemManager::loadCollectionSystems(bool async)
+ {
+ 	initAutoCollectionSystems();
+ 	CollectionSystemDecl decl = mCollectionSystemDeclsIndex[myCollectionsName];
+@@ -135,8 +135,10 @@ void CollectionSystemManager::loadCollectionSystems()
+ 	{
+ 		// Now see which ones are enabled
+ 		loadEnabledListFromSettings();
++
+ 		// add to the main System Vector, and create Views as needed
+-		updateSystemsList();
++		if (!async)
++			updateSystemsList();
+ 	}
+ }
+ 
+diff --git a/es-app/src/CollectionSystemManager.h b/es-app/src/CollectionSystemManager.h
+index 23afe1932..50a113c36 100644
+--- a/es-app/src/CollectionSystemManager.h
++++ b/es-app/src/CollectionSystemManager.h
+@@ -49,7 +49,7 @@ class CollectionSystemManager
+ 	static void deinit();
+ 	void saveCustomCollection(SystemData* sys);
+ 
+-	void loadCollectionSystems();
++	void loadCollectionSystems(bool async=false);
+ 	void loadEnabledListFromSettings();
+ 	void updateSystemsList();
+ 
+diff --git a/es-app/src/SystemData.cpp b/es-app/src/SystemData.cpp
+index 11ff0b830..d1a67dc55 100644
+--- a/es-app/src/SystemData.cpp
++++ b/es-app/src/SystemData.cpp
+@@ -10,11 +10,12 @@
+ #include "Settings.h"
+ #include "ThemeData.h"
+ #include "views/UIModeController.h"
+-#include <pugixml/src/pugixml.hpp>
+ #include <fstream>
+-#ifdef WIN32
+-#include <Windows.h>
+-#endif
++#include "utils/StringUtil.h"
++#include "utils/ThreadPool.h"
++#include "Window.h"
++
++using namespace Utils;
+ 
+ std::vector<SystemData*> SystemData::sSystemVector;
+ 
+@@ -164,8 +165,93 @@ std::vector<std::string> readList(const std::string& str, const char* delims = "
+ 	return ret;
+ }
+ 
++
++SystemData* SystemData::loadSystem(pugi::xml_node system)
++{
++	std::string name, fullname, path, cmd, themeFolder, defaultCore;
++
++	name = system.child("name").text().get();
++	fullname = system.child("fullname").text().get();
++	path = system.child("path").text().get();
++	defaultCore = system.child("defaultCore").text().get();
++
++	std::vector<std::string> list = readList(system.child("extension").text().get());
++	std::vector<std::string> extensions;
++
++	for (auto extension = list.cbegin(); extension != list.cend(); extension++)
++	{
++		std::string xt = Utils::String::toLower(*extension);
++		if (std::find(extensions.begin(), extensions.end(), xt) == extensions.end())
++			extensions.push_back(xt);
++	}
++
++	cmd = system.child("command").text().get();
++
++	// platform id list
++	const char* platformList = system.child("platform").text().get();
++	std::vector<std::string> platformStrs = readList(platformList);
++	std::vector<PlatformIds::PlatformId> platformIds;
++	for (auto it = platformStrs.cbegin(); it != platformStrs.cend(); it++)
++	{
++		const char* str = it->c_str();
++		PlatformIds::PlatformId platformId = PlatformIds::getPlatformId(str);
++
++		if (platformId == PlatformIds::PLATFORM_IGNORE)
++		{
++			// when platform is ignore, do not allow other platforms
++			platformIds.clear();
++			platformIds.push_back(platformId);
++			break;
++		}
++
++		// if there appears to be an actual platform ID supplied but it didn't match the list, warn
++		if (str != NULL && str[0] != '\0' && platformId == PlatformIds::PLATFORM_UNKNOWN)
++			LOG(LogWarning) << "  Unknown platform for system \"" << name << "\" (platform \"" << str << "\" from list \"" << platformList << "\")";
++		else if (platformId != PlatformIds::PLATFORM_UNKNOWN)
++			platformIds.push_back(platformId);
++	}
++
++	// theme folder
++	themeFolder = system.child("theme").text().as_string(name.c_str());
++
++	//validate
++	if (name.empty() || path.empty() || extensions.empty() || cmd.empty())
++	{
++		LOG(LogError) << "System \"" << name << "\" is missing name, path, extension, or command!";
++		return nullptr;
++	}
++
++	//convert path to generic directory seperators
++	path = Utils::FileSystem::getGenericPath(path);
++
++	//expand home symbol if the startpath contains ~
++	if (path[0] == '~')
++	{
++		path.erase(0, 1);
++		path.insert(0, Utils::FileSystem::getHomePath());
++	}
++
++	//create the system runtime environment data
++	SystemEnvironmentData* envData = new SystemEnvironmentData;
++	envData->mStartPath = path;
++	envData->mSearchExtensions = extensions;
++	envData->mLaunchCommand = cmd;
++	envData->mPlatformIds = platformIds;
++
++	SystemData* newSys = new SystemData(name, fullname, envData, themeFolder);
++	if (newSys->getRootFolder()->getChildren().size() == 0)
++	{
++		LOG(LogWarning) << "System \"" << name << "\" has no games! Ignoring it.";
++		delete newSys;
++
++		return nullptr;
++	}
++
++	return newSys;
++}
++
+ //creates systems from information located in a config file
+-bool SystemData::loadConfig()
++bool SystemData::loadConfig(Window* window)
+ {
+ 	deleteSystems();
+ 
+@@ -173,7 +259,7 @@ bool SystemData::loadConfig()
+ 
+ 	LOG(LogInfo) << "Loading system config file " << path << "...";
+ 
+-	if(!Utils::FileSystem::exists(path))
++	if (!Utils::FileSystem::exists(path))
+ 	{
+ 		LOG(LogError) << "es_systems.cfg file does not exist!";
+ 		writeExampleConfig(getConfigPath(true));
+@@ -183,7 +269,7 @@ bool SystemData::loadConfig()
+ 	pugi::xml_document doc;
+ 	pugi::xml_parse_result res = doc.load_file(path.c_str());
+ 
+-	if(!res)
++	if (!res)
+ 	{
+ 		LOG(LogError) << "Could not parse es_systems.cfg file!";
+ 		LOG(LogError) << res.description();
+@@ -193,86 +279,104 @@ bool SystemData::loadConfig()
+ 	//actually read the file
+ 	pugi::xml_node systemList = doc.child("systemList");
+ 
+-	if(!systemList)
++	if (!systemList)
+ 	{
+ 		LOG(LogError) << "es_systems.cfg is missing the <systemList> tag!";
+ 		return false;
+ 	}
+ 
+-	for(pugi::xml_node system = systemList.child("system"); system; system = system.next_sibling("system"))
++	std::vector<std::string> systemsNames;
++
++	int systemCount = 0;
++	for (pugi::xml_node system = systemList.child("system"); system; system = system.next_sibling("system"))
+ 	{
+-		std::string name, fullname, path, cmd, themeFolder;
++		systemsNames.push_back(system.child("fullname").text().get());
++		systemCount++;
++	}
+ 
+-		name = system.child("name").text().get();
+-		fullname = system.child("fullname").text().get();
+-		path = system.child("path").text().get();
++	int currentSystem = 0;
+ 
+-		// convert extensions list from a string into a vector of strings
+-		std::vector<std::string> extensions = readList(system.child("extension").text().get());
++	typedef SystemData* SystemDataPtr;
+ 
+-		cmd = system.child("command").text().get();
++	ThreadPool* pThreadPool = NULL;
++	SystemDataPtr* systems = NULL;
+ 
+-		// platform id list
+-		const char* platformList = system.child("platform").text().get();
+-		std::vector<std::string> platformStrs = readList(platformList);
+-		std::vector<PlatformIds::PlatformId> platformIds;
+-		for(auto it = platformStrs.cbegin(); it != platformStrs.cend(); it++)
+-		{
+-			const char* str = it->c_str();
+-			PlatformIds::PlatformId platformId = PlatformIds::getPlatformId(str);
++	if (std::thread::hardware_concurrency() > 2 && Settings::getInstance()->getBool("ThreadedLoading"))
++	{
++		pThreadPool = new ThreadPool();
+ 
+-			if(platformId == PlatformIds::PLATFORM_IGNORE)
+-			{
+-				// when platform is ignore, do not allow other platforms
+-				platformIds.clear();
+-				platformIds.push_back(platformId);
+-				break;
+-			}
++		systems = new SystemDataPtr[systemCount];
++		for (int i = 0; i < systemCount; i++)
++			systems[i] = nullptr;
+ 
+-			// if there appears to be an actual platform ID supplied but it didn't match the list, warn
+-			if(str != NULL && str[0] != '\0' && platformId == PlatformIds::PLATFORM_UNKNOWN)
+-				LOG(LogWarning) << "  Unknown platform for system \"" << name << "\" (platform \"" << str << "\" from list \"" << platformList << "\")";
+-			else if(platformId != PlatformIds::PLATFORM_UNKNOWN)
+-				platformIds.push_back(platformId);
+-		}
++		pThreadPool->queueWorkItem([] { CollectionSystemManager::get()->loadCollectionSystems(true); });
++	}
+ 
+-		// theme folder
+-		themeFolder = system.child("theme").text().as_string(name.c_str());
++	int processedSystem = 0;
+ 
+-		//validate
+-		if(name.empty() || path.empty() || extensions.empty() || cmd.empty())
++	for (pugi::xml_node system = systemList.child("system"); system; system = system.next_sibling("system"))
++	{
++		if (pThreadPool != NULL)
+ 		{
+-			LOG(LogError) << "System \"" << name << "\" is missing name, path, extension, or command!";
+-			continue;
++			pThreadPool->queueWorkItem([system, currentSystem, systems, &processedSystem]
++			{
++				systems[currentSystem] = loadSystem(system);
++				processedSystem++;
++			});
+ 		}
++		else
++		{
++			std::string fullname = system.child("fullname").text().get();
+ 
+-		//convert path to generic directory seperators
+-		path = Utils::FileSystem::getGenericPath(path);
++			if (window != NULL)
++				window->renderLoadingScreen(fullname, systemCount == 0 ? 0 : (float)currentSystem / (float)(systemCount + 1));
+ 
+-		//expand home symbol if the startpath contains ~
+-		if(path[0] == '~')
+-		{
+-			path.erase(0, 1);
+-			path.insert(0, Utils::FileSystem::getHomePath());
++			std::string nm = system.child("name").text().get();
++
++			SystemData* pSystem = loadSystem(system);
++			if (pSystem != nullptr)
++				sSystemVector.push_back(pSystem);
+ 		}
+ 
+-		//create the system runtime environment data
+-		SystemEnvironmentData* envData = new SystemEnvironmentData;
+-		envData->mStartPath = path;
+-		envData->mSearchExtensions = extensions;
+-		envData->mLaunchCommand = cmd;
+-		envData->mPlatformIds = platformIds;
++		currentSystem++;
++	}
++
++	if (pThreadPool != NULL)
++	{
++		if (window != NULL)
++		{
++			pThreadPool->wait([window, &processedSystem, systemCount, &systemsNames]
++			{
++				int px = processedSystem - 1;
++				if (px >= 0 && px < systemsNames.size())
++					window->renderLoadingScreen(systemsNames.at(px), (float)px / (float)(systemCount + 1));
++			}, 10);
++		}
++		else
++			pThreadPool->wait();
+ 
+-		SystemData* newSys = new SystemData(name, fullname, envData, themeFolder);
+-		if(newSys->getRootFolder()->getChildrenByFilename().size() == 0)
++		for (int i = 0; i < systemCount; i++)
+ 		{
+-			LOG(LogWarning) << "System \"" << name << "\" has no games! Ignoring it.";
+-			delete newSys;
+-		}else{
+-			sSystemVector.push_back(newSys);
++			SystemData* pSystem = systems[i];
++			if (pSystem != nullptr)
++				sSystemVector.push_back(pSystem);
+ 		}
++
++		delete[] systems;
++		delete pThreadPool;
++
++		if (window != NULL)
++			window->renderLoadingScreen("Favorites", systemCount == 0 ? 0 : currentSystem / systemCount);
++
++		CollectionSystemManager::get()->updateSystemsList();
++	}
++	else
++	{
++		if (window != NULL)
++			window->renderLoadingScreen("Favorites", systemCount == 0 ? 0 : currentSystem / systemCount);
++
++		CollectionSystemManager::get()->loadCollectionSystems();
+ 	}
+-	CollectionSystemManager::get()->loadCollectionSystems();
+ 
+ 	return true;
+ }
+diff --git a/es-app/src/SystemData.h b/es-app/src/SystemData.h
+index b72e48e38..6eb1d2306 100644
+--- a/es-app/src/SystemData.h
++++ b/es-app/src/SystemData.h
+@@ -8,9 +8,12 @@
+ #include <string>
+ #include <vector>
+ 
++#include <pugixml/src/pugixml.hpp>
++
+ class FileData;
+ class FileFilterIndex;
+ class ThemeData;
++class Window;
+ 
+ struct SystemEnvironmentData
+ {
+@@ -46,7 +49,7 @@ class SystemData
+ 	unsigned int getDisplayedGameCount() const;
+ 
+ 	static void deleteSystems();
+-	static bool loadConfig(); //Load the system config file at getConfigPath(). Returns true if no errors were encountered. An example will be written if the file doesn't exist.
++	static bool loadConfig(Window* window); //Load the system config file at getConfigPath(). Returns true if no errors were encountered. An example will be written if the file doesn't exist.
+ 	static void writeExampleConfig(const std::string& path);
+ 	static std::string getConfigPath(bool forWrite); // if forWrite, will only return ~/.emulationstation/es_systems.cfg, never /etc/emulationstation/es_systems.cfg
+ 
+@@ -71,6 +74,8 @@ class SystemData
+ 	void onMetaDataSavePoint();
+ 
+ private:
++	static SystemData* loadSystem(pugi::xml_node system);
++
+ 	bool mIsCollectionSystem;
+ 	bool mIsGameSystem;
+ 	std::string mName;
+diff --git a/es-app/src/main.cpp b/es-app/src/main.cpp
+index dd6538b8f..f6a938bfa 100644
+--- a/es-app/src/main.cpp
++++ b/es-app/src/main.cpp
+@@ -214,11 +214,11 @@ bool verifyHomeFolderExists()
+ }
+ 
+ // Returns true if everything is OK,
+-bool loadSystemConfigFile(const char** errorString)
++bool loadSystemConfigFile(Window* window, const char** errorString)
+ {
+ 	*errorString = NULL;
+ 
+-	if(!SystemData::loadConfig())
++	if(!SystemData::loadConfig(window))
+ 	{
+ 		LOG(LogError) << "Error while parsing systems configuration file!";
+ 		*errorString = "IT LOOKS LIKE YOUR SYSTEMS CONFIGURATION FILE HAS NOT BEEN SET UP OR IS INVALID. YOU'LL NEED TO DO THIS BY HAND, UNFORTUNATELY.\n\n"
+@@ -323,7 +323,7 @@ int main(int argc, char* argv[])
+ 			return 1;
+ 		}
+ 
+-		if(splashScreen)
++		if (splashScreen)
+ 		{
+ 			std::string progressText = "Loading...";
+ 			if (splashScreenProgress)
+@@ -333,7 +333,7 @@ int main(int argc, char* argv[])
+ 	}
+ 
+ 	const char* errorMsg = NULL;
+-	if(!loadSystemConfigFile(&errorMsg))
++	if(!loadSystemConfigFile(splashScreen && splashScreenProgress ? &window : nullptr, &errorMsg))
+ 	{
+ 		// something went terribly wrong
+ 		if(errorMsg == NULL)
+diff --git a/es-app/src/views/ViewController.cpp b/es-app/src/views/ViewController.cpp
+index 73c5c05eb..173e53366 100644
+--- a/es-app/src/views/ViewController.cpp
++++ b/es-app/src/views/ViewController.cpp
+@@ -436,17 +436,19 @@ void ViewController::render(const Transform4x4f& parentTrans)
+ 
+ void ViewController::preload()
+ {
+-	uint32_t i = 0;
++	int i = 1;
++	int max = SystemData::sSystemVector.size() + 1;
++
++	bool splash = Settings::getInstance()->getBool("SplashScreen") && Settings::getInstance()->getBool("SplashScreenProgress");
++	if (splash)
++		mWindow->renderLoadingScreen("Preloading UI", (float)i / (float)max);
++
+ 	for(auto it = SystemData::sSystemVector.cbegin(); it != SystemData::sSystemVector.cend(); it++)
+ 	{
+-		if(Settings::getInstance()->getBool("SplashScreen") &&
+-			Settings::getInstance()->getBool("SplashScreenProgress"))
++		if (splash)
+ 		{
+ 			i++;
+-			char buffer[100];
+-			sprintf (buffer, "Loading '%s' (%d/%d)",
+-				(*it)->getFullName().c_str(), i, (int)SystemData::sSystemVector.size());
+-			mWindow->renderLoadingScreen(std::string(buffer));
++			mWindow->renderLoadingScreen("Preloading UI", (float)i / (float)max);
+ 		}
+ 
+ 		(*it)->getIndex()->resetFilters();
+diff --git a/es-core/CMakeLists.txt b/es-core/CMakeLists.txt
+index 99d084d0a..ebd97ab13 100644
+--- a/es-core/CMakeLists.txt
++++ b/es-core/CMakeLists.txt
+@@ -76,6 +76,7 @@ set(CORE_HEADERS
+ 	# Utils
+ 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/FileSystemUtil.h
+ 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/StringUtil.h
++	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/ThreadPool.h
+ 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/TimeUtil.h
+ )
+ 
+@@ -154,6 +155,7 @@ set(CORE_SOURCES
+ 	# Utils
+ 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/FileSystemUtil.cpp
+ 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/StringUtil.cpp
++	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/ThreadPool.cpp
+ 	${CMAKE_CURRENT_SOURCE_DIR}/src/utils/TimeUtil.cpp
+ )
+ 
+diff --git a/es-core/src/Settings.cpp b/es-core/src/Settings.cpp
+index e1562d80d..a1d3e7036 100644
+--- a/es-core/src/Settings.cpp
++++ b/es-core/src/Settings.cpp
+@@ -77,6 +77,8 @@ void Settings::setDefaults()
+ 	mBoolMap["QuickSystemSelect"] = true;
+ 	mBoolMap["MoveCarousel"] = true;
+ 
++	mBoolMap["ThreadedLoading"] = true;
++
+ 	mBoolMap["Debug"] = false;
+ 	mBoolMap["DebugGrid"] = false;
+ 	mBoolMap["DebugText"] = false;
+diff --git a/es-core/src/ThemeData.cpp b/es-core/src/ThemeData.cpp
+index 2d1be3d04..8c2c37d65 100644
+--- a/es-core/src/ThemeData.cpp
++++ b/es-core/src/ThemeData.cpp
+@@ -197,9 +197,7 @@ unsigned int getHexColor(const char* str)
+ 	return val;
+ }
+ 
+-std::map<std::string, std::string> mVariables;
+-
+-std::string resolvePlaceholders(const char* in)
++std::string ThemeData::resolvePlaceholders(const char* in)
+ {
+ 	std::string inStr(in);
+ 
+diff --git a/es-core/src/ThemeData.h b/es-core/src/ThemeData.h
+index 5bb2b9808..caeecbc3e 100644
+--- a/es-core/src/ThemeData.h
++++ b/es-core/src/ThemeData.h
+@@ -181,6 +181,9 @@ class ThemeData
+ 	void parseElement(const pugi::xml_node& elementNode, const std::map<std::string, ElementPropertyType>& typeMap, ThemeElement& element);
+ 
+ 	std::map<std::string, ThemeView> mViews;
++
++	std::string resolvePlaceholders(const char* in);
++	std::map<std::string, std::string> mVariables;
+ };
+ 
+ #endif // ES_CORE_THEME_DATA_H
+diff --git a/es-core/src/Window.cpp b/es-core/src/Window.cpp
+index 3ea9a86ff..687060d0f 100644
+--- a/es-core/src/Window.cpp
++++ b/es-core/src/Window.cpp
+@@ -9,6 +9,7 @@
+ #include "Scripting.h"
+ #include <algorithm>
+ #include <iomanip>
++#include <SDL_events.h>
+ 
+ Window::Window() : mNormalizeNextUpdate(false), mFrameTimeElapsed(0), mFrameCountElapsed(0), mAverageDeltaTime(10),
+ 	mAllowSleep(true), mSleeping(false), mTimeSinceLastInput(0), mScreenSaver(NULL), mRenderScreenSaver(false), mInfoPopup(NULL)
+@@ -301,12 +302,26 @@ void Window::setAllowSleep(bool sleep)
+ 	mAllowSleep = sleep;
+ }
+ 
+-void Window::renderLoadingScreen(std::string text)
++void Window::renderLoadingScreen(std::string text, float percent, unsigned char opacity)
+ {
+ 	Transform4x4f trans = Transform4x4f::Identity();
+ 	Renderer::setMatrix(trans);
+ 	Renderer::drawRect(0.0f, 0.0f, Renderer::getScreenWidth(), Renderer::getScreenHeight(), 0x000000FF, 0x000000FF);
+ 
++	if (percent >= 0)
++	{
++		float baseHeight = 0.04f;
++
++		float w = Renderer::getScreenWidth() / 2;
++		float h = Renderer::getScreenHeight() * baseHeight;
++
++		float x = Renderer::getScreenWidth() / 2 - w / 2;
++		float y = Renderer::getScreenHeight() - (Renderer::getScreenHeight() * 3 * baseHeight);
++
++		Renderer::drawRect(x, y, w, h, 0x25252500 | opacity, 0x25252500 | opacity);
++		Renderer::drawRect(x, y, (w*percent), h, 0x006C9E00 | opacity, 0x006C9E00 | opacity); // 0xFFFFFFFF
++	}
++
+ 	ImageComponent splash(this, true);
+ 	splash.setResize(Renderer::getScreenWidth() * 0.6f, 0.0f);
+ 	splash.setImage(":/splash.svg");
+@@ -317,13 +332,19 @@ void Window::renderLoadingScreen(std::string text)
+ 	TextCache* cache = font->buildTextCache(text, 0, 0, 0x656565FF);
+ 
+ 	float x = Math::round((Renderer::getScreenWidth() - cache->metrics.size.x()) / 2.0f);
+-	float y = Math::round(Renderer::getScreenHeight() * 0.835f);
++	float y = Math::round(Renderer::getScreenHeight() * 0.78f);
+ 	trans = trans.translate(Vector3f(x, y, 0.0f));
+ 	Renderer::setMatrix(trans);
+ 	font->renderTextCache(cache);
+ 	delete cache;
+ 
+ 	Renderer::swapBuffers();
++
++#if defined(_WIN32)
++	// Avoid Window Freezing on Windows
++	SDL_Event event;
++	while (SDL_PollEvent(&event));
++#endif
+ }
+ 
+ void Window::renderHelpPromptsEarly()
+diff --git a/es-core/src/Window.h b/es-core/src/Window.h
+index efe48d2df..d92bd09b5 100644
+--- a/es-core/src/Window.h
++++ b/es-core/src/Window.h
+@@ -64,7 +64,7 @@ class Window
+ 	bool getAllowSleep();
+ 	void setAllowSleep(bool sleep);
+ 
+-	void renderLoadingScreen(std::string text);
++	void renderLoadingScreen(std::string text, float percent = -1, unsigned char opacity = 255);
+ 
+ 	void renderHelpPromptsEarly(); // used to render HelpPrompts before a fade
+ 	void setHelpPrompts(const std::vector<HelpPrompt>& prompts, const HelpStyle& style);
+diff --git a/es-core/src/utils/ThreadPool.cpp b/es-core/src/utils/ThreadPool.cpp
+new file mode 100644
+index 000000000..3108cb62a
+--- /dev/null
++++ b/es-core/src/utils/ThreadPool.cpp
+@@ -0,0 +1,93 @@
++#include "ThreadPool.h"
++
++#if WIN32
++#include <Windows.h>
++#endif
++
++namespace Utils
++{
++	ThreadPool::ThreadPool() : mRunning(true), mWaiting(false), mNumWork(0)
++	{
++		size_t num_threads = std::thread::hardware_concurrency() - 1;
++
++		auto doWork = [&](size_t id)
++		{
++#if WIN32
++			auto mask = (static_cast<DWORD_PTR>(1) << id);
++			SetThreadAffinityMask(GetCurrentThread(), mask);
++#endif
++
++			while (mRunning)
++			{
++				_mutex.lock();
++				if (!mWorkQueue.empty())
++				{
++					auto work = mWorkQueue.front();
++					mWorkQueue.pop();
++					_mutex.unlock();
++
++					try
++					{
++						work();
++					}
++					catch (...) {}
++
++					mNumWork--;
++				}
++				else
++				{
++					_mutex.unlock();
++
++					// Extra code : Exit finished threads
++					if (mWaiting)
++						return;
++
++					std::this_thread::yield();
++					std::this_thread::sleep_for(std::chrono::milliseconds(1));
++				}
++			}
++		};
++
++		mThreads.reserve(num_threads);
++
++		for (size_t i = 0; i < num_threads; i++)
++			mThreads.push_back(std::thread(doWork, i));
++	}
++
++	ThreadPool::~ThreadPool()
++	{
++		mRunning = false;
++
++		for (std::thread& t : mThreads)
++			if (t.joinable())
++				t.join();
++	}
++
++	void ThreadPool::queueWorkItem(work_function work)
++	{
++		_mutex.lock();
++		mWorkQueue.push(work);
++		mNumWork++;
++		_mutex.unlock();
++	}
++
++	void ThreadPool::wait()
++	{
++		mWaiting = true;
++		while (mNumWork.load() > 0)
++			std::this_thread::yield();
++	}
++
++	void ThreadPool::wait(work_function work, int delay)
++	{
++		mWaiting = true;
++
++		while (mNumWork.load() > 0)
++		{
++			work();
++
++			std::this_thread::yield();
++			std::this_thread::sleep_for(std::chrono::milliseconds(delay));
++		}
++	}
++}
+\ No newline at end of file
+diff --git a/es-core/src/utils/ThreadPool.h b/es-core/src/utils/ThreadPool.h
+new file mode 100644
+index 000000000..34eb84469
+--- /dev/null
++++ b/es-core/src/utils/ThreadPool.h
+@@ -0,0 +1,32 @@
++#pragma once
++
++#include <thread>
++#include <mutex>
++#include <queue>
++#include <atomic>
++#include <functional>
++
++namespace Utils
++{
++	class ThreadPool
++	{
++	public:
++		typedef std::function<void(void)> work_function;
++
++		ThreadPool();
++		~ThreadPool();
++
++		void queueWorkItem(work_function work);
++		void wait();
++		void wait(work_function work, int delay = 50);
++
++	private:
++		bool mRunning;
++		bool mWaiting;
++		std::queue<work_function> mWorkQueue;
++		std::atomic<size_t> mNumWork;
++		std::mutex _mutex;
++		std::vector<std::thread> mThreads;
++
++	};
++}
+\ No newline at end of file

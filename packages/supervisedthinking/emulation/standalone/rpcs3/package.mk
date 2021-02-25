@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="rpcs3"
-PKG_VERSION="0012f39384099eca8859f5d4cf5d325ccbd4f98a" # v0.0.14+
+PKG_VERSION="c13039396c00b9b2dc6e15059da264b89066d239" # v0.0.14+
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://rpcs3.net"
@@ -41,4 +41,5 @@ post_makeinstall_target() {
   safe_remove ${INSTALL}/usr/share/applications
   safe_remove ${INSTALL}/usr/share/icons
   safe_remove ${INSTALL}/usr/share/metainfo
+  safe_remove ${INSTALL}/usr/share/rpcs3/git
 }

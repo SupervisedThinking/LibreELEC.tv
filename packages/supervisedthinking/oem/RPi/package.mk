@@ -76,7 +76,7 @@ OEM_STREAMING_CLIENTS_RPI=" \
 OEM_TOOLS_RPI=" \
   dhrystone-benchmark \
   ds4drv \
-  htop \
+  htop-system \
   lm-sensors \
   midnight-commander \
   rr-config-tool \

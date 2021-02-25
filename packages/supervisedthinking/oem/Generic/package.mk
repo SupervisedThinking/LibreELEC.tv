@@ -100,7 +100,7 @@ OEM_TOOLS_GENERIC=" \
   dhrystone-benchmark \
   dmidecode \
   ds4drv \
-  htop \
+  htop-system \
   lm-sensors \
   mesa-demos-system \
   midnight-commander \

@@ -78,7 +78,7 @@ OEM_STREAMING_CLIENTS_ROCKCHIP=" \
 OEM_TOOLS_ROCKCHIP=" \
   dhrystone-benchmark \
   ds4drv \
-  htop \
+  htop-system \
   lm-sensors \
   midnight-commander \
   rr-config-tool \

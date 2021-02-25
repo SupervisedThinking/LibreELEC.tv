@@ -16,4 +16,7 @@ post_makeinstall_target() {
   mv ${INSTALL}/usr/bin/sdl2-jstest ${INSTALL}/usr/bin/sdl2-jstest.bin
   cp ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin/
   ln -sf /usr/bin/sdl2-jstest ${INSTALL}/usr/bin/sdl-jstest
+
+  # clean up
+  safe_remove ${INSTALL}/usr/share
 }

@@ -10,8 +10,8 @@ PKG_LONGDESC="Mesa is a 3-D graphics library with an API."
 PKG_TOOLCHAIN="meson"
 
 if [ "${OPENGLES}" = "mesa" ]; then
-  PKG_VERSION="4c4a91abe59c37aa88391e7aff30e078682ecb4c" #21.1.0-devel
-  PKG_SHA256="8894e345896833d31a8db471d99b9fae3ace7b4f534e184932c73b87d1295133"
+  PKG_VERSION="f67259d83bcc9b7775ca710fe9d6e75f00f08175" #21.1.0-devel
+  PKG_SHA256="02dd741822db280329263f1e7b14b6189e6953c30158ae5af689f3ba06d8f5be"
   PKG_URL="https://github.com/mesa3d/mesa/archive/${PKG_VERSION}.tar.gz"
 else
   PKG_VERSION="21.0.0-rc5"

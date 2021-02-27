@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="pegasus-frontend"
-PKG_VERSION="89e3693bce7aea445df68bec04a74c583e557d9e" #weekly_2021w05
+PKG_VERSION="9abf065322d0cf89a4ef8e9bd92cfd25a06b8d9c"
 PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/mmatyas/pegasus-frontend"
 PKG_URL="https://github.com/mmatyas/pegasus-frontend.git"
@@ -20,6 +20,11 @@ configure_package() {
   # Displayserver Support
   if [ "${DISPLAYSERVER}" = "x11" ]; then
     PKG_DEPENDS_TARGET+=" xorg-server unclutter-xfixes"
+  fi
+
+  # Fix EGLFS
+  if [ "${DISPLAYSERVER}" = "no" ]; then
+    PKG_PATCH_DIRS+=" EGLFS"
   fi
 
   # Build with OpenGL / OpenGLES support

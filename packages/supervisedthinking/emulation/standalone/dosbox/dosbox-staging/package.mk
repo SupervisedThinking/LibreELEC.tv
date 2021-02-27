@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="dosbox-staging"
-PKG_VERSION="39fd620ce391b9b56ae14ffb4fbfe68ab3bc6d6f" #v0.77.0-dev
-PKG_SHA256="560fdd91499cb6e9856f5e313e9840308e3afb3ceac4855f69c8ecddd67da5bc"
+PKG_VERSION="ecfc9e10d764951c8eb19ab0150273a4914eaedf" #v0.77.0-dev
+PKG_SHA256="6977d9e7c6ac8497616576deaf1574fa99a5eaea06e38c367cfdf501ce8a0388"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://dosbox-staging.github.io/"
 PKG_URL="https://github.com/dosbox-staging/dosbox-staging/archive/${PKG_VERSION}.tar.gz"
@@ -23,6 +23,8 @@ configure_package() {
 }
 
 pre_configure_target() {
+  PKG_MESON_OPTS_TARGET="-D unit_tests=disabled"
+
   # Disable OpenGL if not supported
   if [ ! "${OPENGL_SUPPORT}" = "yes" ]; then
     PKG_MESON_OPTS_TARGET+=" -D use_opengl=false"

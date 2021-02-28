@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="amiberry"
-PKG_VERSION="77f9f926e9d25b6dde666bac08e5f4b68d3f9343" # v3.3
+PKG_VERSION="8f07fc72c5a54b94e58f47ebabb53fd716bf854a" # v3.3+
 PKG_ARCH="arm"
 PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/midwan/amiberry"
@@ -50,16 +50,37 @@ pre_configure_target() {
 makeinstall_target() {
   # Create directories
   mkdir -p ${INSTALL}/usr/bin
-  mkdir -p ${INSTALL}/usr/lib
+  mkdir -p ${INSTALL}/usr/config/amiberry/whdboot/game-data
   mkdir -p ${INSTALL}/usr/config/amiberry/controller
+  mkdir -p ${INSTALL}/usr/share/amiberry/whdboot/save-data/
 
   # Copy ressources
   cp -a ${PKG_DIR}/config/*           ${INSTALL}/usr/config/amiberry/
   cp -a data                          ${INSTALL}/usr/config/amiberry/
   cp -a savestates                    ${INSTALL}/usr/config/amiberry/
   cp -a screenshots                   ${INSTALL}/usr/config/amiberry/
-  cp -a whdboot                       ${INSTALL}/usr/config/amiberry/
   ln -s /storage/roms/bios/Kickstarts ${INSTALL}/usr/config/amiberry/kickstarts
+
+  # WHDLoad
+  cp -a whdboot/save-data             ${INSTALL}/usr/config/amiberry/whdboot/
+  cp -a whdboot/game-data             ${INSTALL}/usr/share/amiberry/whdboot/
+  cp -a whdboot/save-data/Kickstarts/ ${INSTALL}/usr/share/amiberry/whdboot/save-data/
+  cp -a whdboot/WHDLoad               ${INSTALL}/usr/share/amiberry/whdboot/
+  cp -a whdboot/boot-data.zip         ${INSTALL}/usr/share/amiberry/whdboot/
+
+  # Kickstarts symlinks
+  safe_remove ${INSTALL}/usr/config/amiberry/whdboot/save-data/Kickstarts/*
+  ln -s /usr/share/amiberry/whdboot/save-data/Kickstarts/kick33180.A500.RTB  ${INSTALL}/usr/config/amiberry/whdboot/save-data/Kickstarts/
+  ln -s /usr/share/amiberry/whdboot/save-data/Kickstarts/kick33192.A500.RTB  ${INSTALL}/usr/config/amiberry/whdboot/save-data/Kickstarts/
+  ln -s /usr/share/amiberry/whdboot/save-data/Kickstarts/kick34005.A500.RTB  ${INSTALL}/usr/config/amiberry/whdboot/save-data/Kickstarts/
+  ln -s /usr/share/amiberry/whdboot/save-data/Kickstarts/kick40063.A600.RTB  ${INSTALL}/usr/config/amiberry/whdboot/save-data/Kickstarts/
+  ln -s /usr/share/amiberry/whdboot/save-data/Kickstarts/kick40068.A1200.RTB ${INSTALL}/usr/config/amiberry/whdboot/save-data/Kickstarts/
+  ln -s /usr/share/amiberry/whdboot/save-data/Kickstarts/kick40068.A4000.RTB ${INSTALL}/usr/config/amiberry/whdboot/save-data/Kickstarts/
+
+  # WHDLoad symlinks
+  ln -s /usr/share/amiberry/whdboot/game-data/whdload_db.xml ${INSTALL}/usr/config/amiberry/whdboot/game-data/
+  ln -s /usr/share/amiberry/whdboot/WHDLoad                  ${INSTALL}/usr/config/amiberry/whdboot/
+  ln -s /usr/share/amiberry/whdboot/boot-data.zip            ${INSTALL}/usr/config/amiberry/whdboot/
 
   # Create links to Retroarch controller files
   ln -s /usr/share/retroarch/autoconfig/udev/8Bitdo_Pro_SF30_BT_B.cfg "${INSTALL}/usr/config/amiberry/controller/8Bitdo SF30 Pro.cfg"

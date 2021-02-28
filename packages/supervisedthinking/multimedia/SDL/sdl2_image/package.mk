@@ -3,9 +3,9 @@
 
 PKG_NAME="sdl2_image"
 PKG_VERSION="2.0.5"
-PKG_SHA256="bdd5f6e026682f7d7e1be0b6051b209da2f402a2dd8bd1c4bd9c25ad263108d0"
+PKG_SHA256="76b7f67f4c1a5f8368658f0e1e59bdaa4555d1cc7f3a4413178cd735019983ff"
 PKG_LICENSE="SDL"
 PKG_SITE="http://www.libsdl.org/"
-PKG_URL="https://www.libsdl.org/projects/SDL_image/release/SDL2_image-${PKG_VERSION}.tar.gz"
+PKG_URL="https://github.com/libsdl-org/SDL_image/archive/release-${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain sdl2"
 PKG_LONGDESC="SDL_image is an image file loading library."

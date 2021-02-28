@@ -10,12 +10,3 @@ PKG_URL="https://github.com/libsdl-org/SDL_ttf/archive/release-${PKG_VERSION}.ta
 PKG_DEPENDS_TARGET="toolchain sdl2 freetype"
 PKG_LONGDESC="This is a sample library which allows you to use TrueType fonts in your SDL applications"
 PKG_TOOLCHAIN="configure"
-
-# Disable OpenGL if not supported
-if [ ! ${OPENGL_SUPPORT} = "yes" ]; then
-  PKG_PATCH_DIRS="no-opengl"
-fi
-
-if [ ! "${DISPLAYSERVER}" = "x11" ]; then
-  PKG_CONFIGURE_OPTS_TARGET+=" --without-x"
-fi

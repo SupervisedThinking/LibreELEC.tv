@@ -81,6 +81,7 @@ OEM_STREAMING_CLIENTS_AMLOGIC=" \
 OEM_TOOLS_AMLOGIC=" \
   dhrystone-benchmark \
   ds4drv \
+  evtest \
   htop-system \
   lm-sensors \
   midnight-commander \

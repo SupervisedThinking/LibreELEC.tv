@@ -16,8 +16,6 @@ if [ ! ${OPENGL_SUPPORT} = "yes" ]; then
   PKG_PATCH_DIRS="no-opengl"
 fi
 
-PKG_CONFIGURE_OPTS_TARGET="--with-ft-prefix==${SYSROOT_PREFIX}/usr"
-
 if [ ! "${DISPLAYSERVER}" = "x11" ]; then
   PKG_CONFIGURE_OPTS_TARGET+=" --without-x"
 fi

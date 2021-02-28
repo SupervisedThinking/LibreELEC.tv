@@ -1,23 +1,22 @@
+From 761fe1a6eb39c2cbb0a789d1b58692b293f63380 Mon Sep 17 00:00:00 2001
+From: SupervisedThinking <supervisedthinking@gmail.com>
+Date: Sun, 28 Feb 2021 21:34:12 +0100
+Subject: [PATCH] Makefile: fix cross compile
+
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 4872239e..f66d5e57 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -211,10 +211,6 @@
+@@ -211,7 +211,7 @@ $(error Unknown platform:$(PLATFORM))
  endif
  
  RM     = rm -f
 -AS     = as
--CC     ?= gcc
--CXX    ?= g++
--STRIP  ?= strip
- PROG   = amiberry
- 
- #
-@@ -272,7 +268,7 @@
-     CFLAGS += -fsanitize=leak -fsanitize-recover=address
- endif
- 
--LDFLAGS += -lpthread -lz -lpng -lrt -lxml2 -lFLAC -lmpg123 -ldl -lmpeg2convert -lmpeg2
-+LDFLAGS += -lpthread -lz -lpng -lrt -lxml2 -lFLAC -lmpg123 -ldl -lmpeg2convert -lmpeg2 -logg
- export ASFLAGS = $(CPUFLAGS)
- 
- export CFLAGS := $(CPUFLAGS) $(CFLAGS) -pipe -Wno-shift-overflow -Wno-narrowing $(EXTRA_CFLAGS)
-
++AS     ?= as
+ CC     ?= gcc
+ CXX    ?= g++
+ STRIP  ?= strip

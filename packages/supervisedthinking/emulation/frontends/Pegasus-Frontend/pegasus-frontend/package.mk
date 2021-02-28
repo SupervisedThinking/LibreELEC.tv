@@ -22,10 +22,10 @@ configure_package() {
     PKG_DEPENDS_TARGET+=" xorg-server unclutter-xfixes"
   fi
 
-  # Fix EGLFS
-  if [ "${DISPLAYSERVER}" = "no" ]; then
-    PKG_PATCH_DIRS+=" EGLFS"
-  fi
+#  # Fix EGLFS
+#  if [ "${DISPLAYSERVER}" = "no" ]; then
+#    PKG_PATCH_DIRS+=" EGLFS"
+#  fi
 
   # Build with OpenGL / OpenGLES support
   if [ "${OPENGL_SUPPORT}" = "yes" ]; then
@@ -40,12 +40,20 @@ configure_target() {
   mkdir -p ${PKG_BUILD}/.${TARGET_NAME}
   cd .${TARGET_NAME}
 
+  # Fix EGLFS
+#  if [ "${DISPLAYSERVER}" = "no" ]; then
+#    PKG_QMAKE_LIBS_LIBDL="QMAKE_LIBS_LIBDL=-ldl"
+#    export CFLAGS+=" -DMESA_EGL_NO_X11_HEADERS"
+#    export CXXFLAGS+=" -DMESA_EGL_NO_X11_HEADERS"
+#  fi
+
   # Generate qmake config
   qmake ${PKG_BUILD}/pegasus.pro INSTALLDIR=${INSTALL}/usr/bin \
                                  INSTALL_BINDIR=${INSTALL}/usr/bin \
                                  INSTALL_DATADIR=${INSTALL}/usr/bin \
                                  INSTALL_ICONDIR=${INSTALL}/usr/share/icons/trash \
                                  INSTALL_DESKTOPDIR=${INSTALL}/usr/share/applications
+#                                 ${PKG_QMAKE_LIBS_LIBDL}
 }
 
 post_makeinstall_target() {

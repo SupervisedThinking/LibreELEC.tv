@@ -7,7 +7,7 @@ PKG_SHA256="3a530d1b243b5dec00bc54937455471aaa3e56849d2593edb8ded07228202240"
 PKG_LICENSE="GPL"
 PKG_SITE="http://qt-project.org"
 PKG_URL="http://download.qt.io/archive/qt/${PKG_VERSION%.*}/${PKG_VERSION}/single/${PKG_NAME}-src-${PKG_VERSION}.tar.xz"
-PKG_DEPENDS_TARGET="toolchain libjpeg-turbo libpng pcre2 sqlite zlib freetype libxkbcommon gstreamer gst-plugins-base gst-plugins-good gst-libav"
+PKG_DEPENDS_TARGET="toolchain libjpeg-turbo libpng pcre2-system sqlite zlib freetype libxkbcommon gstreamer gst-plugins-base gst-plugins-good gst-libav"
 PKG_LONGDESC="A cross-platform application and UI framework"
 PKG_BUILD_FLAGS="-gold"
 

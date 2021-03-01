@@ -33,4 +33,9 @@ makeinstall_target() {
   # Install default config cfg
   mkdir -p ${INSTALL}/usr/config/openbor
     cp -rfv ${PKG_DIR}/config/* ${INSTALL}/usr/config/openbor
+
+  # clean up for KMS based ARM builds
+  if [ ! "${DISPLAYSERVER}" = "x11" ]; then
+    sed -e "/# Change refresh.*/,+2d" -i ${INSTALL}/usr/bin/*.start
+  fi
 }

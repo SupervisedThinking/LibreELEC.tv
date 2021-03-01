@@ -24,7 +24,7 @@ else
   # Set SDL audio driver to Pulseaudio or ALSA
   set_SDL_audiodriver
 
-  # Set Qt5 screen scale environment vars
+  # Set Qt5 environment vars
   set_QT_environment_vars
 
   # Run Moonlight-Qt

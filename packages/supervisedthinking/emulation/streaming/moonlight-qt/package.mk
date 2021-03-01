@@ -32,7 +32,9 @@ post_makeinstall_target() {
   cp -rfv ${PKG_DIR}/scripts/*    ${INSTALL}/usr/bin/
   safe_remove ${INSTALL}/usr/share
 
- if [ ${DISPLAYSERVER} = "no" ]; then
-   sed -e "s/set_QT_environment_vars.*/set_QT_environment_vars cursor/" -i ${INSTALL}/usr/bin/moonlight-qt.start
+  # clean up for KMS based ARM builds
+  if [ ! "${DISPLAYSERVER}" = "x11" ]; then
+    sed -e "s/set_QT_environment_vars.*/set_QT_environment_vars cursor/" -i ${INSTALL}/usr/bin/*.start
+    sed -e "/# Change refresh.*/,+2d"                                    -i ${INSTALL}/usr/bin/*.start
  fi
 }

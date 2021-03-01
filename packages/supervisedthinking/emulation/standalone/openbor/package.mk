@@ -14,8 +14,9 @@ PKG_TOOLCHAIN="make"
 pre_configure_target() {
   PKG_MAKE_OPTS_TARGET="BUILD_LINUX_${ARCH}=1 \
                         -C ${PKG_BUILD}/engine \
-                        SDKPATH="${SYSROOT_PREFIX}"
-                        PREFIX=${TARGET_NAME}"
+                        SDKPATH="${SYSROOT_PREFIX}" \
+                        PREFIX="${TARGET_NAME}-" \
+                        LNXDEV="${TOOLCHAIN}/bin""
 }
 
 pre_make_target() {

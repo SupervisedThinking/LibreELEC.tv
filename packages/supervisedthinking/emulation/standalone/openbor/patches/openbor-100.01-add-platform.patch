@@ -64,12 +64,3 @@ index 8b0f9a65..6e8198e0 100644
  ifdef BUILD_DARWIN
  TARGET          = $(VERSION_NAME).elf
  TARGET_FINAL    = $(VERSION_NAME)
-@@ -195,7 +241,7 @@ ifdef BUILD_WIN
- STRIP 	        = $(WINDEV)/$(PREFIX)strip$(EXTENSION) $(TARGET) -o $(TARGET_FINAL)
- endif
- ifdef BUILD_LINUX
--STRIP 	        = $(LNXDEV)/$(PREFIX)strip $(TARGET) -o $(TARGET_FINAL)
-+STRIP 	        = $(PREFIX)-strip $(TARGET) -o $(TARGET_FINAL)
- endif
- ifdef BUILD_DARWIN
- STRIP           = $(PREFIX)strip $(TARGET) -o $(TARGET_FINAL)

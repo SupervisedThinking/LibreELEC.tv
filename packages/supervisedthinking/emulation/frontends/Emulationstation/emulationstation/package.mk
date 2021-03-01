@@ -68,5 +68,10 @@ post_makeinstall_target() {
     cp -v ${PKG_DIR}/config/${PROJECT}/es_systems.cfg                       ${INSTALL}/usr/config/emulationstation/
     cp -v ${PKG_DIR}/config/${PROJECT}/userdirs-emulationstation.conf       ${INSTALL}/usr/lib/tmpfiles.d/
   fi
+
+  # clean up for KMS based ARM builds
+  if [ ! "${DISPLAYSERVER}" = "x11" ]; then
+    sed -e "/# Change refresh.*/,+2d" -i ${INSTALL}/usr/bin/*.start
+  fi
 }
 

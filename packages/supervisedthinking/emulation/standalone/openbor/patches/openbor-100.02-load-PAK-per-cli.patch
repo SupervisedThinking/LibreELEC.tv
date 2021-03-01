@@ -1,9 +1,21 @@
+From 63b04f0f01e8bc79950348ae1a83a8777315e87e Mon Sep 17 00:00:00 2001
+From: SupervisedThinking <supervisedthinking@gmail.com>
+Date: Mon, 1 Mar 2021 13:59:57 +0100
+Subject: [PATCH] engine/sdl: add command line argument to load paks directly
+ form cli
+
+---
+ engine/sdl/sdlport.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/engine/sdl/sdlport.c b/engine/sdl/sdlport.c
+index a820fefc..0d4c7f7d 100644
 --- a/engine/sdl/sdlport.c
 +++ b/engine/sdl/sdlport.c
-@@ -137,7 +137,19 @@
+@@ -137,7 +137,19 @@ int main(int argc, char *argv[])
  	dirExists(logsDir, 1);
  	dirExists(screenShotsDir, 1);
-
+ 
 -	Menu();
 +   // Test command line argument to launch MOD
 +   int romArg = 0;

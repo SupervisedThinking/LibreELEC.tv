@@ -1,14 +1,14 @@
-From 5d057e7b6b350e2faa75c041d0081fb2963e980d Mon Sep 17 00:00:00 2001
-From: ThinkSupervised <supervisedthinking@gmail.com>
-Date: Sat, 12 Oct 2019 19:24:14 +0200
-Subject: [PATCH] engine/Makefile: updated platform
+From b48638f06ed723db9aa7ac81137b79283ed8647a Mon Sep 17 00:00:00 2001
+From: SupervisedThinking <supervisedthinking@gmail.com>
+Date: Mon, 1 Mar 2021 14:00:38 +0100
+Subject: [PATCH] Makefile: added Linux platforms for x86_64 & arm
 
 ---
- engine/Makefile | 48 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 1 deletion(-)
+ engine/Makefile | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
 diff --git a/engine/Makefile b/engine/Makefile
-index 8b0f9a65..6e8198e0 100644
+index 8b0f9a65..de02f96e 100644
 --- a/engine/Makefile
 +++ b/engine/Makefile
 @@ -103,6 +103,52 @@ BUILD_DEBUG     = 1

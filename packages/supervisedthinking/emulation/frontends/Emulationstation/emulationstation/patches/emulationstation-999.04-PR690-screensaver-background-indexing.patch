@@ -1,0 +1,176 @@
+From 3f1a109fefa78d6b428eae273dc00a592e1a01d0 Mon Sep 17 00:00:00 2001
+From: pjft <paulo.j.tavares@gmail.com>
+Date: Sat, 3 Oct 2020 19:34:41 +0100
+Subject: [PATCH] Adding background indexing during screensaver
+
+---
+ es-app/src/CollectionSystemManager.h |  3 +-
+ es-app/src/SystemScreenSaver.cpp     | 41 ++++++++++++++++++++++++++++
+ es-app/src/SystemScreenSaver.h       |  6 ++++
+ es-app/src/guis/GuiMenu.cpp          |  6 ++++
+ es-core/src/Settings.cpp             |  1 +
+ 5 files changed, 56 insertions(+), 1 deletion(-)
+
+diff --git a/es-app/src/CollectionSystemManager.h b/es-app/src/CollectionSystemManager.h
+index 23afe1932..82aec230f 100644
+--- a/es-app/src/CollectionSystemManager.h
++++ b/es-app/src/CollectionSystemManager.h
+@@ -76,6 +76,8 @@ class CollectionSystemManager
+ 	SystemData* getSystemToView(SystemData* sys);
+ 	void updateCollectionFolderMetadata(SystemData* sys);
+ 
++	SystemData* getAllGamesCollection();
++
+ private:
+ 	static CollectionSystemManager* sInstance;
+ 	SystemEnvironmentData* mCollectionEnvData;
+@@ -89,7 +91,6 @@ class CollectionSystemManager
+ 
+ 	void initAutoCollectionSystems();
+ 	void initCustomCollectionSystems();
+-	SystemData* getAllGamesCollection();
+ 	SystemData* createNewCollectionEntry(std::string name, CollectionSystemDecl sysDecl, bool index = true);
+ 	void populateAutoCollection(CollectionSystemData* sysData);
+ 	void populateCustomCollection(CollectionSystemData* sysData);
+diff --git a/es-app/src/SystemScreenSaver.cpp b/es-app/src/SystemScreenSaver.cpp
+index cffe103a1..4236f5ca0 100644
+--- a/es-app/src/SystemScreenSaver.cpp
++++ b/es-app/src/SystemScreenSaver.cpp
+@@ -4,6 +4,7 @@
+ #include "components/VideoPlayerComponent.h"
+ #endif
+ #include "components/VideoVlcComponent.h"
++#include "CollectionSystemManager.h"
+ #include "utils/FileSystemUtil.h"
+ #include "views/gamelist/IGameListView.h"
+ #include "views/ViewController.h"
+@@ -15,8 +16,11 @@
+ #include "SystemData.h"
+ #include <unordered_map>
+ #include <time.h>
++#include <chrono>
+ #define FADE_TIME 			300
+ 
++static int lastIndex = 0;
++
+ SystemScreenSaver::SystemScreenSaver(Window* window) :
+ 	mVideoScreensaver(NULL),
+ 	mImageScreensaver(NULL),
+@@ -63,6 +67,13 @@ bool SystemScreenSaver::isScreenSaverActive()
+ 
+ void SystemScreenSaver::startScreenSaver()
+ {
++	// if set to index files in background, start thread
++	if (Settings::getInstance()->getBool("BackgroundIndexing"))
++	{
++		mExit = false;
++		mThread = new std::thread(&SystemScreenSaver::backgroundIndexing, this);
++	}
++
+ 	std::string screensaver_behavior = Settings::getInstance()->getString("ScreenSaverBehavior");
+ 	if (!mVideoScreensaver && (screensaver_behavior == "random video"))
+ 	{
+@@ -197,6 +208,14 @@ void SystemScreenSaver::stopScreenSaver()
+ 	delete mImageScreensaver;
+ 	mImageScreensaver = NULL;
+ 
++	// Exit the indexing thread
++	if (Settings::getInstance()->getBool("BackgroundIndexing"))
++	{
++		mExit = true;
++		mThread->join();
++		delete mThread;
++	}
++
+ 	// we need this to loop through different videos
+ 	mState = STATE_INACTIVE;
+ 	PowerSaver::runningScreenSaver(false);
+@@ -253,6 +272,28 @@ void SystemScreenSaver::renderScreenSaver()
+ 	}
+ }
+ 
++void SystemScreenSaver::backgroundIndexing()
++{
++	LOG(LogDebug) << "Background indexing starting.";
++
++	// get the list of all games
++	SystemData* all = CollectionSystemManager::get()->getAllGamesCollection();
++	std::vector<FileData*> files = all->getRootFolder()->getFilesRecursive(GAME);
++	
++	const auto startTs = std::chrono::system_clock::now();
++	for (lastIndex; lastIndex < files.size(); lastIndex++)
++	{
++		if(mExit)
++			break;
++		Utils::FileSystem::exists(files.at(lastIndex)->getVideoPath());
++		Utils::FileSystem::exists(files.at(lastIndex)->getMarqueePath());
++		Utils::FileSystem::exists(files.at(lastIndex)->getThumbnailPath());
++		Utils::FileSystem::exists(files.at(lastIndex)->getImagePath());
++	}
++	auto endTs = std::chrono::system_clock::now();
++	LOG(LogDebug) << "Indexed a total of " << lastIndex << " entries in " << std::chrono::duration_cast<std::chrono::milliseconds>(endTs - startTs).count() << " ms. Stopping.";		
++}
++
+ unsigned long SystemScreenSaver::countGameListNodes(const char *nodeName)
+ {
+ 	unsigned long nodeCount = 0;
+diff --git a/es-app/src/SystemScreenSaver.h b/es-app/src/SystemScreenSaver.h
+index 4e4240508..000c995d3 100644
+--- a/es-app/src/SystemScreenSaver.h
++++ b/es-app/src/SystemScreenSaver.h
+@@ -3,6 +3,7 @@
+ #define ES_APP_SYSTEM_SCREEN_SAVER_H
+ 
+ #include "Window.h"
++#include <thread>
+ 
+ class ImageComponent;
+ class Sound;
+@@ -36,6 +37,8 @@ class SystemScreenSaver : public Window::ScreenSaver
+ 	void pickRandomGameListImage(std::string& path);
+ 	void pickRandomCustomImage(std::string& path);
+ 
++	void backgroundIndexing();
++
+ 	void input(InputConfig* config, Input input);
+ 
+ 	enum STATE {
+@@ -62,6 +65,9 @@ class SystemScreenSaver : public Window::ScreenSaver
+ 	int 			mSwapTimeout;
+ 	std::shared_ptr<Sound>	mBackgroundAudio;
+ 	bool			mStopBackgroundAudio;
++
++	std::thread*				mThread;
++	bool 						mExit;
+ };
+ 
+ #endif // ES_APP_SYSTEM_SCREEN_SAVER_H
+diff --git a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
+index cd60ff09f..319906e13 100644
+--- a/es-app/src/guis/GuiMenu.cpp
++++ b/es-app/src/guis/GuiMenu.cpp
+@@ -453,6 +453,12 @@ void GuiMenu::openOtherSettings()
+ 
+ #endif
+ 
++	// hidden files
++	auto background_indexing = std::make_shared<SwitchComponent>(mWindow);
++	background_indexing->setState(Settings::getInstance()->getBool("BackgroundIndexing"));
++	s->addWithLabel("INDEX FILES DURING SCREENSAVER", background_indexing);
++	s->addSaveFunc([background_indexing] { Settings::getInstance()->setBool("BackgroundIndexing", background_indexing->getState()); });
++
+ 	// framerate
+ 	auto framerate = std::make_shared<SwitchComponent>(mWindow);
+ 	framerate->setState(Settings::getInstance()->getBool("DrawFramerate"));
+diff --git a/es-core/src/Settings.cpp b/es-core/src/Settings.cpp
+index cc7f8de97..2d353f78a 100644
+--- a/es-core/src/Settings.cpp
++++ b/es-core/src/Settings.cpp
+@@ -140,6 +140,7 @@ void Settings::setDefaults()
+ 	mBoolMap["CollectionShowSystemInfo"] = true;
+ 	mBoolMap["SortAllSystems"] = false;
+ 	mBoolMap["UseCustomCollectionsSystem"] = true;
++	mBoolMap["BackgroundIndexing"] = false;
+ 
+ 	mBoolMap["LocalArt"] = false;
+ 

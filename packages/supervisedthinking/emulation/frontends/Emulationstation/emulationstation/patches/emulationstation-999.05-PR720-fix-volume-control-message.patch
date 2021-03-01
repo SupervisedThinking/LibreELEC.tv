@@ -1,0 +1,37 @@
+From 3890e19f1990e9b0864d03fbf91635227ff8e027 Mon Sep 17 00:00:00 2001
+From: opa <opa@ken16.net>
+Date: Thu, 3 Dec 2020 01:14:01 +0900
+Subject: [PATCH] Fix insignificant message typo in VolumeControl.cpp.
+
+---
+ es-app/src/VolumeControl.cpp | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/es-app/src/VolumeControl.cpp b/es-app/src/VolumeControl.cpp
+index 9153523ed..80d18dfdc 100644
+--- a/es-app/src/VolumeControl.cpp
++++ b/es-app/src/VolumeControl.cpp
+@@ -173,7 +173,7 @@ void VolumeControl::init()
+ 				mixerLineControls.cbmxctrl = sizeof(MIXERCONTROL);
+ 				if (mixerGetLineControls((HMIXEROBJ)mixerHandle, &mixerLineControls, MIXER_GETLINECONTROLSF_ONEBYTYPE) != MMSYSERR_NOERROR)
+ 				{
+-					LOG(LogError) << "VolumeControl::getVolume() - Failed to get mixer volume control!";
++					LOG(LogError) << "VolumeControl::init() - Failed to get mixer volume control!";
+ 					mixerClose(mixerHandle);
+ 					mixerHandle = nullptr;
+ 				}
+@@ -364,12 +364,12 @@ void VolumeControl::setVolume(int volume)
+ 			if (snd_mixer_selem_set_playback_volume(mixerElem, SND_MIXER_SCHN_FRONT_LEFT, rawVolume) < 0
+ 				|| snd_mixer_selem_set_playback_volume(mixerElem, SND_MIXER_SCHN_FRONT_RIGHT, rawVolume) < 0)
+ 			{
+-				LOG(LogError) << "VolumeControl::getVolume() - Failed to set mixer volume!";
++				LOG(LogError) << "VolumeControl::setVolume() - Failed to set mixer volume!";
+ 			}
+ 		}
+ 		else
+ 		{
+-			LOG(LogError) << "VolumeControl::getVolume() - Failed to get volume range!";
++			LOG(LogError) << "VolumeControl::setVolume() - Failed to get volume range!";
+ 		}
+ 	}
+ #elif defined(WIN32) || defined(_WIN32)

@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="openbor"
-PKG_VERSION="b8a2cef9d7c6b90efa62a0188a020f6df79186c2"
+PKG_VERSION="2b7f9ac6cf244e9e68da5e85459e2ba9c5bcb0b9" # 4.0-dev
 PKG_LICENSE="BSD-3-Clause"
 PKG_SITE="https://github.com/DCurrent/openbor"
 PKG_URL="https://github.com/DCurrent/openbor.git"
@@ -16,7 +16,6 @@ pre_configure_target() {
                         -C ${PKG_BUILD}/engine \
                         SDKPATH="${SYSROOT_PREFIX}"
                         PREFIX=${TARGET_NAME}"
-
 }
 
 pre_make_target() {

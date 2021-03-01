@@ -1,6 +1,6 @@
-From b48638f06ed723db9aa7ac81137b79283ed8647a Mon Sep 17 00:00:00 2001
+From ddb0758f8afc22b83acb4ed3f1d9e65259d56ab8 Mon Sep 17 00:00:00 2001
 From: SupervisedThinking <supervisedthinking@gmail.com>
-Date: Mon, 1 Mar 2021 14:00:38 +0100
+Date: Mon, 1 Mar 2021 22:00:58 +0100
 Subject: [PATCH] Makefile: added Linux platforms for x86_64 & arm
 
 ---
@@ -8,14 +8,14 @@ Subject: [PATCH] Makefile: added Linux platforms for x86_64 & arm
  1 file changed, 46 insertions(+)
 
 diff --git a/engine/Makefile b/engine/Makefile
-index 8b0f9a65..de02f96e 100644
+index 8b0f9a65..6ca8a08b 100644
 --- a/engine/Makefile
 +++ b/engine/Makefile
 @@ -103,6 +103,52 @@ BUILD_DEBUG     = 1
  endif
  endif
  
-+ifdef BUILD_LINUX_x86_64
++ifdef BUILD_LINUX_LE_x86_64
 +TARGET 	        = $(VERSION_NAME).elf
 +TARGET_FINAL    = $(VERSION_NAME)
 +TARGET_PLATFORM = LINUX
@@ -41,7 +41,7 @@ index 8b0f9a65..de02f96e 100644
 +CFLAGS          += -Wno-error=format-overflow -Wno-error=stringop-truncation -Wno-error=stringop-overflow
 +endif
 +
-+ifdef BUILD_LINUX_arm
++ifdef BUILD_LINUX_LE_arm
 +TARGET 	        = $(VERSION_NAME).elf
 +TARGET_FINAL    = $(VERSION_NAME)
 +TARGET_PLATFORM = LINUX

@@ -12,7 +12,7 @@ GET_HANDLER_SUPPORT="git"
 PKG_TOOLCHAIN="make"
 
 pre_configure_target() {
-  PKG_MAKE_OPTS_TARGET="BUILD_LINUX_${ARCH}=1 \
+  PKG_MAKE_OPTS_TARGET="BUILD_LINUX_LE_${ARCH}=1 \
                         -C ${PKG_BUILD}/engine \
                         SDKPATH="${SYSROOT_PREFIX}" \
                         PREFIX="${TARGET_NAME}-" \

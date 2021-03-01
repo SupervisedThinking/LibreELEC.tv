@@ -83,4 +83,9 @@ makeinstall_target() {
   if [ "${PROJECT}" = "Generic" ]; then
     sed -e "s/FullScreen = True/FullScreen = False/" -i ${INSTALL}/usr/config/ppsspp/PSP/SYSTEM/ppsspp.ini
   fi
+
+  # clean up for KMS based ARM builds
+  if [ ! "${DISPLAYSERVER}" = "x11" ]; then
+    sed -e "/# Change refresh.*/,+2d" -i ${INSTALL}/usr/bin/*.start
+  fi
 }

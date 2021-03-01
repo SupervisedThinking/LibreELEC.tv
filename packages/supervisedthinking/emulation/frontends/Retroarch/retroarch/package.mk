@@ -155,14 +155,19 @@ makeinstall_target() {
   mkdir -p ${INSTALL}/usr/share/retroarch/filters/audio
     cp ${PKG_BUILD}/libretro-common/audio/dsp_filters/*.so ${INSTALL}/usr/share/retroarch/filters/audio
     cp ${PKG_BUILD}/libretro-common/audio/dsp_filters/*.dsp ${INSTALL}/usr/share/retroarch/filters/audio
+
+  # Install binaries & scripts
   mkdir -p ${INSTALL}/usr/bin
     cp ${PKG_BUILD}/retroarch ${INSTALL}/usr/bin
-    cp -rf ${PKG_DIR}/scripts/common/*     ${INSTALL}/usr/bin/
-    cp -rf ${PKG_DIR}/scripts/${PROJECT}/* ${INSTALL}/usr/bin/
-
-  if [ "${PROJECT}" = "Generic" ]; then
+  
+  if [ "${DISPLAYSERVER}" = "x11" ]; then
     mkdir -p ${INSTALL}/usr/config/retroarch
-    cp -PR ${PKG_DIR}/config/* ${INSTALL}/usr/config/retroarch/
+      cp -PR ${PKG_DIR}/config/* ${INSTALL}/usr/config/retroarch/
+      cp -rf ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin/
+  else
+    cp -rf ${PKG_DIR}/scripts/frontend-retroarch.py ${INSTALL}/usr/bin/
+    cp -rf ${PKG_DIR}/scripts/retroarch-nokms.start ${INSTALL}/usr/bin/retroarch.start
+      sed -e "/# Change refresh.*/,+2d"          -i ${INSTALL}/usr/bin/*.start
   fi
   
   # General path configuration

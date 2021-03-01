@@ -47,4 +47,9 @@ makeinstall_target() {
   # copy binary & start script
   cp -v src/hatari ${INSTALL}/usr/bin
   cp -R ${PKG_DIR}/scripts/* ${INSTALL}/usr/bin/
+
+  # clean up for KMS based ARM builds
+  if [ ! "${DISPLAYSERVER}" = "x11" ]; then
+    sed -e "/# Change refresh.*/,+2d" -i ${INSTALL}/usr/bin/*.start
+  fi
 }

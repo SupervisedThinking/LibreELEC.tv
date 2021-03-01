@@ -1,3 +1,6 @@
+105
+- Removed refresh rates for GBM/KMS ARM builds
+
 104
 - Removed demos / id games menu option
 

@@ -6,8 +6,6 @@
     <setting id="RR_AUDIO_VOLUME"                 default="true">75</setting>
     <setting id="RR_QT_QPA_EGLFS_PHYSICAL_WIDTH"  default="true">576</setting>
     <setting id="RR_QT_QPA_EGLFS_PHYSICAL_HEIGHT" default="true">324</setting>
-    <setting id="RR_REFRESH_RATE_AMIGA"           default="true">50Hz</setting>
-    <setting id="RR_REFRESH_RATE_ATARI"           default="true">50Hz</setting>
 </settings>
 
 

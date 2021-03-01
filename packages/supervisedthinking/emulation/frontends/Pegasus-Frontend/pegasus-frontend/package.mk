@@ -60,9 +60,13 @@ post_makeinstall_target() {
   mkdir -p ${INSTALL}/usr/bin
   mkdir -p ${INSTALL}/usr/config/pegasus-frontend/themes
   echo "Place your Pegasus-Frontend Themes here!" > ${INSTALL}/usr/config/pegasus-frontend/themes/readme.txt
-  cp -rf ${PKG_DIR}/scripts/common/*     ${INSTALL}/usr/bin/
-  cp -rf ${PKG_DIR}/scripts/${PROJECT}/* ${INSTALL}/usr/bin/
+  cp -rf ${PKG_DIR}/scripts/*        ${INSTALL}/usr/bin/
 
   # Clean up
   safe_remove ${INSTALL}/usr/share
+
+  # clean up for KMS based ARM builds
+  if [ ! "${DISPLAYSERVER}" = "x11" ]; then
+    sed -e "/# Change refresh.*/,+2d" -i ${INSTALL}/usr/bin/*.start
+  fi
 }

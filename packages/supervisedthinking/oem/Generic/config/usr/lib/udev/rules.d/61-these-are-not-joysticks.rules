@@ -1,4 +1,4 @@
-# /etc/udev/rules.d/60-these-are-not-joysticks.rules
+# /etc/udev/rules.d/61-these-are-not-joysticks.rules
 #
 # This file is auto-generated. For more information:
 # https://github.com/denilsonsa/udev-joystick-blacklist

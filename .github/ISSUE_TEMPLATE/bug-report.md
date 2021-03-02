@@ -1,8 +1,8 @@
 ---
 name: Bug report
-about: Describe this issue
-title: "[BUG]"
-labels: ISSUE NEEDS REVIEW
+about: Create a report to help us improve the project.
+title: "[BUG]:"
+labels: ''
 assignees: ''
 
 ---
@@ -25,4 +25,3 @@ Steps to reproduce the behavior:
 
 ### Additional context
 <!--- Add any other context about the problem here. -->
-

@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="genesis-plus-gx-wide"
-PKG_VERSION="fbbac3888690a2ac03cf567e88d864edbcd57034"
-PKG_SHA256="1a601b965a2db5e4544049081c1bc0a4446acc6dd3acabfa4695b5342efb34e8"
+PKG_VERSION="ac7c50fe865b7f485eda982a41dbe4ea9edcfc33"
+PKG_SHA256="b2c1e60f9b786b7adabb4da84c1ef3dbd77685f39d953c1cabc5ac8ea691157a"
 PKG_LICENSE="Modified BSD / LGPLv2.1"
 PKG_SITE="https://github.com/libretro/Genesis-Plus-GX-Wide"
 PKG_URL="https://github.com/libretro/Genesis-Plus-GX-Wide/archive/${PKG_VERSION}.tar.gz"

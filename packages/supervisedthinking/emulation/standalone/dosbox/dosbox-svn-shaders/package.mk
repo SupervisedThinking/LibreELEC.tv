@@ -8,10 +8,10 @@ PKG_LICENSE="OSS"
 PKG_SITE="https://github.com/tyrells/dosbox-svn-shaders"
 PKG_URL="https://github.com/tyrells/dosbox-svn-shaders/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
-PKG_LONGDESC="This repo contains a number of shaders ported/created or the new version of DOSBox SVN (r4319) by members of the DOSBox community."
+PKG_LONGDESC="This repo contains a number of shaders ported/created for DOSBox-staging by members of the DOSBox community."
 PKG_TOOLCHAIN="manual"
 
 makeinstall_target() {
   mkdir -p ${INSTALL}/usr/config/dosbox/glshaders
-  cp -r crt interpolation xbr ${INSTALL}/usr/config/dosbox/glshaders/
+    cp -rv crt interpolation xbr ${INSTALL}/usr/config/dosbox/glshaders/
 }

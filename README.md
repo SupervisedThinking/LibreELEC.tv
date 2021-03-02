@@ -17,7 +17,7 @@
 
 * Amlogic - AMLG12B
 * Generic - AMD & Intel systems with IGP and/or discrete AMD or Nvidia GPU
-* Rockchip - Rk3399
+* Rockchip - RK3399
 
 *WIP:*
 * Amlogic - AMLGX
@@ -75,7 +75,7 @@
 | [desmume](https://github.com/libretro/desmume) | Nintendo DS |
 | [dosbox-pure](https://github.com/libretro/dosbox-pure) | DOS |
 | [ecwolf](https://github.com/libretro/ecwolf) | Wolfenstein 3D engine |
-| [fbneo](https://github.com/libretro/fbneo) | Multiple Arcade Machine Emulator |
+| [fbneo](https://github.com/libretro/fbneo) | Multiple Arcade Machine Emulator -  Romset|
 | [fceumm](https://github.com/libretro/libretro-fceumm) | Nintendo Entertainment System |
 | [fuse](https://github.com/libretro/fuse-libretro) | ZX Spectrum |
 | [gambatte](https://github.com/libretro/gambatte-libretro) | Nintendo Game Boy (Color) |

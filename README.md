@@ -37,7 +37,7 @@
 ---
 **Minor features**
 
-* Updated "51-these-are-not-joysticks.rules" udev rules for input devices
+* Updated [udev-joystick-blacklist](https://github.com/denilsonsa/udev-joystick-blacklist) udev rules for input devices
 * Increased system partion size to 1024MB for new installations
 ---
 **Sysutils**

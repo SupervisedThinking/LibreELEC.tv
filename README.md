@@ -13,13 +13,13 @@
 ---
 **Currently supported & WIP devices**
 
-*Supported:*
+*Supported - run tested:*
 
 * Amlogic - AMLG12B
 * Generic - AMD & Intel systems with IGP and/or discrete AMD or Nvidia GPU
 * Rockchip - RK3399
 
-*WIP:*
+*WIP - builds fine, not run tested:*
 * Amlogic - AMLGX
 * Raspberry Pi - RPi4
 

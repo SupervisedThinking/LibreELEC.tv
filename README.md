@@ -89,6 +89,7 @@
 | [opera](https://github.com/libretro/opera-libretro) | 3DO Interactive Multiplayer |
 | [pcsx-rearmed](https://github.com/libretro/pcsx_rearmed) | Sony Playstation |
 | [prboom](https://github.com/libretro/libretro-prboom) | Doom engine |
+| [prosystem](https://github.com/libretro/prosystem-libretro) | Atari 7800 |
 | [sameboy](https://github.com/libretro/SameBoy) | Nintendo Game Boy (Color) |
 | [scummvm](https://github.com/libretro/scummvm) | Engine for LucasArts adventure games |
 | [snes9x](https://github.com/libretro/snes9x) | Nintendo Super Nintendo Entertainment System |

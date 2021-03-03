@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="nestopia"
-PKG_VERSION="fd7a7423512da11dfc208fefcf2930b8b25343a1"
-PKG_SHA256="a7ce428e56819ad8a4ebef82d237381cc376c804fe42ed531dea408b4b6f51ae"
+PKG_VERSION="7c71f61c72cc4aa277b7e5915b6802a2c1fb0d8c"
+PKG_SHA256="883ebe1e0e944f40522104c40bbf1c7d814c91160b6d815f1465b0273bc91245"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/nestopia"
 PKG_URL="https://github.com/libretro/nestopia/archive/${PKG_VERSION}.tar.gz"
@@ -19,16 +19,7 @@ PKG_MAKE_OPTS_TARGET="-C libretro GIT_VERSION=${PKG_VERSION:0:7}"
 
 pre_configure_target() {
   if [ "${ARCH}" = "arm" ]; then
-    if [ "${PROJECT}" = "RPi" ]; then
-      PKG_MAKE_OPTS_TARGET+=" platform=rpi2"
-    else
-      PKG_MAKE_OPTS_TARGET+=" platform=armv"
-      # ARM NEON support
-      if target_has_feature neon; then
-        PKG_MAKE_OPTS_TARGET+="-neon"
-      fi
-      PKG_MAKE_OPTS_TARGET+="-${TARGET_FLOAT}float-${TARGET_CPU}"
-    fi
+    PKG_MAKE_OPTS_TARGET+=" platform=armv"
   fi
 }
 

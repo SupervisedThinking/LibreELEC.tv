@@ -28,6 +28,7 @@ OEM_EMULATORS_LIBRETRO_ROCKCHIP=" \
   chailove \
   desmume \
   dosbox-pure \
+  ecwolf \
   fbneo \
   fceumm \
   flycast \

@@ -28,6 +28,7 @@ OEM_EMULATORS_LIBRETRO_RPI=" \
   chailove \
   desmume \
   dosbox-pure \
+  ecwolf \
   fbneo \
   fceumm \
   flycast \

@@ -13,6 +13,8 @@ PKG_LONGDESC="GeneralUser GS is a GM and GS compatible SoundFont bank for compos
 PKG_TOOLCHAIN="manual"
 
 makeinstall_target() {
+  mkdir -p ${INSTALL}/usr/config/soundfonts
   mkdir -p ${INSTALL}/usr/share/soundfonts
-  cp GeneralUser*${PKG_VERSION}.sf2 ${INSTALL}/usr/share/soundfonts/GeneralUser.sf2
+    cp -v GeneralUser*${PKG_VERSION}.sf2 ${INSTALL}/usr/share/soundfonts/GeneralUser.sf2
+    ln -sf /usr/share/soundfonts/GeneralUser.sf2 ${INSTALL}/usr/config/soundfonts/
 }

@@ -46,6 +46,7 @@ OEM_EMULATORS_LIBRETRO_ROCKCHIP=" \
   opera \
   pcsx_rearmed \
   prboom \
+  prosystem \
   sameboy \
   scummvm \
   snes9x \

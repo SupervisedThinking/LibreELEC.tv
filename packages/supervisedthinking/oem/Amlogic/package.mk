@@ -45,6 +45,7 @@ OEM_EMULATORS_LIBRETRO_AMLOGIC=" \
   opera \
   pcsx_rearmed \
   prboom \
+  prosystem \
   sameboy \
   scummvm \
   snes9x \

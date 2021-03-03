@@ -44,6 +44,7 @@ OEM_EMULATORS_LIBRETRO_RPI=" \
   opera \
   pcsx_rearmed \
   prboom \
+  prosystem \
   sameboy \
   scummvm \
   snes9x \

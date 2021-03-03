@@ -60,6 +60,7 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   pcsx_rearmed \
   ppsspp-libretro \
   prboom \
+  prosystem \
   sameboy \
   scummvm \
   snes9x \

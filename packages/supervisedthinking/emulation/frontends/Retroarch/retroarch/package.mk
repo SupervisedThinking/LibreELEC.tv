@@ -109,6 +109,11 @@ pre_configure_target() {
                                      --disable-videocore"
       fi
 
+      # Panfrost: Mali T860 & G52 support OpenGLES 3.0
+      if [ "${GRAPHIC_DRIVERS}" = "panfrost" ] && listcontains "${MALI_FAMILY}" "t860" || listcontains "${MALI_FAMILY}" "g52"; then
+        PKG_CONFIGURE_OPTS_TARGET+=" --enable-opengles3"
+      fi
+    
     # Mali OpenGL ES 2.0/3.0 Features Support
     elif [ "${OPENGLES}" = "libmali" ]; then
       if listcontains "${MALI_FAMILY}" "4[0-9]+"; then

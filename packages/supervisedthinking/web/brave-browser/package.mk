@@ -6,7 +6,7 @@ PKG_VERSION="latest"
 PKG_ARCH="x86_64"
 PKG_LICENSE="MPL-2.0"
 PKG_SITE="https://brave.com"
-PKG_DEPENDS_TARGET="toolchain gtk3-system libXcomposite libXcursor libxss nss scrnsaverproto atk cups unclutter-xfixes"
+PKG_DEPENDS_TARGET="toolchain gtk3-system libXcomposite libXcursor libxshmfence-system libxss nss scrnsaverproto atk cups unclutter-xfixes"
 PKG_LONGDESC="Web browser that blocks ads and trackers by default"
 PKG_TOOLCHAIN="manual"
 
@@ -15,10 +15,11 @@ makeinstall_target() {
   mkdir -p ${INSTALL}/usr/bin
   mkdir -p ${INSTALL}/usr/config/BraveSoftware/Brave-Browser
   mkdir -p ${INSTALL}/usr/share/applications
+  mkdir -p ${INSTALL}/usr/local/share/applications
   mkdir -p ${INSTALL}/opt/brave.com
   
   # copy scripts, config files & resources
-  cp ${PKG_DIR}/config/mimeapps.list    ${INSTALL}/usr/share/applications/
+  cp ${PKG_DIR}/config/mimeapps.list    ${INSTALL}/usr/local/share/applications/
   cp ${PKG_DIR}/config/brave-flags.conf ${INSTALL}/usr/config/BraveSoftware/Brave-Browser
   cp ${PKG_DIR}/files/brave-icon.png    ${INSTALL}/usr/config/BraveSoftware/Brave-Browser
   cp -rf ${PKG_DIR}/scripts/*           ${INSTALL}/usr/bin/

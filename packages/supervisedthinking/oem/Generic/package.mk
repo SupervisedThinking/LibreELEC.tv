@@ -102,6 +102,7 @@ OEM_TOOLS_GENERIC=" \
   dmidecode \
   ds4drv \
   evtest \
+  glmark2 \
   htop-system \
   lm-sensors \
   mesa-demos-system \

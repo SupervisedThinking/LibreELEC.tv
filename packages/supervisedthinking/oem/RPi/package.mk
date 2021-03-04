@@ -79,6 +79,7 @@ OEM_TOOLS_RPI=" \
   dhrystone-benchmark \
   ds4drv \
   evtest \
+  glmark2 \
   htop-system \
   lm-sensors \
   midnight-commander \

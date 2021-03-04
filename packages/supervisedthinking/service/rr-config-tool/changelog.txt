@@ -1,3 +1,6 @@
+106
+- Make FluidSynth service optional
+
 105
 - Removed refresh rates for GBM/KMS ARM builds
 

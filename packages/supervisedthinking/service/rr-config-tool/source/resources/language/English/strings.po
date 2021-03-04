@@ -39,6 +39,10 @@ msgctxt "#30008"
 msgid "PulseAudio volume control"
 msgstr ""
 
+msgctxt "#30009"
+msgid "Use FluidSynth service"
+msgstr ""
+
 msgctxt "#30010"
 msgid "Restart Kodi to enable shared device"
 msgstr ""

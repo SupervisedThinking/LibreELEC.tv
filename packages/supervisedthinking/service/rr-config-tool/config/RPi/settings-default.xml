@@ -4,6 +4,7 @@
     <setting id="RR_PA_UDEV"                      default="true">true</setting>
     <setting id="RR_PA_TSCHED"                    default="true">false</setting>
     <setting id="RR_AUDIO_VOLUME"                 default="true">75</setting>
+    <setting id="RR_FLUIDSYNTH"                   default="true">false</setting>
     <setting id="RR_QT_QPA_EGLFS_PHYSICAL_WIDTH"  default="true">576</setting>
     <setting id="RR_QT_QPA_EGLFS_PHYSICAL_HEIGHT" default="true">324</setting>
 </settings>

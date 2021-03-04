@@ -8,10 +8,17 @@ assignees: SupervisedThinking
 ---
 
 ### Describe the bug
-<!--- Provide a clear description of what the bug/problem is. -->
 <!--- Double check if the bug is not existing in vanilla LibreELEC if its LE specific -->
+<!--- https://github.com/LibreELEC/LibreELEC.tv/issues -->
+
 <!--- Double check if the bug is not a known issue specific to Kodi or Kodi addons -->
-<!--- Double check if the bug is not a known issue specific to an emulator quirk -->
+<!--- https://github.com/xbmc/xbmc/issues -->
+
+<!--- Double check if the bug is not a known issue & specific to an emulator quirk -->
+<!--- https://github.com/libretro/ -->
+<!--- https://docs.libretro.com/ -->
+
+<!--- Provide a clear description of what the bug/problem is. -->
 
 ### How to Reproduce
 <!--- Steps to reproduce the behavior:

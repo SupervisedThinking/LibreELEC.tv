@@ -2,8 +2,8 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="pixel-es-theme"
-PKG_VERSION="31763a9a3a9f20f251a29faa1f00c03689129b6b"
-PKG_SHA256="1f0fbfccdfd4041cd06cb01bba3949a4ede929255ecb982d006f71d7a638dedd"
+PKG_VERSION="b3fc09ec3eeac449aa721ecc44d91da9dc4fd7fb"
+PKG_SHA256="45ec8dde05c3d18f5c2dbdf65ab558a3c9e7a010b3f1821a07959ab3304de9d6"
 PKG_LICENSE="OSS"
 PKG_SITE="https://github.com/SupervisedThinking/es-theme-pixel"
 PKG_URL="https://github.com/SupervisedThinking/es-theme-pixel/archive/${PKG_VERSION}.tar.gz"

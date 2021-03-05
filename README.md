@@ -63,50 +63,50 @@
 ---
 **Emulators included in all builds**
 
-| Standalone-Emulator | Emulated System |
-| ------------------- | --------------- |
-| [dosbox-staging](https://github.com/dosbox-staging/dosbox-staging) | DOS |
-| [hatari](https://github.com/hatari/hatari) | Atari ST/STE/TT/Falcon |
-| [PPSSPP](https://github.com/hrydgard/ppsspp) | Sony PSP |
+| Standalone-Emulator | Emulated System | Documentation & Guide |
+| ------------------- | --------------- | --------------------- |
+| [dosbox-staging](https://github.com/dosbox-staging/dosbox-staging) | DOS | [Wiki](https://github.com/dosbox-staging/dosbox-staging/wiki) |
+| [hatari](https://github.com/hatari/hatari) | Atari ST/STE/TT/Falcon | [Hatari User's Manual](https://hatari.tuxfamily.org/doc/manual.html) |
+| [PPSSPP](https://github.com/hrydgard/ppsspp) | Sony PSP | [Guides](https://www.ppsspp.org/guides.html) |
 
-| Libretro-Core | Emulated System |
-| ------------- | --------------- |
-| [2048](https://github.com/libretro/libretro-2048) | 2048 |
-| [atari800](https://github.com/libretro/libretro-atari800) | Atari 5200 |
-| [beetle-dc](https://github.com/libretro/beetle-dc) | Sega Dreamcast |
-| [beetle-lynx](https://github.com/libretro/beetle-lynx-libretro) | Atari Lynx |
-| [beetle-pce-fast](https://github.com/libretro/beetle-pce-fast-libretro) | PC-Engine |
-| [beetle-wswan](https://github.com/libretro/beetle-wswan-libretro) | Bandai WonderSwan |
-| [blueMSX](https://github.com/libretro/blueMSX-libretro) | MSX |
-| [chailove](https://github.com/libretro/libretro-chailove) | 2D Game Framework with ChaiScript |
-| [desmume](https://github.com/libretro/desmume) | Nintendo DS |
-| [dosbox-pure](https://github.com/libretro/dosbox-pure) | DOS |
-| [ecwolf](https://github.com/libretro/ecwolf) | Wolfenstein 3D engine |
-| [fbneo](https://github.com/libretro/fbneo) | Multiple Arcade Machine Emulator -  Romset|
-| [fceumm](https://github.com/libretro/libretro-fceumm) | Nintendo Entertainment System |
-| [fuse](https://github.com/libretro/fuse-libretro) | ZX Spectrum |
-| [gambatte](https://github.com/libretro/gambatte-libretro) | Nintendo Game Boy (Color) |
-| [genesis-plus-gx](https://github.com/libretro/Genesis-Plus-GX) | Sega Mega Drive |
-| [genesis-plus-gx-wide](https://github.com/libretro/Genesis-Plus-GX-Wide) | Sega Mega Drive |
-| [mame2003-plus](https://github.com/libretro/mame2003-plus-libretro) | Multiple Arcade Machine Emulator - Romset 0.78 |
-| [mgba](https://github.com/mgba-emu/mgba) | Nintendo Game Boy Advance |
-| [mrboom](https://github.com/libretro/mrboom-libretro) | Bomberman clone |
-| [mupen64plus-nx](https://github.com/libretro/mupen64plus-libretro-nx) | Nintendo N64 |
-| [nestopia](https://github.com/libretro/nestopia) | Nintendo Entertainment System |
-| [opera](https://github.com/libretro/opera-libretro) | 3DO Interactive Multiplayer |
-| [pcsx-rearmed](https://github.com/libretro/pcsx_rearmed) | Sony Playstation |
-| [prboom](https://github.com/libretro/libretro-prboom) | Doom engine |
-| [prosystem](https://github.com/libretro/prosystem-libretro) | Atari 7800 |
-| [sameboy](https://github.com/libretro/SameBoy) | Nintendo Game Boy (Color) |
-| [scummvm](https://github.com/libretro/scummvm) | Engine for LucasArts adventure games |
-| [snes9x](https://github.com/libretro/snes9x) | Nintendo Super Nintendo Entertainment System |
-| [stella](https://github.com/libretro/stella-libretro) | Atari 2600 |
-| [tyrquake](https://github.com/libretro/tyrquake) | Quake engine |
-| [virtualjaguar](https://github.com/libretro/virtualjaguar-libretro) | Atari Jaguar |
+| Libretro-Core | Emulated System | Documentation & Guide |
+| ------------- | --------------- | --------------------- |
+| [2048](https://github.com/libretro/libretro-2048) | 2048 | [Libretro Docs](https://docs.libretro.com/library/2048/) |
+| [atari800](https://github.com/libretro/libretro-atari800) | Atari 5200 | [Libretro Docs](https://docs.libretro.com/library/atari800/) |
+| [beetle-lynx](https://github.com/libretro/beetle-lynx-libretro) | Atari Lynx | [Libretro Docs](https://docs.libretro.com/library/beetle_lynx/) |
+| [beetle-pce-fast](https://github.com/libretro/beetle-pce-fast-libretro) | PC-Engine | [Libretro Docs](https://docs.libretro.com/library/beetle_pce_fast/) |
+| [beetle-wswan](https://github.com/libretro/beetle-wswan-libretro) | Bandai WonderSwan | [Libretro Docs](https://docs.libretro.com/library/beetle_cygne/) |
+| [blueMSX](https://github.com/libretro/blueMSX-libretro) | MSX | [Libretro Docs](https://docs.libretro.com/library/bluemsx/) |
+| [chailove](https://github.com/libretro/libretro-chailove) | 2D Game Framework with ChaiScript | [Libretro Docs](https://docs.libretro.com/library/chailove/) |
+| [desmume](https://github.com/libretro/desmume) | Nintendo DS | [Libretro Docs](https://docs.libretro.com/library/desmume/) |
+| [dosbox-pure](https://github.com/libretro/dosbox-pure) | DOS | [Libretro Docs](https://docs.libretro.com/library/dosbox/) |
+| [ecwolf](https://github.com/libretro/ecwolf) | Wolfenstein 3D engine | [Libretro Docs](https://www.libretro.com/index.php/ecwolf-wolfenstein-3d-libretro-core-wip-available-today-on-windowsmaclinuxandroid/) |
+| [fbneo](https://github.com/libretro/fbneo) | Multiple Arcade Machine Emulator -  Romset| [Libretro Docs](https://docs.libretro.com/library/fbneo/) |
+| [fceumm](https://github.com/libretro/libretro-fceumm) | Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/fceumm/) |
+| [flycast](https://github.com/libretro/flycast) | Sega Dreamcast | [Libretro Docs](https://docs.libretro.com/library/flycast/) |
+| [fuse](https://github.com/libretro/fuse-libretro) | ZX Spectrum | [Libretro Docs](https://docs.libretro.com/library/fuse/) |
+| [gambatte](https://github.com/libretro/gambatte-libretro) | Nintendo Game Boy (Color) | [Libretro Docs](https://docs.libretro.com/library/gambatte/) |
+| [genesis-plus-gx](https://github.com/libretro/Genesis-Plus-GX) | Sega Mega Drive | [Libretro Docs](https://docs.libretro.com/library/genesis_plus_gx/) |
+| [genesis-plus-gx-wide](https://github.com/libretro/Genesis-Plus-GX-Wide) | Sega Mega Drive | [Libretro Docs](https://docs.libretro.com/library/genesis_plus_gx/) |
+| [mame2003-plus](https://github.com/libretro/mame2003-plus-libretro) | Multiple Arcade Machine Emulator - Romset 0.78 | [Libretro Docs](https://docs.libretro.com/library/mame2003_plus/) |
+| [mgba](https://github.com/mgba-emu/mgba) | Nintendo Game Boy Advance | [Libretro Docs](https://docs.libretro.com/library/mgba/) |
+| [mrboom](https://github.com/libretro/mrboom-libretro) | Bomberman clone | [Libretro Docs](https://docs.libretro.com/library/mr_boom/) |
+| [mupen64plus-nx](https://github.com/libretro/mupen64plus-libretro-nx) | Nintendo N64 | [Libretro Docs](https://docs.libretro.com/library/mupen64plus/) |
+| [nestopia](https://github.com/libretro/nestopia) | Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/nestopia_ue/) |
+| [opera](https://github.com/libretro/opera-libretro) | 3DO Interactive Multiplayer | [Libretro Docs](https://docs.libretro.com/library/opera/) |
+| [pcsx-rearmed](https://github.com/libretro/pcsx_rearmed) | Sony Playstation | [Libretro Docs](https://docs.libretro.com/library/pcsx_rearmed/) |
+| [prboom](https://github.com/libretro/libretro-prboom) | Doom engine | [Libretro Docs](https://docs.libretro.com/library/prboom/) |
+| [prosystem](https://github.com/libretro/prosystem-libretro) | Atari 7800 | [Libretro Docs](https://docs.libretro.com/library/prosystem/) |
+| [sameboy](https://github.com/libretro/SameBoy) | Nintendo Game Boy (Color) | [Libretro Docs](https://docs.libretro.com/library/sameboy/) |
+| [scummvm](https://github.com/libretro/scummvm) | Engine for LucasArts adventure games | [Libretro Docs](https://docs.libretro.com/library/scummvm/) |
+| [snes9x](https://github.com/libretro/snes9x) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/snes9x/) |
+| [stella](https://github.com/libretro/stella-libretro) | Atari 2600 | [Libretro Docs](https://docs.libretro.com/library/stella/) |
+| [tyrquake](https://github.com/libretro/tyrquake) | Quake engine | [Libretro Docs](https://docs.libretro.com/library/tyrquake/) |
+| [virtualjaguar](https://github.com/libretro/virtualjaguar-libretro) | Atari Jaguar | [Libretro Docs](https://docs.libretro.com/library/virtual_jaguar/) |
 
-| Streaming-Client | System |
-| ---------------- | ------ |
-| [moonlight-qt](https://github.com/moonlight-stream/moonlight-qt) | NVIDIA GameStream client |
+| Streaming-Client | System | Documentation & Guide |
+| ---------------- | ------ | --------------------- |
+| [moonlight-qt](https://github.com/moonlight-stream/moonlight-qt) | NVIDIA GameStream client | [Setup-Guide](https://github.com/moonlight-stream/moonlight-docs/wiki/Setup-Guide) |
 
 | Soundfont for MIDI support | Type |
 | -------------------------- | ---- |
@@ -116,89 +116,89 @@
 ---
 **Emulators included in Generic builds**
 
-| Standalone-Emulator | Emulated System |
-| ------------------- | --------------- |
-| [citra](https://github.com/citra-emu/citra) | Nintendo 3DS |
-| [Dolphin](https://de.dolphin-emu.org/?cr=de) | Nintendo Wii / Gamecube |
-| [fs-uae](https://fs-uae.net/) | Commodore Amiga |
-| [m64p](https://m64p.github.io/) | Nintendo N64 |
-| [OpenBOR ](https://github.com/DCurrent/openbor) | Open Beats of Rage |
-| [PCSX2 ](https://github.com/PCSX2/pcsx2) | Sony PlayStation 2 |
-| [RPCS3 ](https://github.com/RPCS3/rpcs3) | Sony PlayStation 3 |
-| [Vice](http://vice-emu.sourceforge.net/index.html#vice) | Commodore C64 |
+| Standalone-Emulator | Emulated System | Documentation & Guide |
+| ------------------- | --------------- | --------------------- |
+| [citra](https://github.com/citra-emu/citra) | Nintendo 3DS | [FAQ](https://citra-emu.org/wiki/faq/) |
+| [Dolphin](https://de.dolphin-emu.org/?cr=de) | Nintendo Wii / Gamecube | [Wiki](https://wiki.dolphin-emu.org/index.php?title=Main_Page) |
+| [fs-uae](https://fs-uae.net/) | Commodore Amiga | [Docs](https://fs-uae.net/docs) |
+| [m64p](https://m64p.github.io/) | Nintendo N64 | [Wiki](https://github.com/loganmc10/m64p/wiki) |
+| [OpenBOR ](https://github.com/DCurrent/openbor) | Open Beats of Rage | [Wiki](http://www.chronocrash.com/apps/wiki/obor/index.php?title=Main_Page) |
+| [PCSX2 ](https://github.com/PCSX2/pcsx2) | Sony PlayStation 2 | [Wiki](https://wiki.pcsx2.net/Main_Page) |
+| [RPCS3 ](https://github.com/RPCS3/rpcs3) | Sony PlayStation 3 | [Wiki](https://wiki.rpcs3.net/index.php?title=Main_Page) |
+| [Vice](http://vice-emu.sourceforge.net/index.html#vice) | Commodore C64 | [User Manual](https://vice-emu.sourceforge.io/vice_toc.html) |
 
-| Libretro-Core | Emulated System |
-| ------------- | --------------- |
-| [2048](https://github.com/libretro/libretro-2048) | 2048 |
-| [beetle-psx](https://github.com/libretro/beetle-psx-libretro) | Sony Playstation |
-| [beetle-saturn](https://github.com/libretro/beetle-saturn-libretro) | Sega Saturn |
-| [bsnes](https://github.com/libretro/bsnes) | Nintendo Super Nintendo Entertainment System |
-| [bsnes-mercury](https://github.com/libretro/bsnes-mercury) | Nintendo Super Nintendo Entertainment System - balanced & accuracy |
-| [boom3](https://github.com/libretro/boom3) | Doom3 Engine |
-| [citra](https://github.com/libretro/citra) | Nintendo 3DS |
-| [dolphin](https://github.com/libretro/dolphin) | Nintendo Wii / Gamecube |
-| [kronos](https://github.com/libretro/yabause/tree/kronos) | Sega Saturn |
-| [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 |
-| [mesen](https://github.com/SourMesen/Mesen) | Nintendo Entertainment System |
-| [nSide](https://github.com/libretro/nSide) | Nintendo Super Nintendo Entertainment System |
-| [parallel-n64](https://github.com/libretro/parallel-n64) | Nintendo N64 |
-| [ppsspp](https://github.com/hrydgard/ppsspp) | Sony PSP |
-| [uae](https://github.com/libretro/libretro-uae) | Commodore Amiga |
-| [vitaquake2](https://github.com/libretro/vitaquake2) | Commodore Amiga |
-| [vitaquake3](https://github.com/libretro/vitaquake3) | Commodore Amiga |
-| [yabasanshiro](https://github.com/libretro/yabause/tree/yabasanshiro) | Sega Saturn |
+| Libretro-Core | Emulated System | Documentation & Guide |
+| ------------- | --------------- | --------------------- |
+| [beetle-psx](https://github.com/libretro/beetle-psx-libretro) | Sony Playstation | [Libretro Docs](https://docs.libretro.com/library/beetle_psx/) |
+| [beetle-saturn](https://github.com/libretro/beetle-saturn-libretro) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/beetle_saturn/) |
+| [bsnes](https://github.com/libretro/bsnes) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/bsnes_performance/) |
+| [bsnes-mercury](https://github.com/libretro/bsnes-mercury) | Nintendo Super Nintendo Entertainment System - balanced & accuracy | [Libretro Docs](https://docs.libretro.com/library/bsnes_mercury_balanced/) |
+| [boom3](https://github.com/libretro/boom3) | Doom3 Engine | [FAQ](https://github.com/dhewm/dhewm3/wiki/FAQ) |
+| [citra](https://github.com/libretro/citra) | Nintendo 3DS | [Libretro Docs](https://docs.libretro.com/library/citra/) |
+| [dolphin](https://github.com/libretro/dolphin) | Nintendo Wii / Gamecube | [Libretro Docs](https://docs.libretro.com/library/dolphin/) |
+| [kronos](https://github.com/libretro/yabause/tree/kronos) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/yabause/) |
+| [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 | [Libretro Docs](https://docs.libretro.com/guides/softwarelist-getting-started/) |
+| [mesen](https://github.com/SourMesen/Mesen) | Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/mesen/) |
+| [nSide](https://github.com/libretro/nSide) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/nside_balanced/) |
+| [parallel-n64](https://github.com/libretro/parallel-n64) | Nintendo N64 | [Libretro Docs](https://docs.libretro.com/library/mupen64plus/) |
+| [ppsspp](https://github.com/hrydgard/ppsspp) | Sony PSP | [Libretro Docs](https://docs.libretro.com/library/ppsspp/) |
+| [uae](https://github.com/libretro/libretro-uae) | Commodore Amiga | [Libretro Docs](https://docs.libretro.com/library/puae/) |
+| [vitaquake2](https://github.com/libretro/vitaquake2) | id Tech 2 Engine | [Libretro Docs](https://www.libretro.com/index.php/vitaquake-ii-libretro-core-wip-available-soon-high-refresh-rates-in-libretro-core-games/) |
+| [vitaquake3](https://github.com/libretro/vitaquake3) | id Tech 3 Engine | [Libretro Docs](https://www.libretro.com/index.php/quake-3-core-ported-to-libretroretroarch-with-working-online-multiplayer-more/) |
+| [yabasanshiro](https://github.com/libretro/yabause/tree/yabasanshiro) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/yabause/) |
 
 ---
 **Emulators included in Amlogic AMLG12B builds**
-| Standalone-Emulator | Emulated System |
-| ------------------- | --------------- |
-| [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga |
+| Standalone-Emulator | Emulated System | Documentation & Guide |
+| ------------------- | --------------- | --------------------- |
+| [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga | [Wiki](https://github.com/midwan/amiberry/wiki) |
 
-| Libretro-Core | Emulated System |
-| ------------- | --------------- |
-| [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 |
-| [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 |
-| [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System |
-| [vice](https://github.com/libretro/vice-libretro) | Commodore C64 |
-| [yabause](https://github.com/libretro/yabause) | Sega Saturn |
+| Libretro-Core | Emulated System | Documentation & Guide |
+| ------------- | --------------- | --------------------- |
+| [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 | [Libretro Docs](https://docs.libretro.com/library/mame_2010/) |
+| [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 | [Libretro Docs](https://docs.libretro.com/guides/softwarelist-getting-started/) |
+| [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/snes9x_2010/) |
+| [vice](https://github.com/libretro/vice-libretro) | Commodore C64 | [Libretro Docs](https://docs.libretro.com/library/vice/) |
+| [yabause](https://github.com/libretro/yabause) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/yabause/) |
 ---
 **Emulators included in Amlogic AMLGX builds**
-| Standalone-Emulator | Emulated System |
-| ------------------- | --------------- |
-| [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga |
+| Standalone-Emulator | Emulated System | Documentation & Guide |
+| ------------------- | --------------- | --------------------- |
+| [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga | [Wiki](https://github.com/midwan/amiberry/wiki) |
 
-| Libretro-Core | Emulated System |
-| ------------- | --------------- |
-| [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 |
-| [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System |
-| [vice](https://github.com/libretro/vice-libretro) | Commodore C64 |
-| [yabause](https://github.com/libretro/yabause) | Sega Saturn |
+| Libretro-Core | Emulated System | Documentation & Guide |
+| ------------- | --------------- | --------------------- |
+| [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 | [Libretro Docs](https://docs.libretro.com/library/mame_2010/) |
+| [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 | [Libretro Docs](https://docs.libretro.com/guides/softwarelist-getting-started/) |
+| [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/snes9x_2010/) |
+| [vice](https://github.com/libretro/vice-libretro) | Commodore C64 | [Libretro Docs](https://docs.libretro.com/library/vice/) |
+| [yabause](https://github.com/libretro/yabause) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/yabause/) |
 ---
 **Emulators included in RK3399 builds**
-| Standalone-Emulator | Emulated System |
-| ------------------- | --------------- |
-| [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga |
+| Standalone-Emulator | Emulated System | Documentation & Guide |
+| ------------------- | --------------- | --------------------- |
+| [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga | [Wiki](https://github.com/midwan/amiberry/wiki) |
 
-| Libretro-Core | Emulated System |
-| ------------- | --------------- |
-| [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 |
-| [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 |
-| [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System |
-| [vice](https://github.com/libretro/vice-libretro) | Commodore C64 |
-| [yabause](https://github.com/libretro/yabause) | Sega Saturn |
+| Libretro-Core | Emulated System | Documentation & Guide |
+| ------------- | --------------- | --------------------- |
+| [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 | [Libretro Docs](https://docs.libretro.com/library/mame_2010/) |
+| [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 | [Libretro Docs](https://docs.libretro.com/guides/softwarelist-getting-started/) |
+| [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/snes9x_2010/) |
+| [vice](https://github.com/libretro/vice-libretro) | Commodore C64 | [Libretro Docs](https://docs.libretro.com/library/vice/) |
+| [yabause](https://github.com/libretro/yabause) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/yabause/) |
 ---
 **Emulators included in RPi4 builds**
-| Standalone-Emulator | Emulated System |
-| ------------------- | --------------- |
-| [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga |
+| Standalone-Emulator | Emulated System | Documentation & Guide |
+| ------------------- | --------------- | --------------------- |
+| [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga | [Wiki](https://github.com/midwan/amiberry/wiki) |
 
-| Libretro-Core | Emulated System |
-| ------------- | --------------- |
-| [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 |
-| [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 |
-| [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System |
-| [vice](https://github.com/libretro/vice-libretro) | Commodore C64 |
-| [yabause](https://github.com/libretro/yabause) | Sega Saturn |
+| Libretro-Core | Emulated System | Documentation & Guide |
+| ------------- | --------------- | --------------------- |
+| [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 | [Libretro Docs](https://docs.libretro.com/library/mame_2010/) |
+| [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 | [Libretro Docs](https://docs.libretro.com/guides/softwarelist-getting-started/) |
+| [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/snes9x_2010/) |
+| [vice](https://github.com/libretro/vice-libretro) | Commodore C64 | [Libretro Docs](https://docs.libretro.com/library/vice/) |
+| [yabause](https://github.com/libretro/yabause) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/yabause/) |
 ---
 **Builds systems**
 

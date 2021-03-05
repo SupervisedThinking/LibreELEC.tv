@@ -4,7 +4,7 @@
     <setting id="RR_PA_UDEV"                      default="true">true</setting>
     <setting id="RR_PA_TSCHED"                    default="true">true</setting>
     <setting id="RR_AUDIO_VOLUME"                 default="true">75</setting>
-    <setting id="RR_FLUIDSYNTH"                   default="true">true</setting>
+    <setting id="RR_FLUIDSYNTH"                   default="true">false</setting>
     <setting id="RR_KMS"                          default="true">false</setting>
     <setting id="RR_QT_AUTO_SCREEN_SCALE_FACTOR"  default="true">true</setting>
     <setting id="RR_QT_SCALE_FACTOR"              default="true">1</setting>

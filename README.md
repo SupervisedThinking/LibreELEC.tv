@@ -13,22 +13,27 @@
 ---
 **Currently supported & WIP devices**
 
-*Supported - run tested:*
-
-* Amlogic - AMLG12B
-* Generic - AMD & Intel systems with IGP and/or discrete AMD or Nvidia GPU
-* Rockchip - RK3399
-
-*WIP - builds fine, not run tested:*
-* Amlogic - AMLGX
-* Raspberry Pi - RPi4
+| Project | Device | SoC / CPU | SBC | Build tested | Run tested | State | Known issues |
+| ------ | ------- | --------- | --- | ------------ | ---------- | ----- | ------------ |
+| Amlogic | AMLG12B | A311D | VIM3 | x | x | alpha | audio & videodecoder quirks, low Mesa 3D performance |
+| Amlogic | AMLGX | S905X | VIM1 | x | x | alpha | audio & videodecoder quirks, low Mesa 3D performance |
+| Generic | - | AMD & Intel | - | x | x | stable | ? |
+| Rockchip | RK3399 | RK3399 | ROCKPro64 | x | x | beta stable | low Mesa 3D performance |
+| RPi | RPi4 | bcm2711 | RPi4 | x | - | ? | ? |
 
 ---
 **Basics**
 
 * [LibreELEC 10.0](https://github.com/LibreELEC/LibreELEC.tv)
 * [Kodi 19](https://github.com/xbmc/xbmc)
-* [Linux 5.10](https://www.kernel.org/)
+
+| Project | Linux kernel | Mesa 3D |
+| ------ | ------------- | ------- |
+| Amlogic | [Linux 5.11.y](https://www.kernel.org/) | [21.1-dev](https://github.com/mesa3d/mesa) |
+| Generic | [Linux 5.10.y](https://www.kernel.org/) | [21.0-RC5](https://github.com/mesa3d/mesa) |
+| Rockchip | [Linux 5.10.y](https://www.kernel.org/) | [21.1-dev](https://github.com/mesa3d/mesa) |
+| RPi | [Linux 5.10.y](https://www.kernel.org/) | [21.1-dev](https://github.com/mesa3d/mesa) |
+
 ---
 **Addons & tools for generic builds**
 
@@ -42,7 +47,9 @@
 ---
 **Sysutils**
 
-* [mesa-demos](https://cgit.freedesktop.org/mesa/demos/)
+* [evtest](https://github.com/freedesktop-unofficial-mirror/evtest)
+* [glmark2](https://github.com/glmark2/glmark2)
+* [mesa-demos](https://cgit.freedesktop.org/mesa/demos)
 * [sdl-jstest](https://gitlab.com/sdl-jstest/sdl-jstest)
 * [spectre-meltdown-checker](https://github.com/speed47/spectre-meltdown-checker)
 * [Skyscraper by Lars Muldjord](https://github.com/muldjord/skyscraper/releases)
@@ -57,13 +64,13 @@
 **Emulators included in all builds**
 
 | Standalone-Emulator | Emulated System |
-| ------ | ------ |
+| ------------------- | --------------- |
 | [dosbox-staging](https://github.com/dosbox-staging/dosbox-staging) | DOS |
 | [hatari](https://github.com/hatari/hatari) | Atari ST/STE/TT/Falcon |
 | [PPSSPP](https://github.com/hrydgard/ppsspp) | Sony PSP |
 
 | Libretro-Core | Emulated System |
-| ------ | ------ |
+| ------------- | --------------- |
 | [2048](https://github.com/libretro/libretro-2048) | 2048 |
 | [atari800](https://github.com/libretro/libretro-atari800) | Atari 5200 |
 | [beetle-dc](https://github.com/libretro/beetle-dc) | Sega Dreamcast |
@@ -98,13 +105,19 @@
 | [virtualjaguar](https://github.com/libretro/virtualjaguar-libretro) | Atari Jaguar |
 
 | Streaming-Client | System |
-| ------ | ------ |
+| ---------------- | ------ |
 | [moonlight-qt](https://github.com/moonlight-stream/moonlight-qt) | NVIDIA GameStream client |
+
+| Soundfont for MIDI support | Type |
+| -------------------------- | ---- |
+| [GeneralUser GS](http://schristiancollins.com/generaluser.php) | SF2 |
+| [MuseScore General](https://musescore.org/de/handbook/2/soundfonts-und-sfz-dateien) | SF3 |
+
 ---
 **Emulators included in Generic builds**
 
 | Standalone-Emulator | Emulated System |
-| ------ | ------ |
+| ------------------- | --------------- |
 | [citra](https://github.com/citra-emu/citra) | Nintendo 3DS |
 | [Dolphin](https://de.dolphin-emu.org/?cr=de) | Nintendo Wii / Gamecube |
 | [fs-uae](https://fs-uae.net/) | Commodore Amiga |
@@ -115,7 +128,7 @@
 | [Vice](http://vice-emu.sourceforge.net/index.html#vice) | Commodore C64 |
 
 | Libretro-Core | Emulated System |
-| ------ | ------ |
+| ------------- | --------------- |
 | [2048](https://github.com/libretro/libretro-2048) | 2048 |
 | [beetle-psx](https://github.com/libretro/beetle-psx-libretro) | Sony Playstation |
 | [beetle-saturn](https://github.com/libretro/beetle-saturn-libretro) | Sega Saturn |
@@ -138,11 +151,11 @@
 ---
 **Emulators included in Amlogic AMLG12B builds**
 | Standalone-Emulator | Emulated System |
-| ------ | ------ |
+| ------------------- | --------------- |
 | [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga |
 
 | Libretro-Core | Emulated System |
-| ------ | ------ |
+| ------------- | --------------- |
 | [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 |
 | [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 |
 | [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System |
@@ -151,11 +164,11 @@
 ---
 **Emulators included in Amlogic AMLGX builds**
 | Standalone-Emulator | Emulated System |
-| ------ | ------ |
+| ------------------- | --------------- |
 | [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga |
 
 | Libretro-Core | Emulated System |
-| ------ | ------ |
+| ------------- | --------------- |
 | [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 |
 | [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System |
 | [vice](https://github.com/libretro/vice-libretro) | Commodore C64 |
@@ -163,11 +176,11 @@
 ---
 **Emulators included in RK3399 builds**
 | Standalone-Emulator | Emulated System |
-| ------ | ------ |
+| ------------------- | --------------- |
 | [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga |
 
 | Libretro-Core | Emulated System |
-| ------ | ------ |
+| ------------- | --------------- |
 | [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 |
 | [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 |
 | [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System |
@@ -176,11 +189,11 @@
 ---
 **Emulators included in RPi4 builds**
 | Standalone-Emulator | Emulated System |
-| ------ | ------ |
+| ------------------- | --------------- |
 | [amiberry](https://github.com/midwan/amiberry) | Commodore Amiga |
 
 | Libretro-Core | Emulated System |
-| ------ | ------ |
+| ------------- | --------------- |
 | [mame2010](https://github.com/libretro/mame2010-libretro) | Multiple Arcade Machine Emulator - Romset 0.139 |
 | [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 |
 | [snes9x2010](https://github.com/libretro/snes9x2010) | Nintendo Super Nintendo Entertainment System |

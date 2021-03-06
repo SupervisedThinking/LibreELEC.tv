@@ -1,0 +1,1585 @@
+From 7768e7ea4677732a5a728a73d6dc1ffc68067a83 Mon Sep 17 00:00:00 2001
+From: Bluestang <bluestang2006@gmail.com>
+Date: Sat, 6 Feb 2021 21:13:45 -0700
+Subject: [PATCH 1/3] Background Music Player
+
+- Add a background music player using SDL2 mixer
+- Backport various fixes
+---
+ .github/workflows/ccpp.yml          |   2 +-
+ CMake/Packages/FindSDL2_mixer.cmake | 220 ++++++++++++++++++++++
+ CMakeLists.txt                      |   3 +
+ es-app/CMakeLists.txt               |   4 +-
+ es-app/src/FileData.cpp             |   3 +
+ es-app/src/VolumeControl.cpp        | 116 ++++++++----
+ es-app/src/VolumeControl.h          |   6 +-
+ es-app/src/guis/GuiMenu.cpp         |  15 ++
+ es-app/src/main.cpp                 |   5 +
+ es-core/src/AudioManager.cpp        | 279 ++++++++++++++++++++--------
+ es-core/src/AudioManager.h          |  25 ++-
+ es-core/src/Settings.cpp            |  53 +++++-
+ es-core/src/Settings.h              |  23 ++-
+ es-core/src/Sound.cpp               | 135 ++++----------
+ es-core/src/Sound.h                 |  15 +-
+ 15 files changed, 657 insertions(+), 247 deletions(-)
+ create mode 100644 CMake/Packages/FindSDL2_mixer.cmake
+
+diff --git a/.github/workflows/ccpp.yml b/.github/workflows/ccpp.yml
+index a020bef06..e31f33f30 100644
+--- a/.github/workflows/ccpp.yml
++++ b/.github/workflows/ccpp.yml
+@@ -13,7 +13,7 @@ jobs:
+     - name: configure
+       run: |
+         sudo apt-get update
+-        sudo apt-get install libsdl2-dev libfreeimage-dev libfreetype6-dev libcurl4-openssl-dev rapidjson-dev libasound2-dev libgl1-mesa-dev build-essential cmake fonts-droid-fallback libvlc-dev libvlccore-dev vlc-bin
++        sudo apt-get install libsdl2-dev libsdl2-mixer-dev libfreeimage-dev libfreetype6-dev libcurl4-openssl-dev rapidjson-dev libasound2-dev libgl1-mesa-dev build-essential cmake fonts-droid-fallback libvlc-dev libvlccore-dev vlc-bin
+       shell: bash
+     - name: make
+       run: |
+diff --git a/CMake/Packages/FindSDL2_mixer.cmake b/CMake/Packages/FindSDL2_mixer.cmake
+new file mode 100644
+index 000000000..a71f26a83
+--- /dev/null
++++ b/CMake/Packages/FindSDL2_mixer.cmake
+@@ -0,0 +1,220 @@
++# Distributed under the OSI-approved BSD 3-Clause License.  See accompanying
++# file Copyright.txt or https://cmake.org/licensing for details.
++
++#  Copyright 2019 Amine Ben Hassouna <amine.benhassouna@gmail.com>
++#  Copyright 2000-2019 Kitware, Inc. and Contributors
++#  All rights reserved.
++
++#  Redistribution and use in source and binary forms, with or without
++#  modification, are permitted provided that the following conditions
++#  are met:
++
++#  * Redistributions of source code must retain the above copyright
++#    notice, this list of conditions and the following disclaimer.
++
++#  * Redistributions in binary form must reproduce the above copyright
++#    notice, this list of conditions and the following disclaimer in the
++#    documentation and/or other materials provided with the distribution.
++
++#  * Neither the name of Kitware, Inc. nor the names of Contributors
++#    may be used to endorse or promote products derived from this
++#    software without specific prior written permission.
++
++#  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
++#  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
++#  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
++#  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
++#  HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++#  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++#  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++#  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++#  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++#  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
++#  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++#[=======================================================================[.rst:
++FindSDL2_mixer
++--------------
++
++Locate SDL2_mixer library
++
++This module defines the following 'IMPORTED' target:
++
++::
++
++  SDL2::Mixer
++    The SDL2_mixer library, if found.
++    Have SDL2::Core as a link dependency.
++
++
++
++This module will set the following variables in your project:
++
++::
++
++  SDL2_MIXER_LIBRARIES, the name of the library to link against
++  SDL2_MIXER_INCLUDE_DIRS, where to find the headers
++  SDL2_MIXER_FOUND, if false, do not try to link against
++  SDL2_MIXER_VERSION_STRING - human-readable string containing the
++                              version of SDL2_mixer
++
++This module responds to the following cache variables:
++
++::
++
++  SDL2_MIXER_PATH
++    Set a custom SDL2_mixer Library path (default: empty)
++
++  SDL2_MIXER_NO_DEFAULT_PATH
++    Disable search SDL2_mixer Library in default path.
++      If SDL2_MIXER_PATH (default: ON)
++      Else (default: OFF)
++
++  SDL2_MIXER_INCLUDE_DIR
++    SDL2_mixer headers path.
++
++  SDL2_MIXER_LIBRARY
++    SDL2_mixer Library (.dll, .so, .a, etc) path.
++
++
++Additional Note: If you see an empty SDL2_MIXER_LIBRARY in your project
++configuration, it means CMake did not find your SDL2_mixer library
++(SDL2_mixer.dll, libsdl2_mixer.so, etc). Set SDL2_MIXER_LIBRARY to point
++to your SDL2_mixer library, and  configure again. This value is used to
++generate the final SDL2_MIXER_LIBRARIES variable and the SDL2::Mixer target,
++but when this value is unset, SDL2_MIXER_LIBRARIES and SDL2::Mixer does not
++get created.
++
++
++$SDL2MIXERDIR is an environment variable that would correspond to the
++./configure --prefix=$SDL2MIXERDIR used in building SDL2_mixer.
++
++$SDL2DIR is an environment variable that would correspond to the
++./configure --prefix=$SDL2DIR used in building SDL2.
++
++
++
++Created by Amine Ben Hassouna:
++  Adapt FindSDL_mixer.cmake to SDL2_mixer (FindSDL2_mixer.cmake).
++  Add cache variables for more flexibility:
++    SDL2_MIXER_PATH, SDL2_MIXER_NO_DEFAULT_PATH (for details, see doc above).
++  Add SDL2 as a required dependency.
++  Modernize the FindSDL2_mixer.cmake module by creating a specific target:
++    SDL2::Mixer (for details, see doc above).
++
++Original FindSDL_mixer.cmake module:
++  Created by Eric Wing.  This was influenced by the FindSDL.cmake
++  module, but with modifications to recognize OS X frameworks and
++  additional Unix paths (FreeBSD, etc).
++#]=======================================================================]
++
++# SDL2 Library required
++find_package(SDL2 QUIET)
++if(NOT SDL2_FOUND)
++  set(SDL2_MIXER_SDL2_NOT_FOUND "Could NOT find SDL2 (SDL2 is required by SDL2_mixer).")
++  if(SDL2_mixer_FIND_REQUIRED)
++    message(FATAL_ERROR ${SDL2_MIXER_SDL2_NOT_FOUND})
++  else()
++      if(NOT SDL2_mixer_FIND_QUIETLY)
++        message(STATUS ${SDL2_MIXER_SDL2_NOT_FOUND})
++      endif()
++    return()
++  endif()
++  unset(SDL2_MIXER_SDL2_NOT_FOUND)
++endif()
++
++
++# Define options for searching SDL2_mixer Library in a custom path
++
++set(SDL2_MIXER_PATH "" CACHE STRING "Custom SDL2_mixer Library path")
++
++set(_SDL2_MIXER_NO_DEFAULT_PATH OFF)
++if(SDL2_MIXER_PATH)
++  set(_SDL2_MIXER_NO_DEFAULT_PATH ON)
++endif()
++
++set(SDL2_MIXER_NO_DEFAULT_PATH ${_SDL2_MIXER_NO_DEFAULT_PATH}
++    CACHE BOOL "Disable search SDL2_mixer Library in default path")
++unset(_SDL2_MIXER_NO_DEFAULT_PATH)
++
++set(SDL2_MIXER_NO_DEFAULT_PATH_CMD)
++if(SDL2_MIXER_NO_DEFAULT_PATH)
++  set(SDL2_MIXER_NO_DEFAULT_PATH_CMD NO_DEFAULT_PATH)
++endif()
++
++# Search for the SDL2_mixer include directory
++find_path(SDL2_MIXER_INCLUDE_DIR SDL_mixer.h
++  HINTS
++    ENV SDL2MIXERDIR
++    ENV SDL2DIR
++    ${SDL2_MIXER_NO_DEFAULT_PATH_CMD}
++  PATH_SUFFIXES SDL2
++                # path suffixes to search inside ENV{SDL2DIR}
++                # and ENV{SDL2MIXERDIR}
++                include/SDL2 include
++  PATHS ${SDL2_MIXER_PATH}
++  DOC "Where the SDL2_mixer headers can be found"
++)
++
++if(CMAKE_SIZEOF_VOID_P EQUAL 8)
++  set(VC_LIB_PATH_SUFFIX lib/x64)
++else()
++  set(VC_LIB_PATH_SUFFIX lib/x86)
++endif()
++
++# Search for the SDL2_mixer library
++find_library(SDL2_MIXER_LIBRARY
++  NAMES SDL2_mixer
++  HINTS
++    ENV SDL2MIXERDIR
++    ENV SDL2DIR
++    ${SDL2_MIXER_NO_DEFAULT_PATH_CMD}
++  PATH_SUFFIXES lib ${VC_LIB_PATH_SUFFIX}
++  PATHS ${SDL2_MIXER_PATH}
++  DOC "Where the SDL2_mixer Library can be found"
++)
++
++# Read SDL2_mixer version
++if(SDL2_MIXER_INCLUDE_DIR AND EXISTS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h")
++  file(STRINGS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL2_MIXER_VERSION_MAJOR_LINE REGEX "^#define[ \t]+SDL_MIXER_MAJOR_VERSION[ \t]+[0-9]+$")
++  file(STRINGS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL2_MIXER_VERSION_MINOR_LINE REGEX "^#define[ \t]+SDL_MIXER_MINOR_VERSION[ \t]+[0-9]+$")
++  file(STRINGS "${SDL2_MIXER_INCLUDE_DIR}/SDL_mixer.h" SDL2_MIXER_VERSION_PATCH_LINE REGEX "^#define[ \t]+SDL_MIXER_PATCHLEVEL[ \t]+[0-9]+$")
++  string(REGEX REPLACE "^#define[ \t]+SDL_MIXER_MAJOR_VERSION[ \t]+([0-9]+)$" "\\1" SDL2_MIXER_VERSION_MAJOR "${SDL2_MIXER_VERSION_MAJOR_LINE}")
++  string(REGEX REPLACE "^#define[ \t]+SDL_MIXER_MINOR_VERSION[ \t]+([0-9]+)$" "\\1" SDL2_MIXER_VERSION_MINOR "${SDL2_MIXER_VERSION_MINOR_LINE}")
++  string(REGEX REPLACE "^#define[ \t]+SDL_MIXER_PATCHLEVEL[ \t]+([0-9]+)$" "\\1" SDL2_MIXER_VERSION_PATCH "${SDL2_MIXER_VERSION_PATCH_LINE}")
++  set(SDL2_MIXER_VERSION_STRING ${SDL2_MIXER_VERSION_MAJOR}.${SDL2_MIXER_VERSION_MINOR}.${SDL2_MIXER_VERSION_PATCH})
++  unset(SDL2_MIXER_VERSION_MAJOR_LINE)
++  unset(SDL2_MIXER_VERSION_MINOR_LINE)
++  unset(SDL2_MIXER_VERSION_PATCH_LINE)
++  unset(SDL2_MIXER_VERSION_MAJOR)
++  unset(SDL2_MIXER_VERSION_MINOR)
++  unset(SDL2_MIXER_VERSION_PATCH)
++endif()
++
++set(SDL2_MIXER_LIBRARIES ${SDL2_MIXER_LIBRARY})
++set(SDL2_MIXER_INCLUDE_DIRS ${SDL2_MIXER_INCLUDE_DIR})
++
++include(FindPackageHandleStandardArgs)
++
++FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL2_mixer
++                                  REQUIRED_VARS SDL2_MIXER_LIBRARIES SDL2_MIXER_INCLUDE_DIRS
++                                  VERSION_VAR SDL2_MIXER_VERSION_STRING)
++
++
++mark_as_advanced(SDL2_MIXER_PATH
++                 SDL2_MIXER_NO_DEFAULT_PATH
++                 SDL2_MIXER_LIBRARY
++                 SDL2_MIXER_INCLUDE_DIR)
++
++
++if(SDL2_MIXER_FOUND)
++
++  # SDL2::Mixer target
++  if(SDL2_MIXER_LIBRARY AND NOT TARGET SDL2::Mixer)
++    add_library(SDL2::Mixer UNKNOWN IMPORTED)
++    set_target_properties(SDL2::Mixer PROPERTIES
++                          IMPORTED_LOCATION "${SDL2_MIXER_LIBRARY}"
++                          INTERFACE_INCLUDE_DIRECTORIES "${SDL2_MIXER_INCLUDE_DIR}"
++                          INTERFACE_LINK_LIBRARIES SDL2::Core)
++  endif()
++endif()
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 934f8520f..d8ac3f127 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -89,6 +89,7 @@ endif()
+ find_package(Freetype REQUIRED)
+ find_package(FreeImage REQUIRED)
+ find_package(SDL2 REQUIRED)
++find_package(SDL2_mixer REQUIRED)
+ find_package(CURL REQUIRED)
+ find_package(VLC REQUIRED)
+ find_package(RapidJSON REQUIRED)
+@@ -155,6 +156,7 @@ set(COMMON_INCLUDE_DIRS
+     ${FREETYPE_INCLUDE_DIRS}
+     ${FreeImage_INCLUDE_DIRS}
+     ${SDL2_INCLUDE_DIR}
++    ${SDL2_MIXER_INCLUDE_DIR}
+     ${CURL_INCLUDE_DIR}
+     ${VLC_INCLUDE_DIR}
+     ${RAPIDJSON_INCLUDE_DIRS}
+@@ -193,6 +195,7 @@ set(COMMON_LIBRARIES
+     ${FREETYPE_LIBRARIES}
+     ${FreeImage_LIBRARIES}
+     ${SDL2_LIBRARY}
++    ${SDL2_MIXER_LIBRARY}
+     ${CURL_LIBRARIES}
+     ${VLC_LIBRARIES}
+     pugixml
+diff --git a/es-app/CMakeLists.txt b/es-app/CMakeLists.txt
+index 4ff4fdcce..b00dcc013 100644
+--- a/es-app/CMakeLists.txt
++++ b/es-app/CMakeLists.txt
+@@ -158,8 +158,8 @@ SET(CPACK_RESOURCE_FILE README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+ SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Alec Lofquist <allofquist@yahoo.com>")
+ SET(CPACK_DEBIAN_PACKAGE_SECTION "misc")
+ SET(CPACK_DEBIAN_PACKAGE_PRIORITY "extra")
+-SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libsdl2-2.0-0, libfreeimage3, libfreetype6, libcurl3, libasound2")
+-SET(CPACK_DEBIAN_PACKAGE_BUILDS_DEPENDS "debhelper (>= 8.0.0), cmake, g++ (>= 4.8), libsdl2-dev, libfreeimage-dev, libfreetype6-dev, libcurl4-openssl-dev, libasound2-dev, libgl1-mesa-dev, rapidjson-dev")
++SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libc6, libsdl2-2.0-0, libsdl2-mixer-2.0-0, libfreeimage3, libfreetype6, libcurl3, libasound2")
++SET(CPACK_DEBIAN_PACKAGE_BUILDS_DEPENDS "debhelper (>= 8.0.0), cmake, g++ (>= 4.8), libsdl2-dev, libsdl2-mixer-dev, libfreeimage-dev, libfreetype6-dev, libcurl4-openssl-dev, libasound2-dev, libgl1-mesa-dev, rapidjson-dev")
+ 
+ SET(CPACK_PACKAGE_VENDOR "emulationstation.org")
+ SET(CPACK_PACKAGE_VERSION "2.0.0~rc1")
+diff --git a/es-app/src/FileData.cpp b/es-app/src/FileData.cpp
+index 31b9848b8..8ca4d7a42 100644
+--- a/es-app/src/FileData.cpp
++++ b/es-app/src/FileData.cpp
+@@ -298,6 +298,7 @@ void FileData::launchGame(Window* window)
+ 
+ 	window->init();
+ 	VolumeControl::getInstance()->init();
++	AudioManager::getInstance()->init();
+ 	window->normalizeNextUpdate();
+ 
+ 	//update number of times the game has been launched
+@@ -312,6 +313,8 @@ void FileData::launchGame(Window* window)
+ 	CollectionSystemManager::get()->refreshCollectionSystems(gameToUpdate);
+ 
+ 	gameToUpdate->mSystem->onMetaDataSavePoint();
++	
++	AudioManager::getInstance()->playRandomMusic();
+ }
+ 
+ CollectionFileData::CollectionFileData(FileData* file, SystemData* system)
+diff --git a/es-app/src/VolumeControl.cpp b/es-app/src/VolumeControl.cpp
+index 80d18dfdc..8ee6d7486 100644
+--- a/es-app/src/VolumeControl.cpp
++++ b/es-app/src/VolumeControl.cpp
+@@ -8,12 +8,12 @@
+ #endif
+ 
+ #if defined(__linux__)
+-    #if defined(_RPI_) || defined(_VERO4K_)
+-        const char * VolumeControl::mixerName = "PCM";
+-    #else
+-    	const char * VolumeControl::mixerName = "Master";
+-    #endif
+-    const char * VolumeControl::mixerCard = "default";
++#if defined(_RPI_) || defined(_VERO4K_)
++		std::string VolumeControl::mixerName = "PCM";
++#else
++		std::string VolumeControl::mixerName = "Master";
++#endif
++		std::string VolumeControl::mixerCard = "default";
+ #endif
+ 
+ std::weak_ptr<VolumeControl> VolumeControl::sInstance;
+@@ -87,19 +87,24 @@ void VolumeControl::init()
+ 	if (mixerHandle == nullptr)
+ 	{
+ 		// Allow users to override the AudioCard and MixerName in es_settings.cfg
+-		mixerCard = Settings::getInstance()->getString("AudioCard").c_str();
+-		mixerName = Settings::getInstance()->getString("AudioDevice").c_str();
++		auto audioCard = Settings::getInstance()->getString("AudioCard");
++		if (!audioCard.empty())
++			mixerCard = audioCard;
++
++		auto audioDevice = Settings::getInstance()->getString("AudioDevice");
++		if (!audioDevice.empty())
++			mixerName = audioDevice;
+ 
+ 		snd_mixer_selem_id_alloca(&mixerSelemId);
+ 		//sets simple-mixer index and name
+ 		snd_mixer_selem_id_set_index(mixerSelemId, mixerIndex);
+-		snd_mixer_selem_id_set_name(mixerSelemId, mixerName);
++		snd_mixer_selem_id_set_name(mixerSelemId, mixerName.c_str());
+ 		//open mixer
+ 		if (snd_mixer_open(&mixerHandle, 0) >= 0)
+ 		{
+ 			LOG(LogDebug) << "VolumeControl::init() - Opened ALSA mixer";
+ 			//ok. attach to defualt card
+-			if (snd_mixer_attach(mixerHandle, mixerCard) >= 0)
++			if (snd_mixer_attach(mixerHandle, mixerCard.c_str()) >= 0)
+ 			{
+ 				LOG(LogDebug) << "VolumeControl::init() - Attached to default card";
+ 				//ok. register simple element class
+@@ -119,9 +124,39 @@ void VolumeControl::init()
+ 						}
+ 						else
+ 						{
+-							LOG(LogError) << "VolumeControl::init() - Failed to find mixer elements!";
+-							snd_mixer_close(mixerHandle);
+-							mixerHandle = nullptr;
++							LOG(LogInfo) << "VolumeControl::init() - Unable to find mixer " << mixerName << " -> Search for alternative mixer";
++
++							snd_mixer_selem_id_t *mxid = nullptr;
++							snd_mixer_selem_id_alloca(&mxid);
++
++							for (snd_mixer_elem_t* mxe = snd_mixer_first_elem(mixerHandle); mxe != nullptr; mxe = snd_mixer_elem_next(mxe))
++							{
++								if (snd_mixer_selem_has_playback_volume(mxe) != 0 && snd_mixer_selem_is_active(mxe) != 0)
++								{
++									snd_mixer_selem_get_id(mxe, mxid);
++									mixerName = snd_mixer_selem_id_get_name(mxid);
++
++									LOG(LogInfo) << "mixername : " << mixerName;
++
++									snd_mixer_selem_id_set_name(mixerSelemId, mixerName.c_str());
++									mixerElem = snd_mixer_find_selem(mixerHandle, mixerSelemId);
++									if (mixerElem != nullptr)
++									{
++										//wohoo. good to go...
++										LOG(LogDebug) << "VolumeControl::init() - Mixer initialized";
++										break;
++									}
++									else
++										LOG(LogDebug) << "VolumeControl::init() - Mixer not initialized";
++								}
++							}
++
++							if (mixerElem == nullptr)
++							{
++								LOG(LogError) << "VolumeControl::init() - Failed to find mixer elements!";
++								snd_mixer_close(mixerHandle);
++								mixerHandle = nullptr;
++							}
+ 						}
+ 					}
+ 					else
+@@ -232,7 +267,7 @@ void VolumeControl::deinit()
+ 	#error TODO: Not implemented for MacOS yet!!!
+ #elif defined(__linux__)
+ 	if (mixerHandle != nullptr) {
+-		snd_mixer_detach(mixerHandle, mixerCard);
++		snd_mixer_detach(mixerHandle, mixerCard.c_str());
+ 		snd_mixer_free(mixerHandle);
+ 		snd_mixer_close(mixerHandle);
+ 		mixerHandle = nullptr;
+@@ -260,6 +295,20 @@ int VolumeControl::getVolume() const
+ #elif defined(__linux__)
+ 	if (mixerElem != nullptr)
+ 	{
++		if (mixerHandle != nullptr)
++			snd_mixer_handle_events(mixerHandle);
++
++		/* Disabled see commit 38ce42faef8aae3f9c180560bfdedd9d1b954d28
++		 * https://github.com/batocera-linux/batocera-emulationstation/
++		int mute_state;
++		if (snd_mixer_selem_has_playback_switch(mixerElem)) 
++		{
++			snd_mixer_selem_get_playback_switch(mixerElem, SND_MIXER_SCHN_UNKNOWN, &mute_state);
++			if (!mute_state) // system Muted
++				return 0;
++		}
++		*/
++
+ 		//get volume range
+ 		long minVolume;
+ 		long maxVolume;
+@@ -275,7 +324,6 @@ int VolumeControl::getVolume() const
+ 				{
+ 					volume = (rawVolume * 100.0) / (maxVolume - minVolume) + 0.5;
+ 				}
+-				//else volume = 0;
+ 			}
+ 			else
+ 			{
+@@ -300,39 +348,32 @@ int VolumeControl::getVolume() const
+ 		mixerControlDetails.paDetails = &value;
+ 		mixerControlDetails.cbDetails = sizeof(MIXERCONTROLDETAILS_UNSIGNED);
+ 		if (mixerGetControlDetails((HMIXEROBJ)mixerHandle, &mixerControlDetails, MIXER_GETCONTROLDETAILSF_VALUE) == MMSYSERR_NOERROR)
+-		{
+ 			volume = (int)Math::round((value.dwValue * 100) / 65535.0f);
+-		}
+-		else
+-		{
+-			LOG(LogError) << "VolumeControl::getVolume() - Failed to get mixer volume!";
+-		}
+ 	}
+ 	else if (endpointVolume != nullptr)
+ 	{
+ 		//Windows Vista or above. use EndpointVolume API
+ 		float floatVolume = 0.0f; //0-1
+-		if (endpointVolume->GetMasterVolumeLevelScalar(&floatVolume) == S_OK)
+-		{
+-			volume = (int)Math::round(floatVolume * 100.0f);
+-			LOG(LogInfo) << " getting volume as " << volume << " ( from float " << floatVolume << ")";
+-		}
+-		else
++
++		BOOL mute = FALSE;
++		if (endpointVolume->GetMute(&mute) == S_OK)
+ 		{
+-			LOG(LogError) << "VolumeControl::getVolume() - Failed to get master volume!";
++			if (mute)
++				return 0;
+ 		}
+ 
++		if (endpointVolume->GetMasterVolumeLevelScalar(&floatVolume) == S_OK)
++			volume = (int)Math::round(floatVolume * 100.0f);
+ 	}
+ #endif
++
+ 	//clamp to 0-100 range
+ 	if (volume < 0)
+-	{
+ 		volume = 0;
+-	}
++
+ 	if (volume > 100)
+-	{
+ 		volume = 100;
+-	}
++
+ 	return volume;
+ }
+ 
+@@ -404,3 +445,14 @@ void VolumeControl::setVolume(int volume)
+ 	}
+ #endif
+ }
++
++bool VolumeControl::isAvailable()
++{
++#if defined (__APPLE__)
++	return false;
++#elif defined(__linux__)
++	return mixerHandle != nullptr && mixerElem != nullptr;
++#elif defined(WIN32) || defined(_WIN32)
++	return mixerHandle != nullptr || endpointVolume != nullptr;
++#endif
++}
+diff --git a/es-app/src/VolumeControl.h b/es-app/src/VolumeControl.h
+index a2e420e7e..adae297de 100644
+--- a/es-app/src/VolumeControl.h
++++ b/es-app/src/VolumeControl.h
+@@ -24,8 +24,8 @@ class VolumeControl
+ #if defined (__APPLE__)
+     #error TODO: Not implemented for MacOS yet!!!
+ #elif defined(__linux__)
+-    static const char * mixerName;
+-    static const char * mixerCard;
++    static std::string mixerName;
++    static std::string mixerCard;
+     int mixerIndex;
+     snd_mixer_t* mixerHandle;
+     snd_mixer_elem_t* mixerElem;
+@@ -51,6 +51,8 @@ class VolumeControl
+ 	void init();
+ 	void deinit();
+ 
++	bool isAvailable();
++
+ 	int getVolume() const;
+ 	void setVolume(int volume);
+ 
+diff --git a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
+index e59342871..69a268d3c 100644
+--- a/es-app/src/guis/GuiMenu.cpp
++++ b/es-app/src/guis/GuiMenu.cpp
+@@ -11,6 +11,7 @@
+ #include "guis/GuiSettings.h"
+ #include "views/UIModeController.h"
+ #include "views/ViewController.h"
++#include "AudioManager.h"
+ #include "CollectionSystemManager.h"
+ #include "EmulationStation.h"
+ #include "Scripting.h"
+@@ -165,6 +166,20 @@ void GuiMenu::openSoundSettings()
+ 			}
+ 			Settings::getInstance()->setBool("EnableSounds", sounds_enabled->getState());
+ 		});
++		
++		auto music_enabled = std::make_shared<SwitchComponent>(mWindow);
++		music_enabled->setState(Settings::getInstance()->getBool("EnableMusic"));
++		s->addWithLabel("BACKGROUND MUSIC", music_enabled);
++		s->addSaveFunc([music_enabled] 
++		{
++			if (Settings::getInstance()->setBool("EnableMusic", music_enabled->getState()))
++			{
++				if (music_enabled->getState())
++					AudioManager::getInstance()->playRandomMusic();
++				else
++					AudioManager::getInstance()->stopMusic();
++			}
++		});
+ 
+ 		auto video_audio = std::make_shared<SwitchComponent>(mWindow);
+ 		video_audio->setState(Settings::getInstance()->getBool("VideoAudio"));
+diff --git a/es-app/src/main.cpp b/es-app/src/main.cpp
+index 2977e0771..bc86bf1c5 100644
+--- a/es-app/src/main.cpp
++++ b/es-app/src/main.cpp
+@@ -5,6 +5,7 @@
+ #include "guis/GuiMsgBox.h"
+ #include "utils/FileSystemUtil.h"
+ #include "views/ViewController.h"
++#include "AudioManager.h"
+ #include "CollectionSystemManager.h"
+ #include "EmulationStation.h"
+ #include "InputManager.h"
+@@ -387,6 +388,10 @@ int main(int argc, char* argv[])
+ 
+ 	//generate joystick events since we're done loading
+ 	SDL_JoystickEventState(SDL_ENABLE);
++		
++	// RetroPie BGM
++	AudioManager::getInstance()->init();
++	AudioManager::getInstance()->playRandomMusic();
+ 
+ 	int lastTime = SDL_GetTicks();
+ 	int ps_time = SDL_GetTicks();
+diff --git a/es-core/src/AudioManager.cpp b/es-core/src/AudioManager.cpp
+index 1d0f8ac49..f9ea46961 100644
+--- a/es-core/src/AudioManager.cpp
++++ b/es-core/src/AudioManager.cpp
+@@ -4,54 +4,14 @@
+ #include "Settings.h"
+ #include "Sound.h"
+ #include <SDL.h>
++#include "utils/FileSystemUtil.h"
++#include "utils/StringUtil.h"
++#include <unistd.h>
+ 
++AudioManager* AudioManager::sInstance = NULL;
+ std::vector<std::shared_ptr<Sound>> AudioManager::sSoundVector;
+-SDL_AudioSpec AudioManager::sAudioFormat;
+-std::shared_ptr<AudioManager> AudioManager::sInstance;
+ 
+-
+-void AudioManager::mixAudio(void* /*unused*/, Uint8 *stream, int len)
+-{
+-	bool stillPlaying = false;
+-
+-	//initialize the buffer to "silence"
+-	SDL_memset(stream, 0, len);
+-
+-	//iterate through all our samples
+-	std::vector<std::shared_ptr<Sound>>::const_iterator soundIt = sSoundVector.cbegin();
+-	while (soundIt != sSoundVector.cend())
+-	{
+-		std::shared_ptr<Sound> sound = *soundIt;
+-		if(sound->isPlaying())
+-		{
+-			//calculate rest length of current sample
+-			Uint32 restLength = (sound->getLength() - sound->getPosition());
+-			if (restLength > (Uint32)len) {
+-				//if stream length is smaller than smaple lenght, clip it
+-				restLength = len;
+-			}
+-			//mix sample into stream
+-			SDL_MixAudio(stream, &(sound->getData()[sound->getPosition()]), restLength, SDL_MIX_MAXVOLUME);
+-			if (sound->getPosition() + restLength < sound->getLength())
+-			{
+-				//sample hasn't ended yet
+-				stillPlaying = true;
+-			}
+-			//set new sound position. if this is at or beyond the end of the sample, it will stop automatically
+-			sound->setPosition(sound->getPosition() + restLength);
+-		}
+-		//advance to next sound
+-		++soundIt;
+-	}
+-
+-	//we have processed all samples. check if some will still be playing
+-	if (!stillPlaying) {
+-		//no. pause audio till a Sound::play() wakes us up
+-		SDL_PauseAudio(1);
+-	}
+-}
+-
+-AudioManager::AudioManager()
++AudioManager::AudioManager() : mInitialized(false), mCurrentMusic(nullptr)
+ {
+ 	init();
+ }
+@@ -61,54 +21,71 @@ AudioManager::~AudioManager()
+ 	deinit();
+ }
+ 
+-std::shared_ptr<AudioManager> & AudioManager::getInstance()
++AudioManager* AudioManager::getInstance()
+ {
+ 	//check if an AudioManager instance is already created, if not create one
+-	if (sInstance == nullptr && Settings::getInstance()->getBool("EnableSounds")) {
+-		sInstance = std::shared_ptr<AudioManager>(new AudioManager);
+-	}
++	if(sInstance == nullptr)
++		sInstance = new AudioManager();
++
+ 	return sInstance;
+ }
+ 
++bool AudioManager::isInitialized()
++{
++	if(sInstance == nullptr)
++		return false;
++
++	return sInstance->mInitialized;
++}
++
+ void AudioManager::init()
+ {
+-	if (SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
++	if(mInitialized)
++		return;
++
++	mMusicVolume = 0;
++
++	if(SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
+ 	{
+ 		LOG(LogError) << "Error initializing SDL audio!\n" << SDL_GetError();
+ 		return;
+ 	}
+ 
+-	//stop playing all Sounds
+-	for(unsigned int i = 0; i < sSoundVector.size(); i++)
++	// Open the audio device and pause
++	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
++		LOG(LogError) << "MUSIC Error - Unable to open SDLMixer audio: " << SDL_GetError() << std::endl;
++	else
+ 	{
+-		if(sSoundVector.at(i)->isPlaying())
+-		{
+-			sSoundVector[i]->stop();
+-		}
+-	}
++		LOG(LogInfo) << "SDL AUDIO Initialized";
++		mInitialized = true;
+ 
+-	//Set up format and callback. Play 16-bit stereo audio at 44.1Khz
+-	sAudioFormat.freq = 44100;
+-	sAudioFormat.format = AUDIO_S16;
+-	sAudioFormat.channels = 2;
+-	sAudioFormat.samples = 4096;
+-	sAudioFormat.callback = mixAudio;
+-	sAudioFormat.userdata = NULL;
+-
+-	//Open the audio device and pause
+-	if (SDL_OpenAudio(&sAudioFormat, NULL) < 0) {
+-		LOG(LogError) << "AudioManager Error - Unable to open SDL audio: " << SDL_GetError() << std::endl;
++		// Reload known sounds
++		for(unsigned int i = 0; i < sSoundVector.size(); i++)
++			sSoundVector[i]->init();
+ 	}
+ }
+ 
+ void AudioManager::deinit()
+ {
++	if(!mInitialized)
++		return;
++
++	mInitialized = false;
++
+ 	//stop all playback
+ 	stop();
++	stopMusic();
++
++	// Free known sounds from memory
++	for(unsigned int i = 0; i < sSoundVector.size(); i++)
++		sSoundVector[i]->deinit();
++
++	Mix_HookMusicFinished(nullptr);
++	Mix_HaltMusic();
++
+ 	//completely tear down SDL audio. else SDL hogs audio resources and emulators might fail to start...
+-	SDL_CloseAudio();
++	Mix_CloseAudio();
+ 	SDL_QuitSubSystem(SDL_INIT_AUDIO);
+-	sInstance = NULL;
+ }
+ 
+ void AudioManager::registerSound(std::shared_ptr<Sound> & sound)
+@@ -135,21 +112,169 @@ void AudioManager::unregisterSound(std::shared_ptr<Sound> & sound)
+ void AudioManager::play()
+ {
+ 	getInstance();
+-
+-	//unpause audio, the mixer will figure out if samples need to be played...
+-	SDL_PauseAudio(0);
+ }
+ 
+ void AudioManager::stop()
+ {
+ 	//stop playing all Sounds
+ 	for(unsigned int i = 0; i < sSoundVector.size(); i++)
+-	{
+ 		if(sSoundVector.at(i)->isPlaying())
+-		{
+ 			sSoundVector[i]->stop();
++}
++
++void AudioManager::getMusicIn(const std::string &path, std::vector<std::string>& all_matching_files)
++{	
++    if(!Utils::FileSystem::isDirectory(path)) {
++		return;
++    }
++    auto dirContent = Utils::FileSystem::getDirContent(path);
++    for(auto it = dirContent.cbegin(); it != dirContent.cend(); ++it)
++	{	
++		if(Utils::FileSystem::isDirectory(*it))
++		{
++			if(*it == "." || *it == "..")
++				getMusicIn(*it, all_matching_files);
++					
+ 		}
++		else
++		{
++			std::string extension = Utils::String::toLower(Utils::FileSystem::getExtension(*it));
++			if(extension == ".mp3" || extension == ".ogg")
++				all_matching_files.push_back(*it);
++		}
++	}		
++}
++
++void AudioManager::playRandomMusic(bool continueIfPlaying)
++{
++	if(!Settings::getInstance()->getBool("EnableMusic"))
++		return;
++
++	std::vector<std::string> musics;
++	
++	// check in RetroPie music directory
++	if(musics.empty())
++		getMusicIn(Utils::FileSystem::getHomePath() + "/RetroPie/roms/music", musics);
++  
++	// check in system sound directory
++	if(musics.empty())
++		getMusicIn("/usr/share/RetroPie/music", musics);
++  
++	// check in .emulationstation/music directory
++	if(musics.empty())
++		getMusicIn(Utils::FileSystem::getHomePath() + "/.emulationstation/music", musics);
++
++	if(musics.empty())
++		return;
++
++#if defined(WIN32)
++	srand(time(NULL) % getpid());
++#else
++	srand(time(NULL) % getpid() + getppid());
++#endif
++
++	int randomIndex = rand() % musics.size();
++
++	// continue playing ?
++	if(mCurrentMusic != nullptr && continueIfPlaying)
++		return;
++
++	playMusic(musics.at(randomIndex));
++}
++
++void AudioManager::playMusic(std::string path)
++{
++	if(!mInitialized)
++		return;
++
++	// free the previous music
++	stopMusic(false);
++
++	if(!Settings::getInstance()->getBool("EnableMusic"))
++		return;
++
++	// load a new music
++	mCurrentMusic = Mix_LoadMUS(path.c_str());
++	if(mCurrentMusic == NULL)
++	{
++		LOG(LogError) << Mix_GetError() << " for " << path;
++		return;
+ 	}
+-	//pause audio
+-	SDL_PauseAudio(1);
++
++	if(Mix_FadeInMusic(mCurrentMusic, 1, 1000) == -1)
++	{
++		stopMusic();
++		return;
++	}
++
++	Mix_HookMusicFinished(AudioManager::musicEnd_callback);
++}
++
++void AudioManager::musicEnd_callback()
++{
++    if(!Settings::getInstance()->getBool("EnableMusic"))
++		return;
++	else
++		AudioManager::getInstance()->playRandomMusic(false);
++}
++
++void AudioManager::stopMusic(bool fadeOut)
++{
++	if(mCurrentMusic == NULL)
++		return;
++
++	Mix_HookMusicFinished(nullptr);
++
++	if(fadeOut)
++	{
++		while(!Mix_FadeOutMusic(2000) && Mix_PlayingMusic())
++			SDL_Delay(100);
++	}
++
++	Mix_FreeMusic(mCurrentMusic);
++	mCurrentMusic = NULL;
++}
++
++int AudioManager::getMaxMusicVolume()
++{
++	int ret = (Settings::getInstance()->getInt("MusicVolume") * MIX_MAX_VOLUME) / 100;
++	if(ret > MIX_MAX_VOLUME)
++		return MIX_MAX_VOLUME;
++
++	if(ret < 0)
++		return 0;
++
++	return ret;
++}
++
++void AudioManager::update(int deltaTime)
++{
++	if(sInstance == nullptr || !sInstance->mInitialized || !Settings::getInstance()->getBool("EnableMusic"))
++		return;
++
++	float deltaVol = deltaTime / 8.0f;
++
++//	#define MINVOL 5
++
++	int maxVol = getMaxMusicVolume();
++	int minVol = maxVol / 20;
++	if(maxVol > 0 && minVol == 0)
++		minVol = 1;
++
++	/*if (sInstance->mMusicVolume > minVol)
++	{
++		sInstance->mMusicVolume -= deltaVol;
++		if (sInstance->mMusicVolume < minVol)
++			sInstance->mMusicVolume = minVol;
++
++		Mix_VolumeMusic((int)sInstance->mMusicVolume);
++	}
++	else if (sInstance->mMusicVolume < maxVol)
++	{
++		sInstance->mMusicVolume += deltaVol;
++		if (sInstance->mMusicVolume > maxVol)
++			sInstance->mMusicVolume = maxVol;
++
++		Mix_VolumeMusic((int)sInstance->mMusicVolume);
++	}*/
+ }
+diff --git a/es-core/src/AudioManager.h b/es-core/src/AudioManager.h
+index e27ce1dc2..3eadb9243 100644
+--- a/es-core/src/AudioManager.h
++++ b/es-core/src/AudioManager.h
+@@ -5,21 +5,30 @@
+ #include <SDL_audio.h>
+ #include <memory>
+ #include <vector>
++#include "SDL_mixer.h"
++#include <string>
++#include <iostream>
+ 
+ class Sound;
+ 
+ class AudioManager
+ {
+-	static SDL_AudioSpec sAudioFormat;
++private:
++	AudioManager();
++	
+ 	static std::vector<std::shared_ptr<Sound>> sSoundVector;
+-	static std::shared_ptr<AudioManager> sInstance;
+-
+-	static void mixAudio(void *unused, Uint8 *stream, int len);
++	static AudioManager* sInstance;
+ 
+-	AudioManager();
++	Mix_Music* mCurrentMusic;
++	void getMusicIn(const std::string &path, std::vector<std::string>& all_matching_files);
++	void playMusic(std::string path);
++	static void musicEnd_callback();
++	
++	bool mInitialized;
+ 
+ public:
+-	static std::shared_ptr<AudioManager> & getInstance();
++	static AudioManager* getInstance();
++	static bool isInitialized();
+ 
+ 	void init();
+ 	void deinit();
+@@ -30,6 +39,10 @@ class AudioManager
+ 	void play();
+ 	void stop();
+ 
++	// RetroPie Mixer
++	void playRandomMusic(bool continueIfPlaying = true);
++	void stopMusic(bool fadeOut = true);
++
+ 	virtual ~AudioManager();
+ };
+ 
+diff --git a/es-core/src/Settings.cpp b/es-core/src/Settings.cpp
+index 8f48f60a3..fa688340f 100644
+--- a/es-core/src/Settings.cpp
++++ b/es-core/src/Settings.cpp
+@@ -9,6 +9,7 @@
+ #include <vector>
+ 
+ Settings* Settings::sInstance = NULL;
++static std::string mEmptyString = "";
+ 
+ // these values are NOT saved to es_settings.xml
+ // since they're set through command-line arguments, and not the in-program settings menu
+@@ -70,6 +71,7 @@ void Settings::setDefaults()
+ 	mBoolMap["VSync"] = true;
+ 
+ 	mBoolMap["EnableSounds"] = true;
++	mBoolMap["EnableMusic"] = true;
+ 	mBoolMap["ShowHelpPrompts"] = true;
+ 	mBoolMap["ScrapeRatings"] = true;
+ 	mBoolMap["IgnoreGamelist"] = false;
+@@ -251,20 +253,55 @@ void Settings::processBackwardCompatibility()
+ }
+ 
+ //Print a warning message if the setting we're trying to get doesn't already exist in the map, then return the value in the map.
+-#define SETTINGS_GETSET(type, mapName, getMethodName, setMethodName) type Settings::getMethodName(const std::string& name) \
++#define SETTINGS_GETSET(type, mapName, getMethodName, setMethodName, defaultValue) type Settings::getMethodName(const std::string& name) \
+ { \
+ 	if(mapName.find(name) == mapName.cend()) \
+ 	{ \
+-		LOG(LogError) << "Tried to use unset setting " << name << "!"; \
++		/* LOG(LogError) << "Tried to use unset setting " << name << "!"; */ \
++		return defaultValue; \
+ 	} \
+ 	return mapName[name]; \
+ } \
+-void Settings::setMethodName(const std::string& name, type value) \
++bool Settings::setMethodName(const std::string& name, type value) \
+ { \
+-	mapName[name] = value; \
++	if(mapName.count(name) == 0 || mapName[name] != value) { \
++		mapName[name] = value; \
++\
++		if(std::find(settings_dont_save.cbegin(), settings_dont_save.cend(), name) == settings_dont_save.cend()) \
++			mWasChanged = true; \
++\
++		return true; \
++	} \
++	return false; \
++}
++
++SETTINGS_GETSET(bool, mBoolMap, getBool, setBool, false);
++SETTINGS_GETSET(int, mIntMap, getInt, setInt, 0);
++SETTINGS_GETSET(float, mFloatMap, getFloat, setFloat, 0.0f);
++
++
++std::string Settings::getString(const std::string& name)
++{ 
++	if(mStringMap.find(name) == mStringMap.cend())
++		return mEmptyString;
++
++	return mStringMap[name];
+ }
+ 
+-SETTINGS_GETSET(bool, mBoolMap, getBool, setBool);
+-SETTINGS_GETSET(int, mIntMap, getInt, setInt);
+-SETTINGS_GETSET(float, mFloatMap, getFloat, setFloat);
+-SETTINGS_GETSET(const std::string&, mStringMap, getString, setString);
++bool Settings::setString(const std::string& name, const std::string& value)
++{ 
++	if(mStringMap.count(name) == 0 || mStringMap[name] != value)
++	{
++		if(value == "" && mStringMap.count(name) == 0)
++			return false;
++
++		mStringMap[name] = value;
++		
++		if(std::find(settings_dont_save.cbegin(), settings_dont_save.cend(), name) == settings_dont_save.cend()) 
++			mWasChanged = true; 
++			
++		return true; 
++	} 
++
++	return false; 
++}
+diff --git a/es-core/src/Settings.h b/es-core/src/Settings.h
+index 34b54957d..6be66d9a2 100644
+--- a/es-core/src/Settings.h
++++ b/es-core/src/Settings.h
+@@ -19,12 +19,18 @@ class Settings
+ 	bool getBool(const std::string& name);
+ 	int getInt(const std::string& name);
+ 	float getFloat(const std::string& name);
+-	const std::string& getString(const std::string& name);
++	std::string getString(const std::string& name);
+ 
+-	void setBool(const std::string& name, bool value);
+-	void setInt(const std::string& name, int value);
+-	void setFloat(const std::string& name, float value);
+-	void setString(const std::string& name, const std::string& value);
++	bool setBool(const std::string& name, bool value);
++	bool setInt(const std::string& name, int value);
++	bool setFloat(const std::string& name, float value);
++	bool setString(const std::string& name, const std::string& value);
++
++	std::map<std::string, std::string>& getStringMap() { return mStringMap; }
++
++	static bool DebugText;
++	static bool DebugImage;
++	static bool DebugGrid;
+ 
+ private:
+ 	static Settings* sInstance;
+@@ -39,6 +45,13 @@ class Settings
+ 	std::map<std::string, int> mIntMap;
+ 	std::map<std::string, float> mFloatMap;
+ 	std::map<std::string, std::string> mStringMap;
++
++	bool mWasChanged;
++
++	std::map<std::string, bool> mDefaultBoolMap;
++	std::map<std::string, int> mDefaultIntMap;
++	std::map<std::string, float> mDefaultFloatMap;
++	std::map<std::string, std::string> mDefaultStringMap;
+ };
+ 
+ #endif // ES_CORE_SETTINGS_H
+diff --git a/es-core/src/Sound.cpp b/es-core/src/Sound.cpp
+index e3f46e279..72be6b29f 100644
+--- a/es-core/src/Sound.cpp
++++ b/es-core/src/Sound.cpp
+@@ -14,8 +14,13 @@ std::shared_ptr<Sound> Sound::get(const std::string& path)
+ 		return it->second;
+ 
+ 	std::shared_ptr<Sound> sound = std::shared_ptr<Sound>(new Sound(path));
+-	AudioManager::getInstance()->registerSound(sound);
+-	sMap[path] = sound;
++	
++	if(AudioManager::isInitialized())
++	{
++		AudioManager::getInstance()->registerSound(sound);
++		sMap[path] = sound;
++	}
++
+ 	return sound;
+ }
+ 
+@@ -33,7 +38,7 @@ std::shared_ptr<Sound> Sound::getFromTheme(const std::shared_ptr<ThemeData>& the
+ 	return get(elem->get<std::string>("path"));
+ }
+ 
+-Sound::Sound(const std::string & path) : mSampleData(NULL), mSamplePos(0), mSampleLength(0), playing(false)
++Sound::Sound(const std::string & path) : mSampleData(NULL), mPlayingChannel(-1)
+ {
+ 	loadFile(path);
+ }
+@@ -51,131 +56,57 @@ void Sound::loadFile(const std::string & path)
+ 
+ void Sound::init()
+ {
+-	if(mSampleData != NULL)
+-		deinit();
++	deinit();
++
++	if(!AudioManager::isInitialized())
++		return;
+ 
+-	if(mPath.empty())
++	if(mPath.empty() || !Utils::FileSystem::exists(mPath))
++		return;
++		
++	if(!Settings::getInstance()->getBool("EnableSounds"))
+ 		return;
+ 
+ 	//load wav file via SDL
+-	SDL_AudioSpec wave;
+-	Uint8 * data = NULL;
+-    Uint32 dlen = 0;
+-	if (SDL_LoadWAV(mPath.c_str(), &wave, &data, &dlen) == NULL) {
++	mSampleData = Mix_LoadWAV(mPath.c_str());
++	if(mSampleData == nullptr)
++	{
+ 		LOG(LogError) << "Error loading sound \"" << mPath << "\"!\n" << "	" << SDL_GetError();
+ 		return;
+ 	}
+-	//build conversion buffer
+-	SDL_AudioCVT cvt;
+-    SDL_BuildAudioCVT(&cvt, wave.format, wave.channels, wave.freq, AUDIO_S16, 2, 44100);
+-	//copy data to conversion buffer
+-	cvt.len = dlen;
+-    cvt.buf = new Uint8[cvt.len * cvt.len_mult];
+-    memcpy(cvt.buf, data, dlen);
+-	//convert buffer to stereo, 16bit, 44.1kHz
+-    if (SDL_ConvertAudio(&cvt) < 0) {
+-		LOG(LogError) << "Error converting sound \"" << mPath << "\" to 44.1kHz, 16bit, stereo format!\n" << "	" << SDL_GetError();
+-		delete[] cvt.buf;
+-	}
+-	else {
+-		//worked. set up member data
+-		SDL_LockAudio();
+-		mSampleData = cvt.buf;
+-		mSampleLength = cvt.len_cvt;
+-		mSamplePos = 0;
+-		mSampleFormat.channels = 2;
+-		mSampleFormat.freq = 44100;
+-		mSampleFormat.format = AUDIO_S16;
+-		SDL_UnlockAudio();
+-	}
+-	//free wav data now
+-    SDL_FreeWAV(data);
+ }
+ 
+ void Sound::deinit()
+ {
+-	playing = false;
+-
+-	if(mSampleData != NULL)
+-	{
+-		SDL_LockAudio();
+-		delete[] mSampleData;
+-		mSampleData = NULL;
+-		mSampleLength = 0;
+-		mSamplePos = 0;
+-		SDL_UnlockAudio();
+-	}
++	if(mSampleData == nullptr)
++		return;
++		
++	stop();
++	Mix_FreeChunk(mSampleData);
++	mSampleData = nullptr;
+ }
+ 
+ void Sound::play()
+ {
+-	if(mSampleData == NULL)
++	if(mSampleData == nullptr)
+ 		return;
+-
++	
+ 	if(!Settings::getInstance()->getBool("EnableSounds"))
+ 		return;
+ 
+-	AudioManager::getInstance();
+-
+-	SDL_LockAudio();
+-	if (playing)
+-	{
+-		//replay from start. rewind the sample to the beginning
+-		mSamplePos = 0;
+-
+-	}
+-	else
+-	{
+-		//flag our sample as playing
+-		playing = true;
+-	}
+-	SDL_UnlockAudio();
+-	//tell the AudioManager to start playing samples
+-	AudioManager::getInstance()->play();
++	mPlayingChannel = Mix_PlayChannel(-1, mSampleData, 0);
+ }
+ 
+ bool Sound::isPlaying() const
+ {
+-	return playing;
++	return (mPlayingChannel >= 0);
+ }
+ 
+ void Sound::stop()
+ {
+-	//flag our sample as playing and rewind its position
+-	SDL_LockAudio();
+-	playing = false;
+-	mSamplePos = 0;
+-	SDL_UnlockAudio();
+-}
+-
+-const Uint8 * Sound::getData() const
+-{
+-	return mSampleData;
+-}
+-
+-Uint32 Sound::getPosition() const
+-{
+-	return mSamplePos;
+-}
+-
+-void Sound::setPosition(Uint32 newPosition)
+-{
+-	mSamplePos = newPosition;
+-	if (mSamplePos >= mSampleLength) {
+-		//got to or beyond the end of the sample. stop playing
+-		playing = false;
+-		mSamplePos = 0;
+-	}
+-}
+-
+-Uint32 Sound::getLength() const
+-{
+-	return mSampleLength;
+-}
++	if(mPlayingChannel < 0)
++		return;
+ 
+-Uint32 Sound::getLengthMS() const
+-{
+-	//44100 samples per second, 2 channels (stereo)
+-	//I have no idea why the *0.75 is necessary, but otherwise it's inaccurate
+-	return (Uint32)((mSampleLength / 44100.0f / 2.0f * 0.75f) * 1000);
++	//Mix_HaltChannel(mPlayingChannel);
++	mPlayingChannel = -1;
+ }
+diff --git a/es-core/src/Sound.h b/es-core/src/Sound.h
+index 43e68453c..4de996170 100644
+--- a/es-core/src/Sound.h
++++ b/es-core/src/Sound.h
+@@ -2,7 +2,7 @@
+ #ifndef ES_CORE_SOUND_H
+ #define ES_CORE_SOUND_H
+ 
+-#include "SDL_audio.h"
++#include "SDL_mixer.h"
+ #include <map>
+ #include <memory>
+ #include <string>
+@@ -12,11 +12,8 @@ class ThemeData;
+ class Sound
+ {
+ 	std::string mPath;
+-    SDL_AudioSpec mSampleFormat;
+-	Uint8 * mSampleData;
+-    Uint32 mSamplePos;
+-    Uint32 mSampleLength;
+-	bool playing;
++    Mix_Chunk* mSampleData;
++	int mPlayingChannel;
+ 
+ public:
+ 	static std::shared_ptr<Sound> get(const std::string& path);
+@@ -33,12 +30,6 @@ class Sound
+ 	bool isPlaying() const;
+ 	void stop();
+ 
+-	const Uint8 * getData() const;
+-	Uint32 getPosition() const;
+-	void setPosition(Uint32 newPosition);
+-	Uint32 getLength() const;
+-	Uint32 getLengthMS() const;
+-
+ private:
+ 	Sound(const std::string & path = "");
+ 	static std::map< std::string, std::shared_ptr<Sound> > sMap;
+
+From 48d394d8f344792d890bd2716e9b5e58a32b036b Mon Sep 17 00:00:00 2001
+From: Bluestang <bluestang2006@gmail.com>
+Date: Sat, 6 Feb 2021 21:19:19 -0700
+Subject: [PATCH 2/3] Improved volume slider
+
+- Volume updates as slider moves
+---
+ es-app/src/guis/GuiMenu.cpp                | 12 ++++++++++--
+ es-core/src/AudioManager.cpp               |  8 +++++---
+ es-core/src/AudioManager.h                 |  8 ++++++--
+ es-core/src/Settings.cpp                   |  1 +
+ es-core/src/Window.cpp                     |  3 +++
+ es-core/src/components/SliderComponent.cpp | 10 ++++++++--
+ es-core/src/components/SliderComponent.h   |  4 ++++
+ 7 files changed, 37 insertions(+), 9 deletions(-)
+
+diff --git a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
+index 69a268d3c..bf46394e1 100644
+--- a/es-app/src/guis/GuiMenu.cpp
++++ b/es-app/src/guis/GuiMenu.cpp
+@@ -98,8 +98,16 @@ void GuiMenu::openSoundSettings()
+ 	// volume
+ 	auto volume = std::make_shared<SliderComponent>(mWindow, 0.f, 100.f, 1.f, "%");
+ 	volume->setValue((float)VolumeControl::getInstance()->getVolume());
+-	s->addWithLabel("SYSTEM VOLUME", volume);
+-	s->addSaveFunc([volume] { VolumeControl::getInstance()->setVolume((int)Math::round(volume->getValue())); });
++	volume->setOnValueChanged([](const float &newVal) { VolumeControl::getInstance()->setVolume((int)Math::round(newVal)); });
++	s->addWithLabel("AUDIO VOLUME", volume);
++	s->addSaveFunc([this, volume] { VolumeControl::getInstance()->setVolume((int)Math::round(volume->getValue())); });
++		
++	/*TODO: This is a separate volume slider for the Music Player
++	auto musicVolume = std::make_shared<SliderComponent>(mWindow, 0.f, 100.f, 1.f, "%");
++	musicVolume->setValue(Settings::getInstance()->getInt("MusicVolume"));		
++	musicVolume->setOnValueChanged([](const float &newVal) { Settings::getInstance()->setInt("MusicVolume", (int)round(newVal)); });
++	s->addWithLabel("MUSIC VOLUME", musicVolume);
++	*/
+ 
+ 	if (UIModeController::getInstance()->isUIModeFull())
+ 	{
+diff --git a/es-core/src/AudioManager.cpp b/es-core/src/AudioManager.cpp
+index f9ea46961..e0fef1e4d 100644
+--- a/es-core/src/AudioManager.cpp
++++ b/es-core/src/AudioManager.cpp
+@@ -11,7 +11,7 @@
+ AudioManager* AudioManager::sInstance = NULL;
+ std::vector<std::shared_ptr<Sound>> AudioManager::sSoundVector;
+ 
+-AudioManager::AudioManager() : mInitialized(false), mCurrentMusic(nullptr)
++AudioManager::AudioManager() : mInitialized(false), mCurrentMusic(nullptr), mMusicVolume(MIX_MAX_VOLUME)
+ {
+ 	init();
+ }
+@@ -42,7 +42,7 @@ void AudioManager::init()
+ {
+ 	if(mInitialized)
+ 		return;
+-
++		
+ 	mMusicVolume = 0;
+ 
+ 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
+@@ -261,7 +261,9 @@ void AudioManager::update(int deltaTime)
+ 	if(maxVol > 0 && minVol == 0)
+ 		minVol = 1;
+ 
+-	/*if (sInstance->mMusicVolume > minVol)
++	/* TODO: This is part of unimplemented feature that would
++	 * lower the music volume if a video snap was playing
++	 * if (sInstance->mMusicVolume > minVol)
+ 	{
+ 		sInstance->mMusicVolume -= deltaVol;
+ 		if (sInstance->mMusicVolume < minVol)
+diff --git a/es-core/src/AudioManager.h b/es-core/src/AudioManager.h
+index 3eadb9243..797a81fcd 100644
+--- a/es-core/src/AudioManager.h
++++ b/es-core/src/AudioManager.h
+@@ -15,7 +15,7 @@ class AudioManager
+ {
+ private:
+ 	AudioManager();
+-	
++
+ 	static std::vector<std::shared_ptr<Sound>> sSoundVector;
+ 	static AudioManager* sInstance;
+ 
+@@ -23,7 +23,7 @@ class AudioManager
+ 	void getMusicIn(const std::string &path, std::vector<std::string>& all_matching_files);
+ 	void playMusic(std::string path);
+ 	static void musicEnd_callback();
+-	
++
+ 	bool mInitialized;
+ 
+ public:
+@@ -44,6 +44,10 @@ class AudioManager
+ 	void stopMusic(bool fadeOut = true);
+ 
+ 	virtual ~AudioManager();
++
++	float mMusicVolume;
++	static void update(int deltaTime);
++	static int getMaxMusicVolume();
+ };
+ 
+ #endif // ES_CORE_AUDIO_MANAGER_H
+diff --git a/es-core/src/Settings.cpp b/es-core/src/Settings.cpp
+index fa688340f..60d468349 100644
+--- a/es-core/src/Settings.cpp
++++ b/es-core/src/Settings.cpp
+@@ -72,6 +72,7 @@ void Settings::setDefaults()
+ 
+ 	mBoolMap["EnableSounds"] = true;
+ 	mBoolMap["EnableMusic"] = true;
++	mIntMap["MusicVolume"] = 128;
+ 	mBoolMap["ShowHelpPrompts"] = true;
+ 	mBoolMap["ScrapeRatings"] = true;
+ 	mBoolMap["IgnoreGamelist"] = false;
+diff --git a/es-core/src/Window.cpp b/es-core/src/Window.cpp
+index 3ea9a86ff..98c92c79e 100644
+--- a/es-core/src/Window.cpp
++++ b/es-core/src/Window.cpp
+@@ -4,6 +4,7 @@
+ #include "components/ImageComponent.h"
+ #include "resources/Font.h"
+ #include "resources/TextureResource.h"
++#include "AudioManager.h"
+ #include "InputManager.h"
+ #include "Log.h"
+ #include "Scripting.h"
+@@ -232,6 +233,8 @@ void Window::update(int deltaTime)
+ 	// Update the screensaver
+ 	if (mScreenSaver)
+ 		mScreenSaver->update(deltaTime);
++
++	AudioManager::update(deltaTime);
+ }
+ 
+ void Window::render()
+diff --git a/es-core/src/components/SliderComponent.cpp b/es-core/src/components/SliderComponent.cpp
+index aba8174c4..dc7a7004d 100644
+--- a/es-core/src/components/SliderComponent.cpp
++++ b/es-core/src/components/SliderComponent.cpp
+@@ -28,7 +28,7 @@ bool SliderComponent::input(InputConfig* config, Input input)
+ 
+ 		mMoveRate = input.value ? -mSingleIncrement : 0;
+ 		mMoveAccumulator = -MOVE_REPEAT_DELAY;
+-		return true;
++		return input.value;
+ 	}
+ 	if(config->isMappedLike("right", input))
+ 	{
+@@ -37,7 +37,7 @@ bool SliderComponent::input(InputConfig* config, Input input)
+ 
+ 		mMoveRate = input.value ? mSingleIncrement : 0;
+ 		mMoveAccumulator = -MOVE_REPEAT_DELAY;
+-		return true;
++		return input.value;
+ 	}
+ 
+ 	return GuiComponent::input(config, input);
+@@ -81,6 +81,9 @@ void SliderComponent::render(const Transform4x4f& parentTrans)
+ 
+ void SliderComponent::setValue(float value)
+ {
++	if (mValue == value)
++		return;
++
+ 	mValue = value;
+ 	if(mValue < mMin)
+ 		mValue = mMin;
+@@ -88,6 +91,9 @@ void SliderComponent::setValue(float value)
+ 		mValue = mMax;
+ 
+ 	onValueChanged();
++	
++	if (mValueChanged)
++		mValueChanged(mValue);
+ }
+ 
+ float SliderComponent::getValue()
+diff --git a/es-core/src/components/SliderComponent.h b/es-core/src/components/SliderComponent.h
+index f3ae181fc..cf0f10885 100644
+--- a/es-core/src/components/SliderComponent.h
++++ b/es-core/src/components/SliderComponent.h
+@@ -25,6 +25,8 @@ class SliderComponent : public GuiComponent
+ 	void onSizeChanged() override;
+ 
+ 	virtual std::vector<HelpPrompt> getHelpPrompts() override;
++	
++	inline void setOnValueChanged(const std::function<void(const float&)>& callback) { mValueChanged = callback; }
+ 
+ private:
+ 	void onValueChanged();
+@@ -40,6 +42,8 @@ class SliderComponent : public GuiComponent
+ 	std::string mSuffix;
+ 	std::shared_ptr<Font> mFont;
+ 	std::shared_ptr<TextCache> mValueCache;
++	
++	std::function<void(const float&)> mValueChanged;
+ };
+ 
+ #endif // ES_CORE_COMPONENTS_SLIDER_COMPONENT_H
+
+From e333532299d77c937332f59b40c03321d70bf98d Mon Sep 17 00:00:00 2001
+From: Bluestang <bluestang2006@gmail.com>
+Date: Sat, 6 Feb 2021 21:24:16 -0700
+Subject: [PATCH 3/3] Credits
+
+- Added original authors of the BGM player using SDL2-mixer (Backported by Bluestang2006)
+---
+ CREDITS.md | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/CREDITS.md b/CREDITS.md
+index babde810f..6a699d5f9 100644
+--- a/CREDITS.md
++++ b/CREDITS.md
+@@ -1,6 +1,10 @@
+ Programming
+ 	Alec "Aloshi" Lofquist - http://www.aloshi.com
+ 
++BGM Player using SDL2-mixer
++	Nicolas Adenis-Lamarre - https://batocera.org
++	Fabrice Caruso		   - https://batocera.org
++
+ UI Art & Design
+ 	Nils Bonenberger
+ 
+@@ -30,4 +34,4 @@ Resources
+ =========
+ 
+ Open Sans font
+-	http://www.google.com/fonts/specimen/Open+Sans
+\ No newline at end of file
++	http://www.google.com/fonts/specimen/Open+Sans

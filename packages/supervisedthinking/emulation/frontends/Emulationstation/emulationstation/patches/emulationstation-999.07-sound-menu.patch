@@ -1,0 +1,117 @@
+From e3bc12a92a2beb3cd5648c81829deee896117e2e Mon Sep 17 00:00:00 2001
+From: SupervisedThinking <supervisedthinking@gmail.com>
+Date: Sat, 6 Mar 2021 21:33:15 +0100
+Subject: [PATCH] Gui: remove volume & card options
+
+---
+ es-app/src/guis/GuiMenu.cpp | 88 -------------------------------------
+ 1 file changed, 88 deletions(-)
+
+diff --git a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
+index 6c73308b8..5be5b6a0a 100644
+--- a/es-app/src/guis/GuiMenu.cpp
++++ b/es-app/src/guis/GuiMenu.cpp
+@@ -92,71 +92,8 @@ void GuiMenu::openSoundSettings()
+ {
+ 	auto s = new GuiSettings(mWindow, "SOUND SETTINGS");
+ 
+-	// volume
+-	auto volume = std::make_shared<SliderComponent>(mWindow, 0.f, 100.f, 1.f, "%");
+-	volume->setValue((float)VolumeControl::getInstance()->getVolume());
+-	volume->setOnValueChanged([](const float &newVal) { VolumeControl::getInstance()->setVolume((int)Math::round(newVal)); });
+-	s->addWithLabel("AUDIO VOLUME", volume);
+-	s->addSaveFunc([this, volume] { VolumeControl::getInstance()->setVolume((int)Math::round(volume->getValue())); });
+-		
+-	/*TODO: This is a separate volume slider for the Music Player
+-	auto musicVolume = std::make_shared<SliderComponent>(mWindow, 0.f, 100.f, 1.f, "%");
+-	musicVolume->setValue(Settings::getInstance()->getInt("MusicVolume"));		
+-	musicVolume->setOnValueChanged([](const float &newVal) { Settings::getInstance()->setInt("MusicVolume", (int)round(newVal)); });
+-	s->addWithLabel("MUSIC VOLUME", musicVolume);
+-	*/
+-
+ 	if (UIModeController::getInstance()->isUIModeFull())
+ 	{
+-#if defined(__linux__)
+-		// audio card
+-		auto audio_card = std::make_shared< OptionListComponent<std::string> >(mWindow, "AUDIO CARD", false);
+-		std::vector<std::string> audio_cards;
+-		audio_cards.push_back("default");
+-		audio_cards.push_back("sysdefault");
+-		audio_cards.push_back("dmix");
+-		audio_cards.push_back("hw");
+-		audio_cards.push_back("plughw");
+-		audio_cards.push_back("null");
+-		if (Settings::getInstance()->getString("AudioCard") != "") {
+-			if(std::find(audio_cards.begin(), audio_cards.end(), Settings::getInstance()->getString("AudioCard")) == audio_cards.end()) {
+-				audio_cards.push_back(Settings::getInstance()->getString("AudioCard"));
+-			}
+-		}
+-		for(auto ac = audio_cards.cbegin(); ac != audio_cards.cend(); ac++)
+-			audio_card->add(*ac, *ac, Settings::getInstance()->getString("AudioCard") == *ac);
+-		s->addWithLabel("AUDIO CARD", audio_card);
+-		s->addSaveFunc([audio_card] {
+-			Settings::getInstance()->setString("AudioCard", audio_card->getSelected());
+-			VolumeControl::getInstance()->deinit();
+-			VolumeControl::getInstance()->init();
+-		});
+-
+-		// volume control device
+-		auto vol_dev = std::make_shared< OptionListComponent<std::string> >(mWindow, "AUDIO DEVICE", false);
+-		std::vector<std::string> transitions;
+-		transitions.push_back("PCM");
+-		transitions.push_back("HDMI");
+-		transitions.push_back("Headphone");
+-		transitions.push_back("Speaker");
+-		transitions.push_back("Master");
+-		transitions.push_back("Digital");
+-		transitions.push_back("Analogue");
+-		if (Settings::getInstance()->getString("AudioDevice") != "") {
+-			if(std::find(transitions.begin(), transitions.end(), Settings::getInstance()->getString("AudioDevice")) == transitions.end()) {
+-				transitions.push_back(Settings::getInstance()->getString("AudioDevice"));
+-			}
+-		}
+-		for(auto it = transitions.cbegin(); it != transitions.cend(); it++)
+-			vol_dev->add(*it, *it, Settings::getInstance()->getString("AudioDevice") == *it);
+-		s->addWithLabel("AUDIO DEVICE", vol_dev);
+-		s->addSaveFunc([vol_dev] {
+-			Settings::getInstance()->setString("AudioDevice", vol_dev->getSelected());
+-			VolumeControl::getInstance()->deinit();
+-			VolumeControl::getInstance()->init();
+-		});
+-#endif
+-
+ 		// disable sounds
+ 		auto sounds_enabled = std::make_shared<SwitchComponent>(mWindow);
+ 		sounds_enabled->setState(Settings::getInstance()->getBool("EnableSounds"));
+@@ -190,31 +127,6 @@ void GuiMenu::openSoundSettings()
+ 		video_audio->setState(Settings::getInstance()->getBool("VideoAudio"));
+ 		s->addWithLabel("ENABLE VIDEO AUDIO", video_audio);
+ 		s->addSaveFunc([video_audio] { Settings::getInstance()->setBool("VideoAudio", video_audio->getState()); });
+-
+-#ifdef _RPI_
+-		// OMX player Audio Device
+-		auto omx_audio_dev = std::make_shared< OptionListComponent<std::string> >(mWindow, "OMX PLAYER AUDIO DEVICE", false);
+-		std::vector<std::string> omx_cards;
+-		// RPi Specific  Audio Cards
+-		omx_cards.push_back("local");
+-		omx_cards.push_back("hdmi");
+-		omx_cards.push_back("both");
+-		omx_cards.push_back("alsa");
+-		omx_cards.push_back("alsa:hw:0,0");
+-		omx_cards.push_back("alsa:hw:1,0");
+-		if (Settings::getInstance()->getString("OMXAudioDev") != "") {
+-			if (std::find(omx_cards.begin(), omx_cards.end(), Settings::getInstance()->getString("OMXAudioDev")) == omx_cards.end()) {
+-				omx_cards.push_back(Settings::getInstance()->getString("OMXAudioDev"));
+-			}
+-		}
+-		for (auto it = omx_cards.cbegin(); it != omx_cards.cend(); it++)
+-			omx_audio_dev->add(*it, *it, Settings::getInstance()->getString("OMXAudioDev") == *it);
+-		s->addWithLabel("OMX PLAYER AUDIO DEVICE", omx_audio_dev);
+-		s->addSaveFunc([omx_audio_dev] {
+-			if (Settings::getInstance()->getString("OMXAudioDev") != omx_audio_dev->getSelected())
+-				Settings::getInstance()->setString("OMXAudioDev", omx_audio_dev->getSelected());
+-		});
+-#endif
+ 	}
+ 
+ 	mWindow->pushGui(s);

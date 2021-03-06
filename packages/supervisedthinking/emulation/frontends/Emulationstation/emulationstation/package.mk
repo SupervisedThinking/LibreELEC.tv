@@ -6,7 +6,7 @@ PKG_VERSION="be9e0f323ba67b8b18161397a0c739345d4d1936" #v2.9.4
 PKG_LICENSE="ES"
 PKG_SITE="https://github.com/RetroPie/EmulationStation"
 PKG_URL="https://github.com/RetroPie/EmulationStation.git"
-PKG_DEPENDS_TARGET="toolchain linux glibc systemd dbus openssl zlib libpng alsa-lib sdl2 freetype curl freeimage bzip2 vlc carbon-es-theme pixel-es-theme simple-dark-es-theme"
+PKG_DEPENDS_TARGET="toolchain linux glibc systemd dbus openssl zlib libpng alsa-lib sdl2 sdl2_mixer freetype curl freeimage bzip2 vlc carbon-es-theme pixel-es-theme simple-dark-es-theme"
 PKG_LONGDESC="A Fork of Emulation Station which is a flexible emulator front-end supporting keyboardless navigation and custom system themes."
 GET_HANDLER_SUPPORT="git"
 PKG_GIT_CLONE_BRANCH="stable"
@@ -43,6 +43,7 @@ post_makeinstall_target() {
   # Create directories
   mkdir -p ${INSTALL}/etc/emulationstation
   mkdir -p ${INSTALL}/usr/config/emulationstation
+  mkdir -p ${INSTALL}/usr/config/emulationstation/music
   mkdir -p ${INSTALL}/usr/lib/tmpfiles.d
 
   # Create symlinks for themes & config files
@@ -55,6 +56,9 @@ post_makeinstall_target() {
   # Install resources
   cp -r ${PKG_DIR}/files/*     ${INSTALL}/usr/config/emulationstation/
   cp -a ${PKG_BUILD}/resources ${INSTALL}/usr/config/emulationstation/
+
+  # Create music folder
+  echo "Place your background music .mp3 & .ogg files here!" > ${INSTALL}/usr/config/emulationstation/music/readme.txt
 
   # Install ES config files
   cp ${PKG_DIR}/config/es_input.cfg          ${INSTALL}/usr/config/emulationstation/

@@ -15,11 +15,14 @@
 
 | Project | Device | SoC / CPU | SBC | Build tested | Run tested | State | Known issues |
 | ------ | ------- | --------- | --- | ------------ | ---------- | ----- | ------------ |
-| Amlogic | AMLG12B | A311D | VIM3 | x | x | alpha | audio & videodecoder quirks, low Mesa 3D performance |
-| Amlogic | AMLGX | S905X | VIM1 | x | x | alpha | audio & videodecoder quirks, low Mesa 3D performance |
+| Amlogic | AMLG12B | A311D | VIM3 | x | x | alpha | audio & videodecoder quirks*, low Mesa 3D performance** |
+| Amlogic | AMLGX | S905X | VIM1 | x | x | alpha | audio & videodecoder quirks*, low Mesa 3D performance** |
 | Generic | - | AMD & Intel | - | x | x | stable | ? |
-| Rockchip | RK3399 | RK3399 | ROCKPro64 | x | x | beta stable | low Mesa 3D performance |
+| Rockchip | RK3399 | RK3399 | ROCKPro64 | x | x | beta stable | low Mesa 3D performance** |
 | RPi | RPi4 | bcm2711 | RPi4 | x | - | ? | ? |
+
+*Known issue of the mainline Linux kernel
+**Known issue of the Mesa 3D panfrost driver
 
 ---
 **Basics**
@@ -202,7 +205,7 @@
 ---
 **Builds systems**
 
-I uses VirtualBox to run a Linux Mint 20.1 Mate VM as building system and a Thinkpad X220 with Linux Mint 20.1 as well. So this distribution should be suitable for you too. For further information see [LibreELEC Wiki / Compile](https://wiki.libreelec.tv/compile).
+You can run a VirtualBox Linux Mint 20.1 Mate VM or a Thinkpad X220 with Linux Mint 20.1 as well as build system. So this distribution should be suitable for you too. For further information see [LibreELEC Wiki / Compile](https://wiki.libreelec.tv/compile).
 
 ---
 **Build dependencies**

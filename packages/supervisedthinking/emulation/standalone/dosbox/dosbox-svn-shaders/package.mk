@@ -13,5 +13,9 @@ PKG_TOOLCHAIN="manual"
 
 makeinstall_target() {
   mkdir -p ${INSTALL}/usr/config/dosbox/glshaders
-    cp -rv crt interpolation xbr ${INSTALL}/usr/config/dosbox/glshaders/
+  mkdir -p ${INSTALL}/usr/share/dosbox/glshaders
+    cp -rv crt interpolation xbr ${INSTALL}/usr/share/dosbox/glshaders/
+    ln -sf /usr/share/dosbox/glshaders/crt           ${INSTALL}/usr/config/dosbox/glshaders/
+    ln -sf /usr/share/dosbox/glshaders/interpolation ${INSTALL}/usr/config/dosbox/glshaders/
+    ln -sf /usr/share/dosbox/glshaders/xbr           ${INSTALL}/usr/config/dosbox/glshaders/
 }

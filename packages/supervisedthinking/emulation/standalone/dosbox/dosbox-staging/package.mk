@@ -48,6 +48,7 @@ post_makeinstall_target() {
   # Adjust config files for OpenGLES builds
   if [ "${OPENGL_SUPPORT}" = "no" ]; then
     sed -e "s/output           = opengl/output           = texture/" -i ${INSTALL}/usr/config/dosbox/dosbox-staging*.conf
+    sed -e "/#           glshader:.*/,+16d"                          -i ${INSTALL}/usr/config/dosbox/dosbox-staging*.conf
     sed -e "/glshader           = crt.*/d"                           -i ${INSTALL}/usr/config/dosbox/dosbox-staging*.conf
   fi
 

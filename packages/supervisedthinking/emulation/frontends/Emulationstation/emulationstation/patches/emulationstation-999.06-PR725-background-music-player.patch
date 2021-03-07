@@ -1,7 +1,7 @@
 From 7768e7ea4677732a5a728a73d6dc1ffc68067a83 Mon Sep 17 00:00:00 2001
 From: Bluestang <bluestang2006@gmail.com>
 Date: Sat, 6 Feb 2021 21:13:45 -0700
-Subject: [PATCH 1/3] Background Music Player
+Subject: [PATCH 1/4] Background Music Player
 
 - Add a background music player using SDL2 mixer
 - Backport various fixes
@@ -1351,7 +1351,7 @@ index 43e68453c..4de996170 100644
 From 48d394d8f344792d890bd2716e9b5e58a32b036b Mon Sep 17 00:00:00 2001
 From: Bluestang <bluestang2006@gmail.com>
 Date: Sat, 6 Feb 2021 21:19:19 -0700
-Subject: [PATCH 2/3] Improved volume slider
+Subject: [PATCH 2/4] Improved volume slider
 
 - Volume updates as slider moves
 ---
@@ -1551,10 +1551,99 @@ index f3ae181fc..cf0f10885 100644
  
  #endif // ES_CORE_COMPONENTS_SLIDER_COMPONENT_H
 
-From e333532299d77c937332f59b40c03321d70bf98d Mon Sep 17 00:00:00 2001
+From d95ebf277a03b1e13c9615cfce00316b9f3a3cac Mon Sep 17 00:00:00 2001
+From: Bluestang <bluestang2006@gmail.com>
+Date: Sat, 6 Mar 2021 21:53:51 -0700
+Subject: [PATCH 3/4] Add music volume slider
+
+- Separate slider that controls the music volume
+---
+ es-app/src/guis/GuiMenu.cpp  |  4 ++--
+ es-core/src/AudioManager.cpp | 20 +++++++++++---------
+ 2 files changed, 13 insertions(+), 11 deletions(-)
+
+diff --git a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
+index bf46394e1..8b0f61d21 100644
+--- a/es-app/src/guis/GuiMenu.cpp
++++ b/es-app/src/guis/GuiMenu.cpp
+@@ -102,12 +102,12 @@ void GuiMenu::openSoundSettings()
+ 	s->addWithLabel("AUDIO VOLUME", volume);
+ 	s->addSaveFunc([this, volume] { VolumeControl::getInstance()->setVolume((int)Math::round(volume->getValue())); });
+ 		
+-	/*TODO: This is a separate volume slider for the Music Player
++	// music volume
+ 	auto musicVolume = std::make_shared<SliderComponent>(mWindow, 0.f, 100.f, 1.f, "%");
+ 	musicVolume->setValue(Settings::getInstance()->getInt("MusicVolume"));		
+ 	musicVolume->setOnValueChanged([](const float &newVal) { Settings::getInstance()->setInt("MusicVolume", (int)round(newVal)); });
+ 	s->addWithLabel("MUSIC VOLUME", musicVolume);
+-	*/
++	s->addSaveFunc([this, musicVolume] { Settings::getInstance()->setInt("MusicVolume", (int)round(musicVolume->getValue())); });
+ 
+ 	if (UIModeController::getInstance()->isUIModeFull())
+ 	{
+diff --git a/es-core/src/AudioManager.cpp b/es-core/src/AudioManager.cpp
+index e0fef1e4d..dd1273456 100644
+--- a/es-core/src/AudioManager.cpp
++++ b/es-core/src/AudioManager.cpp
+@@ -11,7 +11,7 @@
+ AudioManager* AudioManager::sInstance = NULL;
+ std::vector<std::shared_ptr<Sound>> AudioManager::sSoundVector;
+ 
+-AudioManager::AudioManager() : mInitialized(false), mCurrentMusic(nullptr), mMusicVolume(MIX_MAX_VOLUME)
++AudioManager::AudioManager() : mInitialized(false), mCurrentMusic(nullptr), mMusicVolume(Settings::getInstance()->getInt("MusicVolume"))
+ {
+ 	init();
+ }
+@@ -42,8 +42,6 @@ void AudioManager::init()
+ {
+ 	if(mInitialized)
+ 		return;
+-		
+-	mMusicVolume = 0;
+ 
+ 	if(SDL_InitSubSystem(SDL_INIT_AUDIO) != 0)
+ 	{
+@@ -252,18 +250,21 @@ void AudioManager::update(int deltaTime)
+ 	if(sInstance == nullptr || !sInstance->mInitialized || !Settings::getInstance()->getBool("EnableMusic"))
+ 		return;
+ 
++	Mix_VolumeMusic(Settings::getInstance()->getInt("MusicVolume"));
++
++	/* TODO: This is part of unimplemented feature that would
++	 * lower the music volume if a video snap was playing
++
+ 	float deltaVol = deltaTime / 8.0f;
+ 
+-//	#define MINVOL 5
++	//	#define MINVOL 5
+ 
+ 	int maxVol = getMaxMusicVolume();
+ 	int minVol = maxVol / 20;
+ 	if(maxVol > 0 && minVol == 0)
+ 		minVol = 1;
+ 
+-	/* TODO: This is part of unimplemented feature that would
+-	 * lower the music volume if a video snap was playing
+-	 * if (sInstance->mMusicVolume > minVol)
++	if (sInstance->mMusicVolume > minVol)
+ 	{
+ 		sInstance->mMusicVolume -= deltaVol;
+ 		if (sInstance->mMusicVolume < minVol)
+@@ -278,5 +279,6 @@ void AudioManager::update(int deltaTime)
+ 			sInstance->mMusicVolume = maxVol;
+ 
+ 		Mix_VolumeMusic((int)sInstance->mMusicVolume);
+-	}*/
+-}
++	}
++	*/
++}
+\ No newline at end of file
+
+From 039d04b07b71f3a2803d658c1d72a33e78085b55 Mon Sep 17 00:00:00 2001
 From: Bluestang <bluestang2006@gmail.com>
 Date: Sat, 6 Feb 2021 21:24:16 -0700
-Subject: [PATCH 3/3] Credits
+Subject: [PATCH 4/4] Credits
 
 - Added original authors of the BGM player using SDL2-mixer (Backported by Bluestang2006)
 ---

@@ -1,17 +1,17 @@
-From fa09e9697e7e6ac09b58d374e7a6eff6b44e26dd Mon Sep 17 00:00:00 2001
+From 7388162cd6c639bd271aa57e73354ad9422a5163 Mon Sep 17 00:00:00 2001
 From: SupervisedThinking <supervisedthinking@gmail.com>
-Date: Sat, 6 Mar 2021 21:39:19 +0100
-Subject: [PATCH] Audiomanager: adjust music folder paths
+Date: Sun, 7 Mar 2021 12:37:46 +0100
+Subject: [PATCH] Audiomanager: adjust music folder paths for LibreELEC-RR
 
 ---
  es-core/src/AudioManager.cpp | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/es-core/src/AudioManager.cpp b/es-core/src/AudioManager.cpp
-index e0fef1e4d..e81e03ba9 100644
+index dd1273456..49457696f 100644
 --- a/es-core/src/AudioManager.cpp
 +++ b/es-core/src/AudioManager.cpp
-@@ -152,13 +152,13 @@ void AudioManager::playRandomMusic(bool continueIfPlaying)
+@@ -150,13 +150,13 @@ void AudioManager::playRandomMusic(bool continueIfPlaying)
  
  	std::vector<std::string> musics;
  	

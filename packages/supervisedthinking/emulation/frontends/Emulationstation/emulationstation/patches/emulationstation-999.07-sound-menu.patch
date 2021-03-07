@@ -1,17 +1,17 @@
-From e3bc12a92a2beb3cd5648c81829deee896117e2e Mon Sep 17 00:00:00 2001
+From 208e145fe4b50b8936a909a948621f35c149a08d Mon Sep 17 00:00:00 2001
 From: SupervisedThinking <supervisedthinking@gmail.com>
-Date: Sat, 6 Mar 2021 21:33:15 +0100
+Date: Sun, 7 Mar 2021 12:33:56 +0100
 Subject: [PATCH] Gui: remove volume & card options
 
 ---
- es-app/src/guis/GuiMenu.cpp | 88 -------------------------------------
- 1 file changed, 88 deletions(-)
+ es-app/src/guis/GuiMenu.cpp | 81 -------------------------------------
+ 1 file changed, 81 deletions(-)
 
 diff --git a/es-app/src/guis/GuiMenu.cpp b/es-app/src/guis/GuiMenu.cpp
-index 6c73308b8..5be5b6a0a 100644
+index dd9c1fd72..f51f4c022 100644
 --- a/es-app/src/guis/GuiMenu.cpp
 +++ b/es-app/src/guis/GuiMenu.cpp
-@@ -92,71 +92,8 @@ void GuiMenu::openSoundSettings()
+@@ -92,13 +92,6 @@ void GuiMenu::openSoundSettings()
  {
  	auto s = new GuiSettings(mWindow, "SOUND SETTINGS");
  
@@ -22,13 +22,11 @@ index 6c73308b8..5be5b6a0a 100644
 -	s->addWithLabel("AUDIO VOLUME", volume);
 -	s->addSaveFunc([this, volume] { VolumeControl::getInstance()->setVolume((int)Math::round(volume->getValue())); });
 -		
--	/*TODO: This is a separate volume slider for the Music Player
--	auto musicVolume = std::make_shared<SliderComponent>(mWindow, 0.f, 100.f, 1.f, "%");
--	musicVolume->setValue(Settings::getInstance()->getInt("MusicVolume"));		
--	musicVolume->setOnValueChanged([](const float &newVal) { Settings::getInstance()->setInt("MusicVolume", (int)round(newVal)); });
--	s->addWithLabel("MUSIC VOLUME", musicVolume);
--	*/
--
+ 	// music volume
+ 	auto musicVolume = std::make_shared<SliderComponent>(mWindow, 0.f, 100.f, 1.f, "%");
+ 	musicVolume->setValue(Settings::getInstance()->getInt("MusicVolume"));		
+@@ -108,55 +101,6 @@ void GuiMenu::openSoundSettings()
+ 
  	if (UIModeController::getInstance()->isUIModeFull())
  	{
 -#if defined(__linux__)
@@ -83,7 +81,7 @@ index 6c73308b8..5be5b6a0a 100644
  		// disable sounds
  		auto sounds_enabled = std::make_shared<SwitchComponent>(mWindow);
  		sounds_enabled->setState(Settings::getInstance()->getBool("EnableSounds"));
-@@ -190,31 +127,6 @@ void GuiMenu::openSoundSettings()
+@@ -190,31 +134,6 @@ void GuiMenu::openSoundSettings()
  		video_audio->setState(Settings::getInstance()->getBool("VideoAudio"));
  		s->addWithLabel("ENABLE VIDEO AUDIO", video_audio);
  		s->addSaveFunc([video_audio] { Settings::getInstance()->setBool("VideoAudio", video_audio->getState()); });

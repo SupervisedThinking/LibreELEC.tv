@@ -98,13 +98,13 @@
 | [nestopia](https://github.com/libretro/nestopia) | Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/nestopia_ue/) |
 | [opera](https://github.com/libretro/opera-libretro) | 3DO Interactive Multiplayer | [Libretro Docs](https://docs.libretro.com/library/opera/) |
 | [pcsx-rearmed](https://github.com/libretro/pcsx_rearmed) | Sony Playstation | [Libretro Docs](https://docs.libretro.com/library/pcsx_rearmed/) |
-| [prboom](https://github.com/libretro/libretro-prboom) | Doom engine | [Libretro Docs](https://docs.libretro.com/library/prboom/) |
+| [prboom](https://github.com/libretro/libretro-prboom) | id Tech 3 Engine | [Libretro Docs](https://docs.libretro.com/library/prboom/) |
 | [prosystem](https://github.com/libretro/prosystem-libretro) | Atari 7800 | [Libretro Docs](https://docs.libretro.com/library/prosystem/) |
 | [sameboy](https://github.com/libretro/SameBoy) | Nintendo Game Boy (Color) | [Libretro Docs](https://docs.libretro.com/library/sameboy/) |
 | [scummvm](https://github.com/libretro/scummvm) | Engine for LucasArts adventure games | [Libretro Docs](https://docs.libretro.com/library/scummvm/) |
 | [snes9x](https://github.com/libretro/snes9x) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/snes9x/) |
 | [stella](https://github.com/libretro/stella-libretro) | Atari 2600 | [Libretro Docs](https://docs.libretro.com/library/stella/) |
-| [tyrquake](https://github.com/libretro/tyrquake) | Quake engine | [Libretro Docs](https://docs.libretro.com/library/tyrquake/) |
+| [tyrquake](https://github.com/libretro/tyrquake) | id Tech Engine | [Libretro Docs](https://docs.libretro.com/library/tyrquake/) |
 | [virtualjaguar](https://github.com/libretro/virtualjaguar-libretro) | Atari Jaguar | [Libretro Docs](https://docs.libretro.com/library/virtual_jaguar/) |
 
 | Streaming-Client | System | Documentation & Guide |
@@ -139,6 +139,7 @@
 | [boom3](https://github.com/libretro/boom3) | Doom3 Engine | [FAQ](https://github.com/dhewm/dhewm3/wiki/FAQ) |
 | [citra](https://github.com/libretro/citra) | Nintendo 3DS | [Libretro Docs](https://docs.libretro.com/library/citra/) |
 | [dolphin](https://github.com/libretro/dolphin) | Nintendo Wii / Gamecube | [Libretro Docs](https://docs.libretro.com/library/dolphin/) |
+| [duckstation](https://github.com/libretro/duckstation) | Sony Playstation | [Wiki](https://www.duckstation.org/wiki/Main_Page) |
 | [kronos](https://github.com/libretro/yabause/tree/kronos) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/yabause/) |
 | [mame2016](https://github.com/libretro/mame2016-libretro) | Multiple Arcade Machine Emulator - Romset 0.174 | [Libretro Docs](https://docs.libretro.com/guides/softwarelist-getting-started/) |
 | [mesen](https://github.com/SourMesen/Mesen) | Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/mesen/) |

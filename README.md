@@ -83,7 +83,7 @@
 | [chailove](https://github.com/libretro/libretro-chailove) | 2D Game Framework with ChaiScript | [Libretro Docs](https://docs.libretro.com/library/chailove/) |
 | [desmume](https://github.com/libretro/desmume) | Nintendo DS | [Libretro Docs](https://docs.libretro.com/library/desmume/) |
 | [dosbox-pure](https://github.com/libretro/dosbox-pure) | DOS | [Libretro Docs](https://docs.libretro.com/library/dosbox/) |
-| [ecwolf](https://github.com/libretro/ecwolf) | Wolfenstein 3D engine | [Libretro Docs](https://www.libretro.com/index.php/ecwolf-wolfenstein-3d-libretro-core-wip-available-today-on-windowsmaclinuxandroid/) |
+| [ecwolf](https://github.com/libretro/ecwolf) | Wolf3D (id Tech Engine) | [Libretro Docs](https://www.libretro.com/index.php/ecwolf-wolfenstein-3d-libretro-core-wip-available-today-on-windowsmaclinuxandroid/) |
 | [fbneo](https://github.com/libretro/fbneo) | Multiple Arcade Machine Emulator -  Romset| [Libretro Docs](https://docs.libretro.com/library/fbneo/) |
 | [fceumm](https://github.com/libretro/libretro-fceumm) | Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/fceumm/) |
 | [flycast](https://github.com/libretro/flycast) | Sega Dreamcast | [Libretro Docs](https://docs.libretro.com/library/flycast/) |
@@ -98,13 +98,13 @@
 | [nestopia](https://github.com/libretro/nestopia) | Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/nestopia_ue/) |
 | [opera](https://github.com/libretro/opera-libretro) | 3DO Interactive Multiplayer | [Libretro Docs](https://docs.libretro.com/library/opera/) |
 | [pcsx-rearmed](https://github.com/libretro/pcsx_rearmed) | Sony Playstation | [Libretro Docs](https://docs.libretro.com/library/pcsx_rearmed/) |
-| [prboom](https://github.com/libretro/libretro-prboom) | id Tech 3 Engine | [Libretro Docs](https://docs.libretro.com/library/prboom/) |
+| [prboom](https://github.com/libretro/libretro-prboom) | Doom (id Tech Engine) | [Libretro Docs](https://docs.libretro.com/library/prboom/) |
 | [prosystem](https://github.com/libretro/prosystem-libretro) | Atari 7800 | [Libretro Docs](https://docs.libretro.com/library/prosystem/) |
 | [sameboy](https://github.com/libretro/SameBoy) | Nintendo Game Boy (Color) | [Libretro Docs](https://docs.libretro.com/library/sameboy/) |
 | [scummvm](https://github.com/libretro/scummvm) | Engine for LucasArts adventure games | [Libretro Docs](https://docs.libretro.com/library/scummvm/) |
 | [snes9x](https://github.com/libretro/snes9x) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/snes9x/) |
 | [stella](https://github.com/libretro/stella-libretro) | Atari 2600 | [Libretro Docs](https://docs.libretro.com/library/stella/) |
-| [tyrquake](https://github.com/libretro/tyrquake) | id Tech Engine | [Libretro Docs](https://docs.libretro.com/library/tyrquake/) |
+| [tyrquake](https://github.com/libretro/tyrquake) | Quake (id Tech 2 Engine) | [Libretro Docs](https://docs.libretro.com/library/tyrquake/) |
 | [virtualjaguar](https://github.com/libretro/virtualjaguar-libretro) | Atari Jaguar | [Libretro Docs](https://docs.libretro.com/library/virtual_jaguar/) |
 
 | Streaming-Client | System | Documentation & Guide |
@@ -136,7 +136,7 @@
 | [beetle-saturn](https://github.com/libretro/beetle-saturn-libretro) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/beetle_saturn/) |
 | [bsnes](https://github.com/libretro/bsnes) | Nintendo Super Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/bsnes_performance/) |
 | [bsnes-mercury](https://github.com/libretro/bsnes-mercury) | Nintendo Super Nintendo Entertainment System - balanced & accuracy | [Libretro Docs](https://docs.libretro.com/library/bsnes_mercury_balanced/) |
-| [boom3](https://github.com/libretro/boom3) | Doom3 Engine | [FAQ](https://github.com/dhewm/dhewm3/wiki/FAQ) |
+| [boom3](https://github.com/libretro/boom3) | Doom3 (id Tech 4 Engine) | [FAQ](https://github.com/dhewm/dhewm3/wiki/FAQ) |
 | [citra](https://github.com/libretro/citra) | Nintendo 3DS | [Libretro Docs](https://docs.libretro.com/library/citra/) |
 | [dolphin](https://github.com/libretro/dolphin) | Nintendo Wii / Gamecube | [Libretro Docs](https://docs.libretro.com/library/dolphin/) |
 | [duckstation](https://github.com/libretro/duckstation) | Sony Playstation | [Wiki](https://www.duckstation.org/wiki/Main_Page) |
@@ -147,8 +147,8 @@
 | [parallel-n64](https://github.com/libretro/parallel-n64) | Nintendo N64 | [Libretro Docs](https://docs.libretro.com/library/mupen64plus/) |
 | [ppsspp](https://github.com/hrydgard/ppsspp) | Sony PSP | [Libretro Docs](https://docs.libretro.com/library/ppsspp/) |
 | [uae](https://github.com/libretro/libretro-uae) | Commodore Amiga | [Libretro Docs](https://docs.libretro.com/library/puae/) |
-| [vitaquake2](https://github.com/libretro/vitaquake2) | id Tech 2 Engine | [Libretro Docs](https://www.libretro.com/index.php/vitaquake-ii-libretro-core-wip-available-soon-high-refresh-rates-in-libretro-core-games/) |
-| [vitaquake3](https://github.com/libretro/vitaquake3) | id Tech 3 Engine | [Libretro Docs](https://www.libretro.com/index.php/quake-3-core-ported-to-libretroretroarch-with-working-online-multiplayer-more/) |
+| [vitaquake2](https://github.com/libretro/vitaquake2) | Quake2 (id Tech 2 Engine) | [Libretro Docs](https://www.libretro.com/index.php/vitaquake-ii-libretro-core-wip-available-soon-high-refresh-rates-in-libretro-core-games/) |
+| [vitaquake3](https://github.com/libretro/vitaquake3) | Quake3 (id Tech 3 Engine) | [Libretro Docs](https://www.libretro.com/index.php/quake-3-core-ported-to-libretroretroarch-with-working-online-multiplayer-more/) |
 | [yabasanshiro](https://github.com/libretro/yabause/tree/yabasanshiro) | Sega Saturn | [Libretro Docs](https://docs.libretro.com/library/yabause/) |
 
 ---

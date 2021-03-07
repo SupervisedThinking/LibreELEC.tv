@@ -1,0 +1,92 @@
+From f6af69e32a5e44f25b4b7462eaeca33b8ee7df54 Mon Sep 17 00:00:00 2001
+From: Patryk Obara <dreamer.tan@gmail.com>
+Date: Sun, 7 Mar 2021 00:44:57 +0100
+Subject: [PATCH] Remove "-git" suffix from .conf file in release
+
+Before this change, we were using "dosbox-staging-git.conf" for all
+builds from master, and then each release branch had a commit changing
+it to "dosbox-staging.conf" for end-users. We were expecting that users
+will be interested in release branches only and we'll keep moving
+forward on master branch.
+
+After moving to Meson buildsystem, we have now have proper place to
+define build type - and we can generate appropriate suffix for .conf
+file depending on that.
+
+It does not work for Visual Studio buildsystem, but we're distributing
+these builds ourselves, so simple adjustment on CI is enough (this tiny
+hack will disappear once VS buildsystem will be replaced with Meson
+anyway).
+
+Pros of implementing this change:
+
+- It's easier to test Linux and macOS builds before the release
+- Removes another step from our release checklist (!)
+- Makes life easier for packagers, who want to deliver pre-release
+  builds (e.g. preparing new package or providing weekly test builds)
+
+Cons of implementing this change:
+
+- Users testing our official snapshot builds might end up with broken
+  default .conf file for next stable release.
+---
+ .github/workflows/windows.yml | 5 ++++-
+ meson.build                   | 6 ++++++
+ src/config.h.in               | 4 ++--
+ 3 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/.github/workflows/windows.yml b/.github/workflows/windows.yml
+index f55aefe8e..11a010e07 100644
+--- a/.github/workflows/windows.yml
++++ b/.github/workflows/windows.yml
+@@ -108,14 +108,17 @@ jobs:
+         shell: pwsh
+         run:   .\scripts\log-env.ps1
+ 
+-      - name:  Inject version string
++      - name:  Adjust config.h
+         shell: bash
+         run: |
+           set -x
+           git fetch --prune --unshallow
+           export VERSION=$(git describe --abbrev=4)
++          # inject version based on vcs
+           sed -i "s|DOSBOX_DETAILED_VERSION \"git\"|DOSBOX_DETAILED_VERSION \"$VERSION\"|" src/platform/visualc/config.h
+           echo "VERSION=$VERSION" >> $GITHUB_ENV
++          # overwrite .conf file branding for release build
++          sed -i "s|CONF_BRAND \"staging-git\"|CONF_BRAND \"staging\"|" src/platform/visualc/config.h
+ 
+       - name:  Build
+         shell: pwsh
+diff --git a/meson.build b/meson.build
+index 745a7d636..5a76584bc 100644
+--- a/meson.build
++++ b/meson.build
+@@ -35,6 +35,12 @@ endif
+ conf_data = configuration_data()
+ conf_data.set('version', meson.project_version())
+ 
++if get_option('buildtype').startswith('debug')
++  conf_data.set('conf_branding', 'staging-git')
++else
++  conf_data.set('conf_branding', 'staging')
++endif
++
+ os_family_name = {
+   'linux'     : 'LINUX',
+   'windows'   : 'WIN32',
+diff --git a/src/config.h.in b/src/config.h.in
+index 0e9c04b58..c0ea73ccd 100644
+--- a/src/config.h.in
++++ b/src/config.h.in
+@@ -27,8 +27,8 @@
+ // Emulator version
+ #define VERSION "@version@"
+ 
+-// TODO make it a suffix, configurable via meson
+-#define CONF_BRAND "staging-git"
++// Suffix appended to the default .conf file name
++#define CONF_BRAND "@conf_branding@"
+ 
+ /* Operating System
+  */

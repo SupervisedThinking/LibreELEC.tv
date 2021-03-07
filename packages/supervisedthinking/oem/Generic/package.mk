@@ -38,6 +38,7 @@ OEM_EMULATORS_LIBRETRO_GENERIC=" \
   desmume \
   dolphin-libretro \
   dosbox-pure \
+  duckstation \
   ecwolf \
   fbneo \
   fceumm \

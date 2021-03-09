@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="chailove"
-PKG_VERSION="8db1eec22c0296f52f0009f345e02afc637dc3ca" # v1.0.0
+PKG_VERSION="81002c59d3ffbafbb8f6594d2db13bb611781191" # v1.1.0
 PKG_LICENSE="MIT"
 PKG_SITE="https://github.com/libretro/libretro-chailove"
 PKG_URL="https://github.com/libretro/libretro-chailove.git"

@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="mame2003-plus"
-PKG_VERSION="71a461c9307aa22e684e5b2a9cbd0967976c107a"
-PKG_SHA256="dd2a234452ae0b0798593fb5525b333070cf9591a2f0e2b4a7c80261d5aaecc6"
+PKG_VERSION="ecca91d43fea4fea945efa9857eb48cb3ff59f25"
+PKG_SHA256="d0454912d0c2c8a12f1d1e22d2dce713f169e90dcbe880a4eabe3cb00477d531"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/libretro/mame2003-plus-libretro"
 PKG_URL="https://github.com/libretro/mame2003-plus-libretro/archive/${PKG_VERSION}.tar.gz"
@@ -19,17 +19,8 @@ PKG_MAKE_OPTS_TARGET="GIT_VERSION=${PKG_VERSION:0:7}"
 
 pre_configure_target() {
   if [ "${ARCH}" = "arm" ]; then
-    case ${DEVICE} in
-      RPi2)
-        PKG_MAKE_OPTS_TARGET+=" platform=rpi2"
-        ;;
-      *)
-        PKG_MAKE_OPTS_TARGET+=" platform=armv"
-        ;;
-    esac
+    PKG_MAKE_OPTS_TARGET+=" platform=armv"
   fi
-  # Fix linking
-  export LD="${CC}"
 }
 
 pre_make_target() {

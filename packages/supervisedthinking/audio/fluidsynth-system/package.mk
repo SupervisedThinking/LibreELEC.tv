@@ -7,7 +7,7 @@ PKG_SHA256="365a1c0982efcaff724a7b05d26ce1db76bc7435aa4c239df61cbc87f04b6c90"
 PKG_LICENSE="LGPL-2.1-or-later"
 PKG_SITE="http://fluidsynth.org/"
 PKG_URL="https://github.com/FluidSynth/fluidsynth/archive/v${PKG_VERSION}.tar.gz"
-PKG_DEPENDS_TARGET="toolchain glib soundfont-generaluser soundfont-musescore_general libsndfile-system"
+PKG_DEPENDS_TARGET="toolchain glib glibc dbus alsa-lib pulseaudio systemd sdl2 libsndfile-system soundfont-generaluser soundfont-musescore_general"
 PKG_LONGDESC="FluidSynth is a software real-time synthesizer based on the Soundfont specifications."
 PKG_BUILD_FLAGS="+pic"
 PKG_DEPENDS_CONFIG="libsndfile-system"
@@ -15,9 +15,7 @@ PKG_DEPENDS_CONFIG="libsndfile-system"
 pre_configure_target() {
   PKG_CMAKE_OPTS_TARGET="-D LIB_SUFFIX= \
                          -D enable-readline=0 \
-                         -D enable-oss=0 \
-                         -D enable-pulseaudio=1 \
-                         -D enable-libsndfile=1"
+                         -D enable-oss=0"
 }
 
 post_makeinstall_target() {

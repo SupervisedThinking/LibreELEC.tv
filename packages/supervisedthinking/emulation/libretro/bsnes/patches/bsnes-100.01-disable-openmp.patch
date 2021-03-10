@@ -1,5 +1,5 @@
 From f221db8b1c5ed0d3057ab528e73e7df421bb6082 Mon Sep 17 00:00:00 2001
-From: ThinkSupervised <supervisedthinking@gmail.com>
+From: SupervisedThinking <supervisedthinking@gmail.com>
 Date: Tue, 8 Oct 2019 18:04:40 +0200
 Subject: [PATCH] GNUmakefile: disable openmp
 

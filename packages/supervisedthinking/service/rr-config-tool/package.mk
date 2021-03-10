@@ -15,7 +15,7 @@ PKG_TOOLCHAIN="manual"
 PKG_IS_ADDON="yes"
 PKG_ADDON_NAME="RR Configuration"
 PKG_ADDON_TYPE="xbmc.service.library"
-PKG_MAINTAINER="ThinkSupervised"
+PKG_MAINTAINER="SupervisedThinking"
 
 makeinstall_target() {
   # Create directories

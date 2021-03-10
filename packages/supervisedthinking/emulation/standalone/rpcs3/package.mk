@@ -2,7 +2,7 @@
 # Copyright (C) 2019-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="rpcs3"
-PKG_VERSION="9cbe77904def228097cb5488a25a046e83aa7686" # v0.0.15+
+PKG_VERSION="cbd895a29c86f4e044ca00d55dff12e3705897ee" # v0.0.15+
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://rpcs3.net"
@@ -12,18 +12,23 @@ PKG_LONGDESC="RPCS3 is an experimental open-source Sony PlayStation 3 emulator a
 GET_HANDLER_SUPPORT="git"
 PKG_BUILD_FLAGS="+lto"
 
-PKG_CMAKE_OPTS_TARGET="-D USE_NATIVE_INSTRUCTIONS=OFF \
-                       -D BUILD_LLVM_SUBMODULE=ON \
-                       -D CMAKE_C_FLAGS="${CFLAGS}" \
-                       -D CMAKE_CXX_FLAGS="${CXXFLAGS}" \
-                       -D LLVM_TARGET_ARCH="${TARGET_ARCH}" \
-                       -D LLVM_TABLEGEN=${TOOLCHAIN}/bin/llvm-tblgen \
-                       -D USE_DISCORD_RPC=OFF \
-                       -D CMAKE_SKIP_RPATH=ON \
-                       -D USE_SYSTEM_FFMPEG=ON \
-                       -D USE_SYSTEM_LIBPNG=ON \
-                       -D USE_SYSTEM_ZLIB=ON \
-                       -D USE_SYSTEM_CURL=ON"
+pre_configure_target() {
+  PKG_CMAKE_OPTS_TARGET="-D USE_NATIVE_INSTRUCTIONS=OFF \
+                         -D BUILD_LLVM_SUBMODULE=ON \
+                         -D CMAKE_C_FLAGS="${CFLAGS}" \
+                         -D CMAKE_CXX_FLAGS="${CXXFLAGS}" \
+                         -D LLVM_TARGET_ARCH="${TARGET_ARCH}" \
+                         -D LLVM_TABLEGEN=${TOOLCHAIN}/bin/llvm-tblgen \
+                         -D USE_DISCORD_RPC=OFF \
+                         -D CMAKE_SKIP_RPATH=ON \
+                         -D USE_SYSTEM_FFMPEG=ON \
+                         -D USE_SYSTEM_LIBPNG=ON \
+                         -D USE_SYSTEM_ZLIB=ON \
+                         -D USE_SYSTEM_CURL=ON"
+
+  # fix missing llvm/test subdir
+  sed -e "/add_subdirectory(test)/d" -i ${PKG_BUILD}/llvm/CMakeLists.txt
+}
 
 pre_make_target() {
   # fix cross compiling

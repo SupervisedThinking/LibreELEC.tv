@@ -17,7 +17,7 @@
 | ------ | ------- | --------- | --- | ------------ | ---------- | ----- | ------------ |
 | Amlogic | AMLG12B | A311D | VIM3 | x | x | alpha | audio & videodecoder quirks*, low Mesa 3D performance** |
 | Amlogic | AMLGX | S905X | VIM1 | x | x | alpha | audio & videodecoder quirks*, low Mesa 3D performance** |
-| Generic | - | AMD & Intel | - | x | x | stable | ? |
+| Generic | - | AMD & Intel | - | x | x | stable | random silent audio in ES with PA backend, should be solved by restarting the emulator/ES |
 | Rockchip | RK3399 | RK3399 | ROCKPro64 | x | x | beta stable | low Mesa 3D performance** |
 | RPi | RPi4 | bcm2711 | RPi4 | x | - | ? | ? |
 

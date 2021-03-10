@@ -415,7 +415,7 @@ index 80d18dfdc..8ee6d7486 100644
 +
 +							if (mixerElem == nullptr)
 +							{
-+								LOG(LogError) << "VolumeControl::init() - Failed to find mixer elements!";
++								//LOG(LogError) << "VolumeControl::init() - Failed to find mixer elements!";
 +								snd_mixer_close(mixerHandle);
 +								mixerHandle = nullptr;
 +							}

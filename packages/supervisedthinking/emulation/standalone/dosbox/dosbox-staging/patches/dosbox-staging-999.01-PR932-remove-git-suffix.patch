@@ -1,17 +1,13 @@
-From f6af69e32a5e44f25b4b7462eaeca33b8ee7df54 Mon Sep 17 00:00:00 2001
+From bd987536cb3b56ba51831b2ce51e7856e589e695 Mon Sep 17 00:00:00 2001
 From: Patryk Obara <dreamer.tan@gmail.com>
 Date: Sun, 7 Mar 2021 00:44:57 +0100
-Subject: [PATCH] Remove "-git" suffix from .conf file in release
+Subject: [PATCH 1/2] Remove "-git" suffix from .conf file in release
 
-Before this change, we were using "dosbox-staging-git.conf" for all
-builds from master, and then each release branch had a commit changing
-it to "dosbox-staging.conf" for end-users. We were expecting that users
-will be interested in release branches only and we'll keep moving
-forward on master branch.
+Default .conf file name after this change is:
 
-After moving to Meson buildsystem, we have now have proper place to
-define build type - and we can generate appropriate suffix for .conf
-file depending on that.
+- dosbox-staging.conf - for buildtypes release, plain, and other
+  non-debug build types
+- dosbox-staging-git.conf - for buildtype debug and debugoptimized
 
 It does not work for Visual Studio buildsystem, but we're distributing
 these builds ourselves, so simple adjustment on CI is enough (this tiny
@@ -36,7 +32,7 @@ Cons of implementing this change:
  3 files changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/.github/workflows/windows.yml b/.github/workflows/windows.yml
-index f55aefe8e..11a010e07 100644
+index 9d541e275..0a9eb0c2c 100644
 --- a/.github/workflows/windows.yml
 +++ b/.github/workflows/windows.yml
 @@ -108,14 +108,17 @@ jobs:
@@ -90,3 +86,83 @@ index 0e9c04b58..c0ea73ccd 100644
  
  /* Operating System
   */
+
+From 7ab60c7f7bdcb3d261900317ddd51c50a1d3a1a4 Mon Sep 17 00:00:00 2001
+From: Patryk Obara <dreamer.tan@gmail.com>
+Date: Wed, 10 Mar 2021 11:45:12 +0100
+Subject: [PATCH 2/2] Rename CONF_BRAND to CONF_SUFFIX
+
+---
+ .github/workflows/windows.yml | 2 +-
+ meson.build                   | 4 ++--
+ src/config.h.in               | 2 +-
+ src/misc/cross.cpp            | 2 +-
+ src/platform/visualc/config.h | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/.github/workflows/windows.yml b/.github/workflows/windows.yml
+index 0a9eb0c2c..ccc520c1d 100644
+--- a/.github/workflows/windows.yml
++++ b/.github/workflows/windows.yml
+@@ -118,7 +118,7 @@ jobs:
+           sed -i "s|DOSBOX_DETAILED_VERSION \"git\"|DOSBOX_DETAILED_VERSION \"$VERSION\"|" src/platform/visualc/config.h
+           echo "VERSION=$VERSION" >> $GITHUB_ENV
+           # overwrite .conf file branding for release build
+-          sed -i "s|CONF_BRAND \"staging-git\"|CONF_BRAND \"staging\"|" src/platform/visualc/config.h
++          sed -i "s|CONF_SUFFIX \"-staging-git\"|CONF_SUFFIX \"-staging\"|" src/platform/visualc/config.h
+ 
+       - name:  Build
+         shell: pwsh
+diff --git a/meson.build b/meson.build
+index 5a76584bc..1e8d287d7 100644
+--- a/meson.build
++++ b/meson.build
+@@ -36,9 +36,9 @@ conf_data = configuration_data()
+ conf_data.set('version', meson.project_version())
+ 
+ if get_option('buildtype').startswith('debug')
+-  conf_data.set('conf_branding', 'staging-git')
++  conf_data.set('conf_suffix', '-staging-git')
+ else
+-  conf_data.set('conf_branding', 'staging')
++  conf_data.set('conf_suffix', '-staging')
+ endif
+ 
+ os_family_name = {
+diff --git a/src/config.h.in b/src/config.h.in
+index c0ea73ccd..13a3bfa57 100644
+--- a/src/config.h.in
++++ b/src/config.h.in
+@@ -28,7 +28,7 @@
+ #define VERSION "@version@"
+ 
+ // Suffix appended to the default .conf file name
+-#define CONF_BRAND "@conf_branding@"
++#define CONF_SUFFIX "@conf_suffix@"
+ 
+ /* Operating System
+  */
+diff --git a/src/misc/cross.cpp b/src/misc/cross.cpp
+index 2121fb18e..211fe69c9 100644
+--- a/src/misc/cross.cpp
++++ b/src/misc/cross.cpp
+@@ -46,7 +46,7 @@
+ 
+ static std::string GetConfigName()
+ {
+-	return "dosbox-" CONF_BRAND ".conf";
++	return "dosbox" CONF_SUFFIX ".conf";
+ }
+ 
+ #ifndef WIN32
+diff --git a/src/platform/visualc/config.h b/src/platform/visualc/config.h
+index 4b1713eb6..885b535e3 100644
+--- a/src/platform/visualc/config.h
++++ b/src/platform/visualc/config.h
+@@ -1,5 +1,5 @@
+ /* String appended to the .conf file. */
+-#define CONF_BRAND "staging-git"
++#define CONF_SUFFIX "-staging-git"
+ 
+ /* Version number of package */
+ #define VERSION "0.77.0"

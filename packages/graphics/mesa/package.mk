@@ -14,9 +14,9 @@ if [ "${OPENGLES}" = "mesa" ]; then
   PKG_SHA256="e1d38f39c0b7b31db7746dab31b3b818a432083e0756764d6f57f69697b49ad1"
   PKG_URL="https://github.com/mesa3d/mesa/archive/${PKG_VERSION}.tar.gz"
 else
-  PKG_VERSION="21.0.0-rc5"
-  PKG_SHA256="f57d23aa69d5ed7cfde250a7bf8f72285a34692f9e8d541532fa6970f941ce01"
-  PKG_URL="https://mesa.freedesktop.org/archive/mesa-${PKG_VERSION}.tar.xz"
+  PKG_VERSION="22869c97f940ba1cc5fd5cd1f3f4207314156265" #21.0.0
+  PKG_SHA256="b18b0a08ada866887efa70c60fc31666e170e94a74ed66f57bbddd7555ba3b28"
+  PKG_URL="https://github.com/mesa3d/mesa/archive/${PKG_VERSION}.tar.gz"
 fi
 
 get_graphicdrivers

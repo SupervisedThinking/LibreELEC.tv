@@ -30,12 +30,12 @@
 * [LibreELEC 10.0](https://github.com/LibreELEC/LibreELEC.tv)
 * [Kodi 19](https://github.com/xbmc/xbmc)
 
-| Project | Linux kernel | Mesa 3D |
-| ------ | ------------- | ------- |
-| Amlogic | [Linux 5.11.y](https://www.kernel.org/) | [21.1-dev](https://github.com/mesa3d/mesa) |
-| Generic | [Linux 5.10.y](https://www.kernel.org/) | [21.0-RC5](https://github.com/mesa3d/mesa) |
-| Rockchip | [Linux 5.10.y](https://www.kernel.org/) | [21.1-dev](https://github.com/mesa3d/mesa) |
-| RPi | [Linux 5.10.y](https://www.kernel.org/) | [21.1-dev](https://github.com/mesa3d/mesa) |
+| Project | Linux kernel | Mesa 3D | xf86-video-nvidia | xf86-video-nvidia-legacy | Vulkan-Loader |
+| ------ | ------------- | ------- | ------ | ------------- | ------ |
+| Amlogic | [Linux 5.11.y](https://www.kernel.org/) | [21.1.0-dev](https://github.com/mesa3d/mesa) | - | - | - |
+| Generic | [Linux 5.10.y](https://www.kernel.org/) | [21.0.0](https://github.com/mesa3d/mesa/releases/tag/mesa-21.0.0) | [460.56](https://www.nvidia.de/Download/driverResults.aspx/170812/de) | [340.108](https://www.nvidia.de/Download/driverResults.aspx/156190/de) | [v1.2.172](https://github.com/KhronosGroup/Vulkan-Loader/releases/tag/v1.2.172) |
+| Rockchip | [Linux 5.10.y](https://www.kernel.org/) | [21.1.0-dev](https://github.com/mesa3d/mesa) | - | - | - |
+| RPi | [Linux 5.10.y](https://www.kernel.org/) | [21.1.0-dev](https://github.com/mesa3d/mesa) | - | - | - |
 
 ---
 **Addons & tools for generic builds**

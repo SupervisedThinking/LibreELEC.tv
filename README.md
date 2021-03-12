@@ -57,11 +57,12 @@
 * Updated [udev-joystick-blacklist](https://github.com/denilsonsa/udev-joystick-blacklist) udev rules for input devices
 * Increased system partion size to 1024MB for new installations
 ---
-**Sysutils**
+**Addons, scripts & sysutils**
 
 * [evtest](https://github.com/freedesktop-unofficial-mirror/evtest)
 * [glmark2](https://github.com/glmark2/glmark2)
 * [mesa-demos](https://cgit.freedesktop.org/mesa/demos)
+* [SDL_GameControllerDB](https://github.com/gabomdq/SDL_GameControllerDB)
 * [sdl-jstest](https://gitlab.com/sdl-jstest/sdl-jstest)
 * [spectre-meltdown-checker](https://github.com/speed47/spectre-meltdown-checker)
 * [Skyscraper by Lars Muldjord](https://github.com/muldjord/skyscraper/releases)

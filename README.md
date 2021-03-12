@@ -72,8 +72,8 @@
 
 | Frontend | Version | Included Themes | Documentation & Guide |
 | -------- | ------- | --------------- | --------------------- |
-| [Emulationstation-Retropie](https://github.com/RetroPie/EmulationStation) | v2.9.4 |[carbon](https://github.com/SupervisedThinking/es-theme-carbon/) [pixel](https://github.com/SupervisedThinking/es-theme-pixel) [simple-dark](https://github.com/SupervisedThinking/es-theme-simple-dark) | [Wiki](https://retropie.org.uk/docs/EmulationStation/) |
-| [Pegasus-Frontend](http://pegasus-frontend.org/) | continous | [es2-simple](https://github.com/mmatyas/pegasus-theme-es2-simple) [gameOS](https://github.com/PlayingKarrde/gameOS) | [Wiki](https://pegasus-frontend.org/docs/) |
+| [Emulationstation-Retropie](https://github.com/RetroPie/EmulationStation) | v2.9.4 |[carbon](https://github.com/SupervisedThinking/es-theme-carbon/) / [pixel](https://github.com/SupervisedThinking/es-theme-pixel) / [simple-dark](https://github.com/SupervisedThinking/es-theme-simple-dark) | [Wiki](https://retropie.org.uk/docs/EmulationStation/) |
+| [Pegasus-Frontend](http://pegasus-frontend.org/) | continous | [es2-simple](https://github.com/mmatyas/pegasus-theme-es2-simple) / [gameOS](https://github.com/PlayingKarrde/gameOS) | [Wiki](https://pegasus-frontend.org/docs/) |
 | [RetroArch](https://github.com/libretro/RetroArch) | v1.9.0 | - |[FAQ](https://www.retroarch.com/?page=faq) |
 
 ---

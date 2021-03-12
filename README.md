@@ -1,6 +1,6 @@
 ## LibreELEC-RR 10.0
 ---
-**Project threads**
+**Preliminary project threads**
 
 *English*
 
@@ -9,6 +9,15 @@
 *German*
 
 * [LibreELEC-RR 10.x [ Brave | Spotify | Moonlight | Emulationstation | Retroarch | Pegasus-Frontend]](https://www.kodinerds.net/index.php/Thread/62933-LibreELEC-9-0-Reborn-Remix-Emulationstation-Retroarch-DolphinQT-Moonlight-Chrome/)
+
+---
+**Downloads**
+| Project | Links |
+| ------ | ----- |
+| Amlogic | [Google Drive](https://drive.google.com/drive/folders/1EwOjNcyR7l4qYds62F7NIHePlZ_A14Na?usp=sharing) |
+| Generic | [Google Drive](https://drive.google.com/drive/folders/1oMAAKESTaaZ_kc8-1iCBvpxDAdJp0B7H?usp=sharing) |
+| Rockchip | [Google Drive](https://drive.google.com/drive/folders/1AyDf37iHSEPsduSZJ4OOhQyJRTPsQG83?usp=sharing) |
+| RPi | [Google Drive](https://drive.google.com/drive/folders/1ECdRmw_cxEvhngdIrqsSQD0zssTK2IoI?usp=sharing) |
 
 ---
 **Currently supported & WIP devices**

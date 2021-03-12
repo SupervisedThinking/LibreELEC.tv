@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="sdl2"
-PKG_VERSION="3a1317ed47698c268574e1d0018edd6485f5dbc4" #2.0.15-dev
-PKG_SHA256="9a6880883fc5efa5c3256095950d0d9fd52747250e720bdc7e6f2863af93601c"
+PKG_VERSION="3d22731d94d6259255ef3fd5006c8c6c80e377b4" #2.0.15-dev
+PKG_SHA256="92c95dc503fcd229e7d77226b49eb9f82f2e516335d753f29082b89bf9bc6658"
 PKG_LICENSE="SDL"
 PKG_SITE="https://www.libsdl.org/"
 PKG_URL="https://github.com/libsdl-org/SDL/archive/${PKG_VERSION}.tar.gz"
@@ -82,6 +82,7 @@ pre_configure_target(){
                          -DSDL_TEST=OFF \
                          -DSNDIO=OFF \
                          -DSNDIO_SHARED=OFF \
+                         -DSSEMATH=OFF \
                          -DVIDEO_COCOA=OFF \
                          -DVIDEO_DIRECTFB=OFF \
                          -DVIDEO_DUMMY=OFF \
@@ -183,6 +184,13 @@ pre_configure_target(){
     PKG_CMAKE_OPTS_TARGET+=" -DSSE2=ON"
   else
     PKG_CMAKE_OPTS_TARGET+=" -DSSE2=OFF"
+  fi
+
+  # SSE3 Support
+  if target_has_feature sse3; then
+    PKG_CMAKE_OPTS_TARGET+=" -DSSE3=ON"
+  else
+    PKG_CMAKE_OPTS_TARGET+=" -DSSE3=OFF"
   fi
 }
 

@@ -19,7 +19,7 @@ index dd1273456..49457696f 100644
 +	// check in storage music directory
  	if(musics.empty())
 -		getMusicIn(Utils::FileSystem::getHomePath() + "/RetroPie/roms/music", musics);
-+		getMusicIn("/storage/music/es", musics);
++		getMusicIn("/storage/music/emulationstation", musics);
    
  	// check in system sound directory
  	if(musics.empty())

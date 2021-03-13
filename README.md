@@ -97,7 +97,7 @@
 | [desmume](https://github.com/libretro/desmume) | Nintendo DS | [Libretro Docs](https://docs.libretro.com/library/desmume/) |
 | [dosbox-pure](https://github.com/libretro/dosbox-pure) | DOS | [Libretro Docs](https://docs.libretro.com/library/dosbox/) |
 | [ecwolf](https://github.com/libretro/ecwolf) | Wolf3D (id Tech Engine) | [Libretro Docs](https://www.libretro.com/index.php/ecwolf-wolfenstein-3d-libretro-core-wip-available-today-on-windowsmaclinuxandroid/) |
-| [fbneo](https://github.com/libretro/fbneo) | Multiple Arcade Machine Emulator -  Romset| [Libretro Docs](https://docs.libretro.com/library/fbneo/) |
+| [fbneo](https://github.com/libretro/fbneo) | Multiple Arcade Machine Emulator -  Romset 1.0.0.1 | [Libretro Docs](https://docs.libretro.com/library/fbneo/) |
 | [fceumm](https://github.com/libretro/libretro-fceumm) | Nintendo Entertainment System | [Libretro Docs](https://docs.libretro.com/library/fceumm/) |
 | [flycast](https://github.com/libretro/flycast) | Sega Dreamcast | [Libretro Docs](https://docs.libretro.com/library/flycast/) |
 | [fuse](https://github.com/libretro/fuse-libretro) | ZX Spectrum | [Libretro Docs](https://docs.libretro.com/library/fuse/) |

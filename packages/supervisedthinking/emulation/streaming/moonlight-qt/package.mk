@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="moonlight-qt"
-PKG_VERSION="b5f8e6738a514b3e9d0f43afe6564b9ca27015d1" # v3.0.0+
+PKG_VERSION="d6b314f573712687197f66401fa6ed87c4064dae" # v3.0.0+
 PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/moonlight-stream/moonlight-qt"
 PKG_URL="https://github.com/moonlight-stream/moonlight-qt.git"
@@ -24,7 +24,7 @@ configure_target() {
   cd .${TARGET_NAME}
 
   # Generate qmake config
-  qmake ${PKG_BUILD}/moonlight-qt.pro PREFIX=${INSTALL}/usr
+  qmake "CONFIG+=embedded" ${PKG_BUILD}/moonlight-qt.pro PREFIX=${INSTALL}/usr
 }
 
 post_makeinstall_target() {

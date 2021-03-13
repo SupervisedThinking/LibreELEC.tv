@@ -17,6 +17,12 @@ PKG_LIBPATH="${PKG_LIBNAME}"
 
 PKG_MAKE_OPTS_TARGET="GIT_VERSION=${PKG_VERSION:0:7}"
 
+pre_configure_target() {
+  if [ "${ARCH}" = "arm" ]; then
+    PKG_MAKE_OPTS_TARGET+=" platform=armv"
+  fi
+}
+
 makeinstall_target() {
   mkdir -p ${INSTALL}/usr/lib/libretro
   cp -v ${PKG_LIBPATH} ${INSTALL}/usr/lib/libretro/

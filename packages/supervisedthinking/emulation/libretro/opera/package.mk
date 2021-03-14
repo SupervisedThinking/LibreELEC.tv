@@ -10,7 +10,7 @@ PKG_URL="https://github.com/libretro/opera-libretro/archive/${PKG_VERSION}.tar.g
 PKG_DEPENDS_TARGET="toolchain glibc"
 PKG_LONGDESC="Port of 4DO/libfreedo to libretro."
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="+lto"
+PKG_BUILD_FLAGS="+lto -sysroot"
 
 PKG_LIBNAME="opera_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

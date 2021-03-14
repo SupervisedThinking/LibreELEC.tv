@@ -10,7 +10,7 @@ PKG_URL="https://github.com/libretro/stella2014-libretro/archive/${PKG_VERSION}.
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="Port of Stella to libretro."
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="+lto"
+PKG_BUILD_FLAGS="+lto -sysroot"
 
 PKG_LIBNAME="stella2014_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

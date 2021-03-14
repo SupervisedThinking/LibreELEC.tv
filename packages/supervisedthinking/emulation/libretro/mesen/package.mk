@@ -10,7 +10,7 @@ PKG_URL="https://github.com/NovaSquirrel/Mesen/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="Mesen is a cross-platform (Windows & Linux) NES/Famicom emulator built in C++ and C#"
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="+lto"
+PKG_BUILD_FLAGS="+lto -sysroot"
 
 PKG_LIBNAME="mesen_libretro.so"
 PKG_LIBPATH="Libretro/${PKG_LIBNAME}"

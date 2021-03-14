@@ -10,7 +10,7 @@ PKG_URL="https://github.com/libretro/libretro-fceumm/archive/${PKG_VERSION}.tar.
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="Libretro port of the NES/Faimcom emulator FCE Ultra mappers mod project."
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="+lto"
+PKG_BUILD_FLAGS="+lto -sysroot"
 
 PKG_LIBNAME="fceumm_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

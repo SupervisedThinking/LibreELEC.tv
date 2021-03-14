@@ -10,7 +10,7 @@ PKG_URL="https://github.com/libretro/virtualjaguar-libretro/archive/${PKG_VERSIO
 PKG_DEPENDS_TARGET="toolchain glibc"
 PKG_LONGDESC="Port of Virtual Jaguar to Libretro"
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="+lto"
+PKG_BUILD_FLAGS="+lto -sysroot"
 
 PKG_LIBNAME="virtualjaguar_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

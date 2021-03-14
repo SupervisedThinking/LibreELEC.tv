@@ -10,7 +10,7 @@ PKG_URL="https://github.com/libretro/beetle-lynx-libretro/archive/${PKG_VERSION}
 PKG_DEPENDS_TARGET="toolchain libc"
 PKG_LONGDESC="Standalone port of Mednafen Lynx to libretro, itself a fork of Handy"
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="+lto"
+PKG_BUILD_FLAGS="+lto -sysroot"
 
 PKG_LIBNAME="mednafen_lynx_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

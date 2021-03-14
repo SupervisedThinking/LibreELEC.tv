@@ -10,6 +10,7 @@ PKG_DEPENDS_TARGET="toolchain linux glibc sdl2 zlib ffmpeg bzip2 openssl speex"
 PKG_LONGDESC="A PSP emulator for Android, Windows, Mac, Linux and Blackberry 10, written in C++."
 GET_HANDLER_SUPPORT="git"
 PKG_GIT_CLONE_BRANCH="v1.11-hotfixes"
+PKG_BUILD_FLAGS="-sysroot"
 
 PKG_LIBNAME="ppsspp_libretro.so"
 PKG_LIBPATH="lib/${PKG_LIBNAME}"

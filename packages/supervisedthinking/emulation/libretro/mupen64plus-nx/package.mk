@@ -10,9 +10,10 @@ PKG_URL="https://github.com/libretro/mupen64plus-libretro-nx/archive/${PKG_VERSI
 PKG_DEPENDS_TARGET="toolchain linux glibc zlib libpng"
 PKG_LONGDESC="Mupen64Plus is mupen64plus + GLideN64 + libretro"
 PKG_TOOLCHAIN="make"
+PKG_BUILD_FLAGS="-sysroot"
 
 if [ "${ARCH}" = "arm" ]; then
-  PKG_BUILD_FLAGS="+lto"
+  PKG_BUILD_FLAGS+=" +lto"
 fi
 
 PKG_LIBNAME="mupen64plus_next_libretro.so"

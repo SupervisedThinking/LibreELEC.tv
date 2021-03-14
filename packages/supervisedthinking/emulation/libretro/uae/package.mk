@@ -10,6 +10,7 @@ PKG_URL="https://github.com/libretro/libretro-uae/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="Libretro wrapper for UAE emulator."
 PKG_TOOLCHAIN="make"
+PKG_BUILD_FLAGS="-sysroot"
 
 PKG_LIBNAME="puae_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

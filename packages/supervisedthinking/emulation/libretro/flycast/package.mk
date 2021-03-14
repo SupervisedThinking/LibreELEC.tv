@@ -10,6 +10,7 @@ PKG_URL="https://github.com/libretro/flycast/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="Flycast is a multiplatform Sega Dreamcast emulator"
 PKG_TOOLCHAIN="make"
+PKG_BUILD_FLAGS="-sysroot"
 
 PKG_LIBNAME="flycast_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

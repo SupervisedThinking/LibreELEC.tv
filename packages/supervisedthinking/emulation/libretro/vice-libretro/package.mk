@@ -10,10 +10,11 @@ PKG_URL="https://github.com/libretro/vice-libretro/archive/${PKG_VERSION}.tar.gz
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="Versatile Commodore 8-bit Emulator version 3.3 LIBRETRO WIP"
 PKG_TOOLCHAIN="make"
+PKG_BUILD_FLAGS="-sysroot"
 
 configure_package() {
   if [ ! "${ARCH}" = "arm" ]; then
-    PKG_BUILD_FLAGS="+lto"
+    PKG_BUILD_FLAGS+=" +lto"
   fi
 }
 

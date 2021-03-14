@@ -9,10 +9,11 @@ PKG_SITE="https://github.com/libretro/duckstation"
 PKG_URL="https://github.com/libretro/duckstation/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="DuckStation is an simulator/emulator of the Sony PlayStation(TM) console, focusing on playability, speed, and long-term maintainability."
+PKG_BUILD_FLAGS="-sysroot"
 
 configure_package() {
   if [ ! "${ARCH}" = "arm" ]; then
-    PKG_BUILD_FLAGS="+lto"
+    PKG_BUILD_FLAGS+=" +lto"
   fi
 }
 

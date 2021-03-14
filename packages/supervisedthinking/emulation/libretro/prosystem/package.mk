@@ -10,7 +10,7 @@ PKG_URL="https://github.com/libretro/prosystem-libretro/archive/${PKG_VERSION}.t
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="Port of ProSystem to the libretro API."
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="+lto"
+PKG_BUILD_FLAGS="+lto -sysroot"
 
 PKG_LIBNAME="prosystem_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

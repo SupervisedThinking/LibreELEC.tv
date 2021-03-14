@@ -10,7 +10,7 @@ PKG_URL="https://github.com/libretro/FBNeo/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="A libretro port of FinalBurn Neo for Romset v1.0.0.1"
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="-gold +lto"
+PKG_BUILD_FLAGS="-gold +lto -sysroot"
 
 PKG_LIBNAME="fbneo_libretro.so"
 PKG_LIBPATH="src/burner/libretro/${PKG_LIBNAME}"

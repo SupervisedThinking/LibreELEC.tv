@@ -3,14 +3,14 @@
 
 PKG_NAME="mrboom"
 PKG_VERSION="67a20a4ac0dff6d3285f7fe8d563919b8f875609" #v5.2
-PKG_LICENSE="GPLv3"
+PKG_LICENSE="GPL-3.0-or-later"
 PKG_SITE="https://github.com/Javanaise/mrboom-libretro"
 PKG_URL="https://github.com/Javanaise/mrboom-libretro.git"
 PKG_DEPENDS_TARGET="toolchain linux glibc"
 PKG_LONGDESC="Mr.Boom is an 8 player Bomberman clone for RetroArch/Libretro"
 GET_HANDLER_SUPPORT="git"
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="+lto"
+PKG_BUILD_FLAGS="+lto -sysroot"
 
 PKG_LIBNAME="mrboom_libretro.so"
 PKG_LIBPATH="${PKG_LIBNAME}"

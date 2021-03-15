@@ -1,14 +1,10 @@
 ## LibreELEC-RR 10.0
 ---
-**Preliminary project threads**
+**Project thread**
 
 *English*
 
-* [LibreELEC-RR 10.x [ Brave | Spotify | Moonlight | Emulationstation | Retroarch | Pegasus-Frontend]](https://forum.libreelec.tv/thread/12662-libreelec-9-0-reborn-remix-emulationstation-retroarch-dolphinqt-chrome-spotify-w/)
-
-*German*
-
-* [LibreELEC-RR 10.x [ Brave | Spotify | Moonlight | Emulationstation | Retroarch | Pegasus-Frontend]](https://www.kodinerds.net/index.php/Thread/62933-LibreELEC-9-0-Reborn-Remix-Emulationstation-Retroarch-DolphinQT-Moonlight-Chrome/)
+* [LibreELEC-RR 10.x [ Brave | Spotify | Moonlight | Emulationstation | Retroarch | Pegasus ]](https://forum.libreelec.tv/thread/23644-libreelec-rr-10-x-brave-spotify-moonlight-emulationstation-retroarch-pegasus/)
 
 ---
 **Basics**

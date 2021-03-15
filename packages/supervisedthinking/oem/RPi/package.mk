@@ -2,7 +2,7 @@
 # Copyright (C) 2021-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="RPi"
-PKG_VERSION="0.1"
+PKG_VERSION="1.0"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://goo.gl/DcQtcR"
 PKG_DEPENDS_TARGET="toolchain"

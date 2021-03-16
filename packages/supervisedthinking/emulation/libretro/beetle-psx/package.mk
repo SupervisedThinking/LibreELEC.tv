@@ -2,8 +2,8 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="beetle-psx"
-PKG_VERSION="3ec155d89f8f113326ef20cf9cb79082684c1201"
-PKG_SHA256="e9fb2b1607539f7b0fe0763c92666fb1665cdfd1e8ec1515217e0305e2a9897d"
+PKG_VERSION="c69e197078c9b8f25d89a6df82b25d01493583a0"
+PKG_SHA256="cb710335f34730ffb0891a6713ffd6f461ffb7cb8f4bb38b863ca1bb5943b749"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/libretro/beetle-psx-libretro"
 PKG_URL="https://github.com/libretro/beetle-psx-libretro/archive/${PKG_VERSION}.tar.gz"
@@ -27,18 +27,24 @@ configure_package() {
 }
 
 make_target() {
-  make GIT_VERSION=${PKG_VERSION:0:7}
+  PKG_MAKE_OPTS_TARGET="GIT_VERSION=${PKG_VERSION:0:7} LINK_STATIC_LIBCPLUSPLUS=0"
 
-  # Build with OpenGL/Vulkan support if available
+  # Build beetle-psx software renderer
+  echo -e "\nmake ${PKG_MAKE_OPTS_TARGET}\n"
+  make ${PKG_MAKE_OPTS_TARGET}
+
+  # Build beetle-psx with OpenGL/Vulkan support if available
   if [ "${OPENGL_SUPPORT}" = "yes" ]; then
     mkdir -p tmp
     mv ${PKG_LIBNAME} tmp/
     make clean
     if [ "${VULKAN_SUPPORT}" = "yes" ]; then
-      make HAVE_HW=1 GIT_VERSION=${PKG_VERSION:0:7}
+      PKG_MAKE_OPTS_TARGET+=" HAVE_HW=1"
     else
-      make HAVE_OPENGL=1 GIT_VERSION=${PKG_VERSION:0:7}
+      PKG_MAKE_OPTS_TARGET+=" HAVE_OPENGL=1"
     fi
+    echo -e "\nmake ${PKG_MAKE_OPTS_TARGET}\n"
+    make ${PKG_MAKE_OPTS_TARGET}
     mv tmp/${PKG_LIBNAME} .
   fi
 }

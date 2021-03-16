@@ -2,7 +2,7 @@
 # Copyright (C) 2018-present Frank Hartung (supervisedthinking (@) gmail.com)
 
 PKG_NAME="dolphin"
-PKG_VERSION="18d95dfcca463dd24e686d74066da96e27edbb3f" #5.0-13827
+PKG_VERSION="f44f20560d2f97ab24532842e2595db55576b8e8" #5.0-13867
 PKG_ARCH="x86_64"
 PKG_LICENSE="GPL-2.0-or-later"
 PKG_SITE="https://github.com/dolphin-emu/dolphin"
